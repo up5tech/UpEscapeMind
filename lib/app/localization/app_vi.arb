@@ -53,5 +53,23 @@
   "@clueDiscoveredMessage": {
     "placeholders": { "title": { "type": "String" } }
   },
-  "clueDiscoveredMessage": "Manh mối mới trong Nhật ký: {title}."
+  "clueDiscoveredMessage": "Manh mối mới trong Nhật ký: {title}.",
+
+  "inventoryTitle": "Hành trang",
+  "inventoryEmpty": "Hành trang trống. Vật phẩm nhặt được sẽ xuất hiện ở đây.",
+  "itemUseAction": "Sử dụng",
+  "itemDeselectAction": "Bỏ chọn",
+  "itemCombineAction": "Kết hợp",
+  "combineExitAction": "Xong",
+  "combineNeedsSelection": "Chọn ít nhất hai vật phẩm để kết hợp.",
+  "invalidItemUseMessage": "Món này không có tác dụng ở đây.",
+  "invalidCombinationMessage": "Các vật phẩm này không thể kết hợp.",
+  "@itemUsedMessage": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "itemUsedMessage": "Bạn sử dụng {item}.",
+  "@itemUsingHint": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "itemUsingHint": "Đang dùng {item} — chạm vào một điểm trong phòng."
 }

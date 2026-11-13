@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/constants/app_constants.dart';
+import '../domain/models/content/item_combination_definition.dart';
 import '../domain/models/content/prerequisites.dart';
 import '../domain/models/progress.dart';
 import 'providers/app_providers.dart';
@@ -47,6 +48,65 @@ class ProgressActions {
       if (p.discoveredClueIds.contains(clueId)) return p;
       return p.copyWith(discoveredClueIds: [...p.discoveredClueIds, clueId]);
     });
+  }
+
+  /// Consumes [itemId]: removes it from the inventory and records it in
+  /// `consumedItemIds`. No-op if the item is not held.
+  Future<void> consumeItem(String itemId) {
+    return _mutate((p) {
+      if (!p.hasItem(itemId)) return p;
+      return p.copyWith(
+        collectedItemIds: p.collectedItemIds
+            .where((id) => id != itemId)
+            .toList(),
+        consumedItemIds: [...p.consumedItemIds, itemId],
+      );
+    });
+  }
+
+  /// Applies [actions] (e.g. a `use_item` hotspot's success effects).
+  /// Idempotent per action target.
+  Future<void> applySuccessActions(List<SuccessAction> actions) {
+    return _mutate((p) {
+      var next = p;
+      for (final action in actions) {
+        next = _applySuccessAction(next, action);
+      }
+      return next;
+    });
+  }
+
+  /// Attempts a defined item [recipe]. Returns `true` when the recipe
+  /// matched the current inventory and was applied.
+  ///
+  /// Fails (returns `false`, state untouched) when any input is missing or
+  /// the result item is already owned — invalid combinations never destroy
+  /// items.
+  Future<bool> combineItems(ItemCombinationDefinition recipe) async {
+    var applied = false;
+    await _mutate((p) {
+      if (!recipe.inputItemIds.every(p.hasItem)) return p;
+      if (p.hasItem(recipe.resultItemId)) return p;
+
+      applied = true;
+      var next = p.copyWith(
+        collectedItemIds: [...p.collectedItemIds, recipe.resultItemId],
+      );
+      if (recipe.consumeInputItems) {
+        final consumed = [...p.consumedItemIds];
+        for (final input in recipe.inputItemIds) {
+          if (!consumed.contains(input)) consumed.add(input);
+        }
+        next = next.copyWith(
+          collectedItemIds: next.collectedItemIds
+              .where((id) => !recipe.inputItemIds.contains(id))
+              .toList(),
+          consumedItemIds: consumed,
+        );
+      }
+      return next;
+    });
+    return applied;
   }
 
   /// Marks [puzzleId] solved and applies its [SuccessAction]s.

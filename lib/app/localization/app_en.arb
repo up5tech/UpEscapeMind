@@ -53,5 +53,23 @@
   "@clueDiscoveredMessage": {
     "placeholders": { "title": { "type": "String" } }
   },
-  "clueDiscoveredMessage": "New clue in your Journal: {title}."
+  "clueDiscoveredMessage": "New clue in your Journal: {title}.",
+
+  "inventoryTitle": "Satchel",
+  "inventoryEmpty": "Your satchel is empty. Picked-up items will appear here.",
+  "itemUseAction": "Use",
+  "itemDeselectAction": "Deselect",
+  "itemCombineAction": "Combine",
+  "combineExitAction": "Done",
+  "combineNeedsSelection": "Select at least two items to combine.",
+  "invalidItemUseMessage": "That doesn't work here.",
+  "invalidCombinationMessage": "These items can't be combined.",
+  "@itemUsedMessage": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "itemUsedMessage": "You use the {item}.",
+  "@itemUsingHint": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "itemUsingHint": "Using {item} — tap something in the room."
 }

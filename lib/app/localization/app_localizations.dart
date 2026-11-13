@@ -355,6 +355,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New clue in your Journal: {title}.'**
   String clueDiscoveredMessage(String title);
+
+  /// No description provided for @inventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Satchel'**
+  String get inventoryTitle;
+
+  /// No description provided for @inventoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your satchel is empty. Picked-up items will appear here.'**
+  String get inventoryEmpty;
+
+  /// No description provided for @itemUseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Use'**
+  String get itemUseAction;
+
+  /// No description provided for @itemDeselectAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect'**
+  String get itemDeselectAction;
+
+  /// No description provided for @itemCombineAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Combine'**
+  String get itemCombineAction;
+
+  /// No description provided for @combineExitAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get combineExitAction;
+
+  /// No description provided for @combineNeedsSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least two items to combine.'**
+  String get combineNeedsSelection;
+
+  /// No description provided for @invalidItemUseMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'That doesn\'t work here.'**
+  String get invalidItemUseMessage;
+
+  /// No description provided for @invalidCombinationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'These items can\'t be combined.'**
+  String get invalidCombinationMessage;
+
+  /// No description provided for @itemUsedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You use the {item}.'**
+  String itemUsedMessage(String item);
+
+  /// No description provided for @itemUsingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Using {item} — tap something in the room.'**
+  String itemUsingHint(String item);
 }
 
 class _AppLocalizationsDelegate

@@ -146,4 +146,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String clueDiscoveredMessage(String title) {
     return 'New clue in your Journal: $title.';
   }
+
+  @override
+  String get inventoryTitle => 'Satchel';
+
+  @override
+  String get inventoryEmpty =>
+      'Your satchel is empty. Picked-up items will appear here.';
+
+  @override
+  String get itemUseAction => 'Use';
+
+  @override
+  String get itemDeselectAction => 'Deselect';
+
+  @override
+  String get itemCombineAction => 'Combine';
+
+  @override
+  String get combineExitAction => 'Done';
+
+  @override
+  String get combineNeedsSelection => 'Select at least two items to combine.';
+
+  @override
+  String get invalidItemUseMessage => 'That doesn\'t work here.';
+
+  @override
+  String get invalidCombinationMessage => 'These items can\'t be combined.';
+
+  @override
+  String itemUsedMessage(String item) {
+    return 'You use the $item.';
+  }
+
+  @override
+  String itemUsingHint(String item) {
+    return 'Using $item — tap something in the room.';
+  }
 }

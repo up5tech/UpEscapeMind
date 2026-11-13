@@ -11,6 +11,7 @@ import '../../data/content/content_strings.dart';
 import '../../domain/models/content/content_models.dart';
 import '../../domain/models/progress.dart';
 import '../../domain/rules/prerequisite_evaluator.dart';
+import '../inventory/inventory_panel.dart';
 import 'room_scene.dart';
 
 /// Room exploration screen: renders the scene, positions hotspots, and
@@ -29,6 +30,12 @@ class RoomScreen extends ConsumerStatefulWidget {
 
 class _RoomScreenState extends ConsumerState<RoomScreen> {
   String? _enteredRoomId;
+
+  /// Transient UI state: item currently "in hand" and combine mode.
+  /// Durable state lives in `GameProgress`.
+  String? _selectedItemId;
+  bool _combineMode = false;
+  final Set<String> _combineSelection = {};
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +86,49 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           ),
     ];
 
+    final l10n = AppLocalizations.of(context);
+    final items = [
+      for (final id in progress.collectedItemIds)
+        if (catalog.itemsById[id] != null) catalog.itemsById[id]!,
+    ];
+
     return AppScaffold(
       title: strings.forLocale(locale, room.titleKey),
       showBackButton: true,
-      body: RoomScene(
-        backgroundAsset: room.backgroundAsset,
-        hotspots: hotspots,
-        onHotspotTap: (hotspot) =>
-            _handleHotspot(context, ref, catalog, strings, progress, hotspot),
+      body: Column(
+        children: [
+          Expanded(
+            child: RoomScene(
+              backgroundAsset: room.backgroundAsset,
+              hotspots: hotspots,
+              onHotspotTap: (hotspot) => _handleHotspot(
+                context,
+                ref,
+                catalog,
+                strings,
+                progress,
+                hotspot,
+              ),
+            ),
+          ),
+          InventoryBar(
+            items: items,
+            strings: strings,
+            locale: locale,
+            l10n: l10n,
+            selectedItemId: _selectedItemId,
+            combineMode: _combineMode,
+            combineSelection: _combineSelection,
+            onItemTap: _onCombineItemTap,
+            onCombine: _tryCombine,
+            onExitCombine: () => setState(() {
+              _combineMode = false;
+              _combineSelection.clear();
+            }),
+            onDeselect: () => setState(() => _selectedItemId = null),
+            onOpenSheet: (item) => _openItemSheet(context, ref, strings, item),
+          ),
+        ],
       ),
     );
   }
@@ -105,10 +147,24 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     final actions = ref.read(progressActionsProvider);
     final def = hotspot.definition;
 
+    // While an item is "in hand", every hotspot tap is a use attempt.
+    // Only `use_item` hotspots can succeed; anything else is invalid
+    // feedback and the selection is kept.
+    if (_selectedItemId != null &&
+        def.interactionType != HotspotInteraction.useItem) {
+      _toast(context, l10n.invalidItemUseMessage);
+      return;
+    }
+
     switch (def.interactionType) {
       case HotspotInteraction.inspect:
-      case HotspotInteraction.useItem:
         await _showInspection(context, hotspot, s);
+      case HotspotInteraction.useItem:
+        if (_selectedItemId == null) {
+          await _showInspection(context, hotspot, s);
+        } else {
+          await _tryUseItem(catalog, strings, progress, hotspot);
+        }
       case HotspotInteraction.navigate:
         await _navigate(context, catalog, progress, def.targetId, l10n);
       case HotspotInteraction.discoverClue:
@@ -141,6 +197,117 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       case HotspotInteraction.puzzle:
         await _openPuzzle(context, catalog, progress, def.targetId, l10n);
     }
+  }
+
+  /// Item-in-hand use attempt on a `use_item` hotspot. Succeeds only when
+  /// the hotspot's `acceptedItemIds` lists the selected item; success
+  /// applies the hotspot's `successActions` and optionally consumes the
+  /// item. Invalid attempts never consume anything.
+  Future<void> _tryUseItem(
+    ContentCatalog catalog,
+    ContentStrings strings,
+    GameProgress progress,
+    RoomHotspotView hotspot,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final locale = ref.read(appLocaleProvider)?.languageCode ?? 'vi';
+    final itemId = _selectedItemId!;
+    final item = catalog.itemsById[itemId];
+    final def = hotspot.definition;
+
+    final accepted =
+        item != null &&
+        progress.hasItem(itemId) &&
+        def.acceptedItemIds.contains(itemId);
+    if (!accepted) {
+      _toast(context, l10n.invalidItemUseMessage);
+      return;
+    }
+
+    final actions = ref.read(progressActionsProvider);
+    await actions.applySuccessActions(def.successActions);
+    if (def.consumeItemOnUse) {
+      await actions.consumeItem(itemId);
+    }
+    if (!mounted) return;
+    setState(() => _selectedItemId = null);
+    _toast(
+      context,
+      l10n.itemUsedMessage(strings.forLocale(locale, item.nameKey)),
+    );
+  }
+
+  void _onCombineItemTap(ItemDefinition item) {
+    setState(() {
+      if (!_combineSelection.remove(item.id)) {
+        _combineSelection.add(item.id);
+      }
+    });
+  }
+
+  /// Attempts an explicitly defined combination recipe matching the
+  /// current combine selection. Invalid selections change nothing.
+  Future<void> _tryCombine() async {
+    final l10n = AppLocalizations.of(context);
+    if (_combineSelection.length < 2) {
+      _toast(context, l10n.combineNeedsSelection);
+      return;
+    }
+    final catalog = ref.read(contentCatalogProvider).value;
+    if (catalog == null) return;
+    final recipe = catalog.combinations
+        .where(
+          (c) =>
+              c.inputItemIds.length == _combineSelection.length &&
+              c.inputItemIds.every(_combineSelection.contains),
+        )
+        .firstOrNull;
+    if (recipe == null) {
+      _toast(context, l10n.invalidCombinationMessage);
+      return;
+    }
+    final ok = await ref.read(progressActionsProvider).combineItems(recipe);
+    if (!mounted) return;
+    if (ok) {
+      setState(() {
+        _combineMode = false;
+        _combineSelection.clear();
+      });
+      final strings = ref.read(contentStringsProvider).value;
+      final locale = ref.read(appLocaleProvider)?.languageCode ?? 'vi';
+      if (strings != null) {
+        _toast(context, strings.forLocale(locale, recipe.resultMessageKey));
+      }
+    } else {
+      _toast(context, l10n.invalidCombinationMessage);
+    }
+  }
+
+  void _openItemSheet(
+    BuildContext context,
+    WidgetRef ref,
+    ContentStrings strings,
+    ItemDefinition item,
+  ) {
+    final locale = ref.read(appLocaleProvider)?.languageCode ?? 'vi';
+    final isSelected = _selectedItemId == item.id;
+    showItemDetailSheet(
+      context: context,
+      item: item,
+      strings: strings,
+      locale: locale,
+      l10n: AppLocalizations.of(context),
+      isSelected: isSelected,
+      onUse: () =>
+          setState(() => _selectedItemId = isSelected ? null : item.id),
+      onCombineStart: () => setState(() {
+        _selectedItemId = null;
+        _combineMode = true;
+        _combineSelection
+          ..clear()
+          ..add(item.id);
+      }),
+    );
   }
 
   Future<void> _navigate(

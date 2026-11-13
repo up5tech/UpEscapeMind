@@ -74,6 +74,9 @@ class HotspotDefinition {
     this.descriptionKey,
     this.inspectionAsset,
     this.visibilityConditions = const [],
+    this.acceptedItemIds = const [],
+    this.consumeItemOnUse = false,
+    this.successActions = const [],
   });
 
   final String id;
@@ -87,6 +90,15 @@ class HotspotDefinition {
   final String? descriptionKey;
   final String? inspectionAsset;
   final List<Prerequisite> visibilityConditions;
+
+  /// Items accepted by a `use_item` hotspot. Empty means no item works.
+  final List<String> acceptedItemIds;
+
+  /// Whether a successful `use_item` interaction consumes the item.
+  final bool consumeItemOnUse;
+
+  /// Side effects applied when an accepted item is used on this hotspot.
+  final List<SuccessAction> successActions;
 
   factory HotspotDefinition.fromJson(
     Map<String, dynamic> json,
@@ -147,6 +159,32 @@ class HotspotDefinition {
         fieldPrefix: fieldPrefix,
       ),
       visibilityConditions: visibility,
+      acceptedItemIds: json['acceptedItemIds'] == null
+          ? const []
+          : reqStringList(
+              json,
+              'acceptedItemIds',
+              filePath,
+              fieldPrefix: fieldPrefix,
+            ),
+      consumeItemOnUse: reqBool(
+        json,
+        'consumeItemOnUse',
+        filePath,
+        mandatory: false,
+        fieldPrefix: fieldPrefix,
+      ),
+      successActions: json['successActions'] == null
+          ? const []
+          : [
+              for (final entry in reqMapList(
+                json,
+                'successActions',
+                filePath,
+                fieldPrefix: fieldPrefix,
+              ))
+                SuccessAction.fromJson(entry, filePath),
+            ],
     );
   }
 }

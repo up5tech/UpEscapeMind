@@ -149,4 +149,42 @@ class AppLocalizationsVi extends AppLocalizations {
   String clueDiscoveredMessage(String title) {
     return 'Manh mối mới trong Nhật ký: $title.';
   }
+
+  @override
+  String get inventoryTitle => 'Hành trang';
+
+  @override
+  String get inventoryEmpty =>
+      'Hành trang trống. Vật phẩm nhặt được sẽ xuất hiện ở đây.';
+
+  @override
+  String get itemUseAction => 'Sử dụng';
+
+  @override
+  String get itemDeselectAction => 'Bỏ chọn';
+
+  @override
+  String get itemCombineAction => 'Kết hợp';
+
+  @override
+  String get combineExitAction => 'Xong';
+
+  @override
+  String get combineNeedsSelection => 'Chọn ít nhất hai vật phẩm để kết hợp.';
+
+  @override
+  String get invalidItemUseMessage => 'Món này không có tác dụng ở đây.';
+
+  @override
+  String get invalidCombinationMessage => 'Các vật phẩm này không thể kết hợp.';
+
+  @override
+  String itemUsedMessage(String item) {
+    return 'Bạn sử dụng $item.';
+  }
+
+  @override
+  String itemUsingHint(String item) {
+    return 'Đang dùng $item — chạm vào một điểm trong phòng.';
+  }
 }

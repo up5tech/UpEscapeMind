@@ -252,8 +252,23 @@ abstract final class ContentValidator {
           errors.add('$where: navigate requires a known room targetId');
         }
       case HotspotInteraction.inspect:
-      case HotspotInteraction.useItem:
         break; // targetId optional
+      case HotspotInteraction.useItem:
+        if (hotspot.acceptedItemIds.isEmpty) {
+          errors.add(
+            '$where: use_item requires a non-empty acceptedItemIds list',
+          );
+        }
+        for (final itemId in hotspot.acceptedItemIds) {
+          if (!c.itemsById.containsKey(itemId)) {
+            errors.add(
+              '$where: acceptedItemIds references unknown item "$itemId"',
+            );
+          }
+        }
+        for (final action in hotspot.successActions) {
+          _checkSuccessAction(c, action, where, errors);
+        }
     }
   }
 

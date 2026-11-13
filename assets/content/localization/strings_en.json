@@ -34,5 +34,7 @@
   "clueSampleNoteTitle": "Margin Note",
   "clueSampleNoteBody": "The clockmaker wrote: 'Time is a lock, not a river.'",
   "clueSampleLockOpenedTitle": "The Lock Opens",
-  "clueSampleLockOpenedBody": "Inside the panel: a second, smaller lock."
+  "clueSampleLockOpenedBody": "Inside the panel: a second, smaller lock.",
+  "hotspotSampleHookPanel": "Ancient carved panel",
+  "hotspotSampleHookPanelDesc": "A brass panel carved with a gear and a key."
 }
