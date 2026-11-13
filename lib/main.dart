@@ -8,7 +8,9 @@ import 'app/providers/app_providers.dart';
 import 'app/router.dart';
 import 'app/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
+import 'data/content/content_strings.dart';
 import 'data/database/app_database.dart';
+import 'domain/models/content/content_catalog.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,8 @@ class UpEscapeMindApp extends StatelessWidget {
     required this.prefs,
     this.languageOverride,
     this.database,
+    this.catalog,
+    this.strings,
   });
 
   final SharedPreferences prefs;
@@ -39,6 +43,10 @@ class UpEscapeMindApp extends StatelessWidget {
 
   /// Optional database override (tests inject `NativeDatabase.memory()`).
   final AppDatabase? database;
+
+  /// Optional pre-loaded content (tests bypass async asset loading).
+  final ContentCatalog? catalog;
+  final ContentStrings? strings;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +59,10 @@ class UpEscapeMindApp extends StatelessWidget {
             languageOverride == null ? null : Locale(languageOverride!),
           ),
         ),
+        if (catalog != null)
+          contentCatalogProvider.overrideWith((ref) async => catalog!),
+        if (strings != null)
+          contentStringsProvider.overrideWith((ref) async => strings!),
       ],
       child: const _AppShell(),
     );

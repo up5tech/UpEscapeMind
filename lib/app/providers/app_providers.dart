@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/app_constants.dart';
+import '../../data/content/content_strings.dart';
 import '../../data/database/app_database.dart';
 import '../../data/repositories/asset_content_repository.dart';
 import '../../data/repositories/content_repository.dart';
@@ -10,6 +11,7 @@ import '../../data/repositories/drift_progress_repository.dart';
 import '../../data/repositories/progress_repository.dart';
 import '../../data/repositories/settings_repository.dart';
 import '../../data/repositories/shared_preferences_settings_repository.dart';
+import '../../domain/models/content/content_catalog.dart';
 import '../../domain/models/progress.dart';
 
 /// SharedPreferences instance, initialized once in `main()`.
@@ -22,6 +24,16 @@ final sharedPreferencesProvider = Provider<SharedPreferences>(
 final contentRepositoryProvider = Provider<ContentRepository>(
   (ref) => AssetContentRepository(),
 );
+
+/// Validated content catalog, loaded once per session.
+final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) {
+  return ref.watch(contentRepositoryProvider).loadCatalog();
+});
+
+/// Bundled content string tables (vi default, en fallback).
+final contentStringsProvider = FutureProvider<ContentStrings>((ref) {
+  return ContentStrings.load();
+});
 
 /// Local SQLite database. Closed when the provider scope is disposed.
 final appDatabaseProvider = Provider<AppDatabase>((ref) {

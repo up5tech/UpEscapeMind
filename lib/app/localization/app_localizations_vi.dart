@@ -35,9 +35,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chaptersTitle => 'Các chương';
 
   @override
-  String get chapter1Title => 'Kho Lưu Trữ của Thợ Làm Đồng Hồ';
-
-  @override
   String get chapterLocked => 'Đã khóa';
 
   @override
@@ -61,116 +58,14 @@ class AppLocalizationsVi extends AppLocalizations {
       'Thao tác này sẽ thay thế dữ liệu lưu hiện tại.';
 
   @override
-  String get roomEntranceTitle => 'Sảnh Chính';
+  String get journalTitle => 'Nhật ký';
 
   @override
-  String get roomStudyTitle => 'Phòng Nghiên Cứu của Thợ Làm Đồng Hồ';
+  String get journalEmpty =>
+      'Chưa có khám phá nào. Ghi chú và manh mối bạn tìm thấy sẽ xuất hiện ở đây.';
 
   @override
-  String get roomWorkshopTitle => 'Xưởng';
-
-  @override
-  String get roomGalleryTitle => 'Phòng Chân Dung';
-
-  @override
-  String get roomObservatoryTitle => 'Đài Thiên Văn Phong Ấn';
-
-  @override
-  String get chapterSampleTitle => 'Chương Mẫu (dữ liệu thử)';
-
-  @override
-  String get roomSampleTitle => 'Phòng Mẫu';
-
-  @override
-  String get roomSampleDescription =>
-      'Một căn phòng tối giản dùng để kiểm tra hệ thống nội dung.';
-
-  @override
-  String get roomSampleExitTitle => 'Phòng Mẫu — Lối Ra';
-
-  @override
-  String get hotspotSampleNote => 'Một mẩu ghi chú';
-
-  @override
-  String get hotspotSampleNoteDesc => 'Một mẩu giấy gấp nằm trên bàn.';
-
-  @override
-  String get hotspotSamplePlaque => 'Một tấm biển';
-
-  @override
-  String get hotspotSampleKeyDrawer => 'Ngăn kéo chìa khóa';
-
-  @override
-  String get hotspotSampleGearDrawer => 'Ngăn kéo bánh răng';
-
-  @override
-  String get hotspotSampleDoorLock => 'Ổ khóa cửa';
-
-  @override
-  String get hotspotSampleExitDoor => 'Cửa bên';
-
-  @override
-  String get hotspotSampleExitBack => 'Đường quay lại';
-
-  @override
-  String get exitSampleForward => 'Đi tiếp';
-
-  @override
-  String get exitSampleBack => 'Quay lại';
-
-  @override
-  String get puzzleSampleLockTitle => 'Ổ Khóa Mẫu';
-
-  @override
-  String get puzzleSampleLockInstructions => 'Nhập mã số gồm bốn chữ số.';
-
-  @override
-  String get puzzleSampleLockHint1 =>
-      'Hãy nhìn quanh căn phòng để tìm các chữ số.';
-
-  @override
-  String get puzzleSampleLockHint2 =>
-      'Tấm biển cạnh cửa hiển thị hai chữ số đầu.';
-
-  @override
-  String get puzzleSampleLockHint3 => 'Mã: 4 - 2 - 7 - 1.';
-
-  @override
-  String get itemSampleKeyName => 'Chìa Khóa Nhỏ';
-
-  @override
-  String get itemSampleKeyDesc => 'Một chìa khóa đồng nhỏ, vẫn còn ấm.';
-
-  @override
-  String get itemSampleGearName => 'Bánh Răng Đồng';
-
-  @override
-  String get itemSampleGearDesc => 'Một bánh răng đơn lẻ từ cơ cấu cũ.';
-
-  @override
-  String get itemSampleHookName => 'Móc & Chìa';
-
-  @override
-  String get itemSampleHookDesc =>
-      'Dụng cụ kết hợp: chìa khóa gắn trên bánh răng.';
-
-  @override
-  String get combinationSampleHookMessage =>
-      'Bạn gắn bánh răng vào chìa khóa, tạo thành dụng cụ có móc.';
-
-  @override
-  String get clueSampleNoteTitle => 'Ghi Chú Lề';
-
-  @override
-  String get clueSampleNoteBody =>
-      'Người thợ làm đồng hồ viết: \'Thời gian là ổ khóa, không phải dòng sông.\'';
-
-  @override
-  String get clueSampleLockOpenedTitle => 'Ổ Khóa Mở Ra';
-
-  @override
-  String get clueSampleLockOpenedBody =>
-      'Bên trong bảng điều khiển: một ổ khóa nhỏ hơn nữa.';
+  String get errorGeneric => 'Đã xảy ra lỗi. Vui lòng thử lại.';
 
   @override
   String get settingsTitle => 'Cài đặt';

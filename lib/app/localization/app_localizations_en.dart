@@ -34,9 +34,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chaptersTitle => 'Chapters';
 
   @override
-  String get chapter1Title => 'The Clockmaker\'s Archive';
-
-  @override
   String get chapterLocked => 'Locked';
 
   @override
@@ -58,114 +55,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newGameConfirmBody => 'This will replace your existing save.';
 
   @override
-  String get roomEntranceTitle => 'Entrance Hall';
+  String get journalTitle => 'Journal';
 
   @override
-  String get roomStudyTitle => 'Clockmaker\'s Study';
+  String get journalEmpty =>
+      'No discoveries yet. Clues and notes you find will appear here.';
 
   @override
-  String get roomWorkshopTitle => 'Workshop';
-
-  @override
-  String get roomGalleryTitle => 'Portrait Gallery';
-
-  @override
-  String get roomObservatoryTitle => 'Sealed Observatory';
-
-  @override
-  String get chapterSampleTitle => 'Sample Chapter (dev fixture)';
-
-  @override
-  String get roomSampleTitle => 'Sample Room';
-
-  @override
-  String get roomSampleDescription =>
-      'A minimal room used to validate the content pipeline.';
-
-  @override
-  String get roomSampleExitTitle => 'Sample Room — Exit';
-
-  @override
-  String get hotspotSampleNote => 'A note';
-
-  @override
-  String get hotspotSampleNoteDesc => 'A folded note lies on the desk.';
-
-  @override
-  String get hotspotSamplePlaque => 'A plaque';
-
-  @override
-  String get hotspotSampleKeyDrawer => 'Key drawer';
-
-  @override
-  String get hotspotSampleGearDrawer => 'Gear drawer';
-
-  @override
-  String get hotspotSampleDoorLock => 'Door lock';
-
-  @override
-  String get hotspotSampleExitDoor => 'Side door';
-
-  @override
-  String get hotspotSampleExitBack => 'Way back';
-
-  @override
-  String get exitSampleForward => 'Proceed';
-
-  @override
-  String get exitSampleBack => 'Return';
-
-  @override
-  String get puzzleSampleLockTitle => 'Sample Lock';
-
-  @override
-  String get puzzleSampleLockInstructions => 'Enter the four-digit code.';
-
-  @override
-  String get puzzleSampleLockHint1 => 'Look around the room for digits.';
-
-  @override
-  String get puzzleSampleLockHint2 =>
-      'The plaque by the door shows the first two digits.';
-
-  @override
-  String get puzzleSampleLockHint3 => 'Code: 4 - 2 - 7 - 1.';
-
-  @override
-  String get itemSampleKeyName => 'Small Key';
-
-  @override
-  String get itemSampleKeyDesc => 'A small brass key, still warm.';
-
-  @override
-  String get itemSampleGearName => 'Brass Gear';
-
-  @override
-  String get itemSampleGearDesc => 'A single gear from an old mechanism.';
-
-  @override
-  String get itemSampleHookName => 'Hook & Key';
-
-  @override
-  String get itemSampleHookDesc => 'A combined tool: key mounted on a gear.';
-
-  @override
-  String get combinationSampleHookMessage =>
-      'You fit the gear onto the key, making a hooked tool.';
-
-  @override
-  String get clueSampleNoteTitle => 'Margin Note';
-
-  @override
-  String get clueSampleNoteBody =>
-      'The clockmaker wrote: \'Time is a lock, not a river.\'';
-
-  @override
-  String get clueSampleLockOpenedTitle => 'The Lock Opens';
-
-  @override
-  String get clueSampleLockOpenedBody =>
-      'Inside the panel: a second, smaller lock.';
+  String get errorGeneric => 'Something went wrong. Please try again.';
 
   @override
   String get settingsTitle => 'Settings';

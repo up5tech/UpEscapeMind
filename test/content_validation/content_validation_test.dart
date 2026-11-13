@@ -58,14 +58,16 @@ ContentCatalog _loadCatalogFromDisk() {
   );
 }
 
-/// Union of keys defined in the en + vi arb files.
+/// Union of keys defined in the bundled content string tables
+/// (`assets/content/localization/strings_*.json`).
 Set<String> _localizationKeys() {
   final keys = <String>{};
   for (final locale in ['en', 'vi']) {
-    final arb = jsonDecode(
-      File('lib/app/localization/app_$locale.arb').readAsStringSync(),
+    final table = jsonDecode(
+      File('assets/content/localization/strings_$locale.json')
+          .readAsStringSync(),
     ) as Map<String, dynamic>;
-    keys.addAll(arb.keys.where((k) => !k.startsWith('@@')));
+    keys.addAll(table.keys);
   }
   return keys;
 }

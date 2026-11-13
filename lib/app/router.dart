@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../features/chapters/chapters_screen.dart';
 import '../features/home/main_menu_screen.dart';
 import '../features/home/splash_screen.dart';
+import '../features/journal/journal_screen.dart';
 import '../features/settings/credits_screen.dart';
 import '../features/settings/settings_screen.dart';
 
@@ -14,6 +15,7 @@ abstract final class AppRoutes {
   static const String chapters = '/chapters';
   static const String settings = '/settings';
   static const String credits = '/credits';
+  static const String journal = '/journal';
 }
 
 GoRouter createAppRouter() {
@@ -44,6 +46,11 @@ GoRouter createAppRouter() {
         path: AppRoutes.credits,
         name: 'credits',
         builder: (context, state) => const CreditsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.journal,
+        name: 'journal',
+        builder: (context, state) => const JournalScreen(),
       ),
     ],
   );

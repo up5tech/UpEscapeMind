@@ -9,7 +9,6 @@ import '../../../app/providers/app_providers.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/widgets/widgets.dart';
-import '../../../domain/models/chapter.dart';
 import '../../../domain/models/progress.dart';
 
 /// Main menu: Continue, New Game, Chapters, Settings, Credits.
@@ -116,8 +115,7 @@ class MainMenuScreen extends ConsumerWidget {
 
   void _onContinue(BuildContext context, GameProgress progress) {
     // Room route lands in Phase 5; until then return to the chapter map.
-    final target = progress.currentRoomId ?? Chapter.chapter1.roomIds.first;
-    context.pushNamed('chapters', extra: {'focusRoomId': target});
+    unawaited(context.pushNamed('chapters'));
   }
 
   Future<void> _onNewGame(BuildContext context, WidgetRef ref) async {
@@ -144,9 +142,23 @@ class MainMenuScreen extends ConsumerWidget {
       if (confirmed != true) return;
     }
 
+    // Entry room = first room of the lowest-ordered chapter in the catalog.
+    final catalog = await ref.read(contentRepositoryProvider).loadCatalog();
+    if (catalog.chapters.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).errorGeneric)),
+        );
+      }
+      return;
+    }
+    final firstChapter = catalog.chapters.reduce(
+      (a, b) => a.order <= b.order ? a : b,
+    );
+
     final progress = GameProgress.newGame(
       AppConstants.defaultSaveSlotId,
-      Chapter.chapter1.roomIds.first,
+      firstChapter.roomIds.first,
     );
     await repo.saveProgress(progress);
     ref.invalidate(gameProgressProvider);
