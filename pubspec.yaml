@@ -41,6 +41,7 @@ dependencies:
   drift: ^2.35.4
   sqlite3_flutter_libs: ^0.6.0+eol
   shared_preferences: ^2.5.6
+  drift_flutter: ^0.3.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  drift_dev: ^2.35.3
+  build_runner: ^2.17.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,10 +69,22 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/art/rooms/
+    - assets/art/objects/
+    - assets/art/items/
+    - assets/art/ui/
+    - assets/art/effects/
+    - assets/audio/music/
+    - assets/audio/sfx/
+    - assets/content/manifest.json
+    - assets/content/chapters/
+    - assets/content/rooms/
+    - assets/content/puzzles/
+    - assets/content/items/
+    - assets/content/clues/
+    - assets/content/localization/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_sample",
+  "chapterId": "chapter_sample",
+  "titleKey": "roomSampleTitle",
+  "descriptionKey": "roomSampleDescription",
+  "backgroundAsset": "assets/art/rooms/room_sample.png",
+  "hotspots": [
+    {
+      "id": "hs_sample_note",
+      "bounds": { "x": 0.08, "y": 0.15, "width": 0.22, "height": 0.18 },
+      "labelKey": "hotspotSampleNote",
+      "interactionType": "inspect",
+      "inspectionAsset": "assets/art/objects/sample_note.png",
+      "descriptionKey": "hotspotSampleNoteDesc"
+    },
+    {
+      "id": "hs_sample_plaque",
+      "bounds": { "x": 0.6, "y": 0.1, "width": 0.18, "height": 0.14 },
+      "labelKey": "hotspotSamplePlaque",
+      "interactionType": "discover_clue",
+      "targetId": "clue_sample_note"
+    },
+    {
+      "id": "hs_sample_key_drawer",
+      "bounds": { "x": 0.35, "y": 0.45, "width": 0.2, "height": 0.16 },
+      "labelKey": "hotspotSampleKeyDrawer",
+      "interactionType": "collect_item",
+      "targetId": "item_sample_key"
+    },
+    {
+      "id": "hs_sample_gear_drawer",
+      "bounds": { "x": 0.62, "y": 0.45, "width": 0.2, "height": 0.16 },
+      "labelKey": "hotspotSampleGearDrawer",
+      "interactionType": "collect_item",
+      "targetId": "item_sample_gear"
+    },
+    {
+      "id": "hs_sample_door_lock",
+      "bounds": { "x": 0.42, "y": 0.6, "width": 0.16, "height": 0.22 },
+      "labelKey": "hotspotSampleDoorLock",
+      "interactionType": "puzzle",
+      "targetId": "puz_sample_lock"
+    },
+    {
+      "id": "hs_sample_exit_door",
+      "bounds": { "x": 0.05, "y": 0.55, "width": 0.15, "height": 0.3 },
+      "labelKey": "hotspotSampleExitDoor",
+      "interactionType": "navigate",
+      "targetId": "room_sample_exit",
+      "visibilityConditions": [
+        { "type": "puzzle_solved", "targetId": "puz_sample_lock" }
+      ]
+    }
+  ],
+  "entryConditions": [],
+  "exitConnections": [
+    {
+      "targetRoomId": "room_sample_exit",
+      "labelKey": "exitSampleForward"
+    }
+  ]
+}

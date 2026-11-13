@@ -6,8 +6,11 @@ class GameProgress {
     this.unlockedRoomIds = const [],
     this.solvedPuzzleIds = const [],
     this.collectedItemIds = const [],
+    this.consumedItemIds = const [],
     this.discoveredClueIds = const [],
+    this.completedChapterIds = const [],
     this.revealedHintLevels = const {},
+    this.puzzleStates = const {},
     this.currentRoomId,
     this.playTimeMs = 0,
   });
@@ -17,10 +20,18 @@ class GameProgress {
   final List<String> unlockedRoomIds;
   final List<String> solvedPuzzleIds;
   final List<String> collectedItemIds;
+
+  /// Items consumed by item-use/combine actions.
+  final List<String> consumedItemIds;
   final List<String> discoveredClueIds;
+  final List<String> completedChapterIds;
 
   /// puzzleId -> highest revealed hint level (1-3).
   final Map<String, int> revealedHintLevels;
+
+  /// puzzleId -> serialized in-progress puzzle input (per the puzzle's
+  /// `resetPolicy`). Only meaningful for unfinished puzzles.
+  final Map<String, String> puzzleStates;
   final int playTimeMs;
 
   bool get hasSave => unlockedRoomIds.isNotEmpty;
@@ -35,8 +46,11 @@ class GameProgress {
     List<String>? unlockedRoomIds,
     List<String>? solvedPuzzleIds,
     List<String>? collectedItemIds,
+    List<String>? consumedItemIds,
     List<String>? discoveredClueIds,
+    List<String>? completedChapterIds,
     Map<String, int>? revealedHintLevels,
+    Map<String, String>? puzzleStates,
     int? playTimeMs,
   }) {
     return GameProgress(
@@ -45,8 +59,11 @@ class GameProgress {
       unlockedRoomIds: unlockedRoomIds ?? this.unlockedRoomIds,
       solvedPuzzleIds: solvedPuzzleIds ?? this.solvedPuzzleIds,
       collectedItemIds: collectedItemIds ?? this.collectedItemIds,
+      consumedItemIds: consumedItemIds ?? this.consumedItemIds,
       discoveredClueIds: discoveredClueIds ?? this.discoveredClueIds,
+      completedChapterIds: completedChapterIds ?? this.completedChapterIds,
       revealedHintLevels: revealedHintLevels ?? this.revealedHintLevels,
+      puzzleStates: puzzleStates ?? this.puzzleStates,
       playTimeMs: playTimeMs ?? this.playTimeMs,
     );
   }
@@ -66,8 +83,11 @@ class GameProgress {
     'unlockedRoomIds': unlockedRoomIds,
     'solvedPuzzleIds': solvedPuzzleIds,
     'collectedItemIds': collectedItemIds,
+    'consumedItemIds': consumedItemIds,
     'discoveredClueIds': discoveredClueIds,
+    'completedChapterIds': completedChapterIds,
     'revealedHintLevels': revealedHintLevels,
+    'puzzleStates': puzzleStates,
     'playTimeMs': playTimeMs,
   };
 
@@ -81,11 +101,20 @@ class GameProgress {
           (json['solvedPuzzleIds'] as List?)?.cast<String>() ?? const [],
       collectedItemIds:
           (json['collectedItemIds'] as List?)?.cast<String>() ?? const [],
+      consumedItemIds:
+          (json['consumedItemIds'] as List?)?.cast<String>() ?? const [],
       discoveredClueIds:
           (json['discoveredClueIds'] as List?)?.cast<String>() ?? const [],
+      completedChapterIds:
+          (json['completedChapterIds'] as List?)?.cast<String>() ?? const [],
       revealedHintLevels:
           (json['revealedHintLevels'] as Map?)?.map(
             (k, v) => MapEntry(k as String, v as int),
+          ) ??
+          const {},
+      puzzleStates:
+          (json['puzzleStates'] as Map?)?.map(
+            (k, v) => MapEntry(k as String, v as String),
           ) ??
           const {},
       playTimeMs: json['playTimeMs'] as int? ?? 0,

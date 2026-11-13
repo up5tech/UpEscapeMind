@@ -224,6 +224,186 @@ abstract class AppLocalizations {
   /// **'Sealed Observatory'**
   String get roomObservatoryTitle;
 
+  /// No description provided for @chapterSampleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample Chapter (dev fixture)'**
+  String get chapterSampleTitle;
+
+  /// No description provided for @roomSampleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample Room'**
+  String get roomSampleTitle;
+
+  /// No description provided for @roomSampleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A minimal room used to validate the content pipeline.'**
+  String get roomSampleDescription;
+
+  /// No description provided for @roomSampleExitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample Room — Exit'**
+  String get roomSampleExitTitle;
+
+  /// No description provided for @hotspotSampleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A note'**
+  String get hotspotSampleNote;
+
+  /// No description provided for @hotspotSampleNoteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A folded note lies on the desk.'**
+  String get hotspotSampleNoteDesc;
+
+  /// No description provided for @hotspotSamplePlaque.
+  ///
+  /// In en, this message translates to:
+  /// **'A plaque'**
+  String get hotspotSamplePlaque;
+
+  /// No description provided for @hotspotSampleKeyDrawer.
+  ///
+  /// In en, this message translates to:
+  /// **'Key drawer'**
+  String get hotspotSampleKeyDrawer;
+
+  /// No description provided for @hotspotSampleGearDrawer.
+  ///
+  /// In en, this message translates to:
+  /// **'Gear drawer'**
+  String get hotspotSampleGearDrawer;
+
+  /// No description provided for @hotspotSampleDoorLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Door lock'**
+  String get hotspotSampleDoorLock;
+
+  /// No description provided for @hotspotSampleExitDoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Side door'**
+  String get hotspotSampleExitDoor;
+
+  /// No description provided for @hotspotSampleExitBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Way back'**
+  String get hotspotSampleExitBack;
+
+  /// No description provided for @exitSampleForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed'**
+  String get exitSampleForward;
+
+  /// No description provided for @exitSampleBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get exitSampleBack;
+
+  /// No description provided for @puzzleSampleLockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample Lock'**
+  String get puzzleSampleLockTitle;
+
+  /// No description provided for @puzzleSampleLockInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the four-digit code.'**
+  String get puzzleSampleLockInstructions;
+
+  /// No description provided for @puzzleSampleLockHint1.
+  ///
+  /// In en, this message translates to:
+  /// **'Look around the room for digits.'**
+  String get puzzleSampleLockHint1;
+
+  /// No description provided for @puzzleSampleLockHint2.
+  ///
+  /// In en, this message translates to:
+  /// **'The plaque by the door shows the first two digits.'**
+  String get puzzleSampleLockHint2;
+
+  /// No description provided for @puzzleSampleLockHint3.
+  ///
+  /// In en, this message translates to:
+  /// **'Code: 4 - 2 - 7 - 1.'**
+  String get puzzleSampleLockHint3;
+
+  /// No description provided for @itemSampleKeyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Small Key'**
+  String get itemSampleKeyName;
+
+  /// No description provided for @itemSampleKeyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A small brass key, still warm.'**
+  String get itemSampleKeyDesc;
+
+  /// No description provided for @itemSampleGearName.
+  ///
+  /// In en, this message translates to:
+  /// **'Brass Gear'**
+  String get itemSampleGearName;
+
+  /// No description provided for @itemSampleGearDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A single gear from an old mechanism.'**
+  String get itemSampleGearDesc;
+
+  /// No description provided for @itemSampleHookName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hook & Key'**
+  String get itemSampleHookName;
+
+  /// No description provided for @itemSampleHookDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A combined tool: key mounted on a gear.'**
+  String get itemSampleHookDesc;
+
+  /// No description provided for @combinationSampleHookMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You fit the gear onto the key, making a hooked tool.'**
+  String get combinationSampleHookMessage;
+
+  /// No description provided for @clueSampleNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin Note'**
+  String get clueSampleNoteTitle;
+
+  /// No description provided for @clueSampleNoteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The clockmaker wrote: \'Time is a lock, not a river.\''**
+  String get clueSampleNoteBody;
+
+  /// No description provided for @clueSampleLockOpenedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The Lock Opens'**
+  String get clueSampleLockOpenedTitle;
+
+  /// No description provided for @clueSampleLockOpenedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside the panel: a second, smaller lock.'**
+  String get clueSampleLockOpenedBody;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -259,6 +439,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System default'**
   String get languageSystemDefault;
+
+  /// No description provided for @settingsResetProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset progress'**
+  String get settingsResetProgress;
+
+  /// No description provided for @resetProgressConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all progress?'**
+  String get resetProgressConfirmTitle;
+
+  /// No description provided for @resetProgressConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your save data. This cannot be undone.'**
+  String get resetProgressConfirmBody;
+
+  /// No description provided for @resetProgressDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress has been reset.'**
+  String get resetProgressDone;
 
   /// No description provided for @creditsTitle.
   ///

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/providers/app_providers.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../data/repositories/settings_repository.dart';
 
@@ -47,6 +49,8 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.settingsLanguage,
             child: _LanguageSelector(repo: repo),
           ),
+          const SizedBox(height: 16),
+          SectionCard(child: _ResetProgressButton()),
         ],
       ),
     );
@@ -145,6 +149,55 @@ class _LanguageSelectorState extends ConsumerState<_LanguageSelector> {
             .read(appLocaleProvider.notifier)
             .set(value == null ? null : Locale(value));
         widget.repo.setLanguageOverride(value);
+      },
+    );
+  }
+}
+
+/// Destructive reset, gated behind an explicit confirmation dialog.
+class _ResetProgressButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+
+    return OutlinedButton.icon(
+      icon: const Icon(Icons.restart_alt),
+      label: Text(l10n.settingsResetProgress),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.danger,
+        side: const BorderSide(color: AppColors.danger),
+      ),
+      onPressed: () async {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l10n.resetProgressConfirmTitle),
+            content: Text(l10n.resetProgressConfirmBody),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: Text(l10n.commonCancel),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.danger,
+                ),
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: Text(l10n.commonConfirm),
+              ),
+            ],
+          ),
+        );
+        if (confirmed != true || !context.mounted) return;
+
+        final repo = ref.read(progressRepositoryProvider);
+        await repo.resetProgress(AppConstants.defaultSaveSlotId);
+        ref.invalidate(gameProgressProvider);
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(l10n.resetProgressDone)));
+        }
       },
     );
   }

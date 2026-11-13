@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_sample_note",
+  "titleKey": "clueSampleNoteTitle",
+  "bodyKey": "clueSampleNoteBody",
+  "sourceRoomId": "room_sample",
+  "optional": true
+}

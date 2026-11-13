@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "item_combination",
+  "id": "comb_sample_hook",
+  "inputItemIds": ["item_sample_key", "item_sample_gear"],
+  "resultItemId": "item_sample_hook",
+  "consumeInputItems": true,
+  "resultMessageKey": "combinationSampleHookMessage"
+}

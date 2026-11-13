@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_sample_exit",
+  "chapterId": "chapter_sample",
+  "titleKey": "roomSampleExitTitle",
+  "backgroundAsset": "assets/art/rooms/room_sample_exit.png",
+  "hotspots": [
+    {
+      "id": "hs_sample_exit_back",
+      "bounds": { "x": 0.4, "y": 0.55, "width": 0.2, "height": 0.3 },
+      "labelKey": "hotspotSampleExitBack",
+      "interactionType": "navigate",
+      "targetId": "room_sample"
+    }
+  ],
+  "entryConditions": [
+    { "type": "puzzle_solved", "targetId": "puz_sample_lock" }
+  ],
+  "exitConnections": [
+    {
+      "targetRoomId": "room_sample",
+      "labelKey": "exitSampleBack"
+    }
+  ]
+}

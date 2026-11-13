@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "chapter",
+  "id": "chapter_sample",
+  "titleKey": "chapterSampleTitle",
+  "order": 0,
+  "roomIds": ["room_sample", "room_sample_exit"],
+  "unlockConditions": []
+}

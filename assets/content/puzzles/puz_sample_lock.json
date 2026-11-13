@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_sample_lock",
+  "roomId": "room_sample",
+  "hotspotId": "hs_sample_door_lock",
+  "puzzleType": "keypad",
+  "titleKey": "puzzleSampleLockTitle",
+  "instructionsKey": "puzzleSampleLockInstructions",
+  "initialState": { "digits": 4 },
+  "solutionConfig": { "code": "4271" },
+  "validationConfig": { "allowLeadingZero": true },
+  "prerequisites": [
+    { "type": "item_collected", "targetId": "item_sample_key" }
+  ],
+  "successActions": [
+    { "type": "discover_clue", "targetId": "clue_sample_lock_opened" },
+    { "type": "unlock_room", "targetId": "room_sample_exit" }
+  ],
+  "hints": [
+    { "level": 1, "textKey": "puzzleSampleLockHint1" },
+    { "level": 2, "textKey": "puzzleSampleLockHint2" },
+    { "level": 3, "textKey": "puzzleSampleLockHint3" }
+  ],
+  "resetPolicy": "keep"
+}

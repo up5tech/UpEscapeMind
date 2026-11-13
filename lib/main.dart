@@ -8,6 +8,7 @@ import 'app/providers/app_providers.dart';
 import 'app/router.dart';
 import 'app/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
+import 'data/database/app_database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,16 +31,21 @@ class UpEscapeMindApp extends StatelessWidget {
     super.key,
     required this.prefs,
     this.languageOverride,
+    this.database,
   });
 
   final SharedPreferences prefs;
   final String? languageOverride;
+
+  /// Optional database override (tests inject `NativeDatabase.memory()`).
+  final AppDatabase? database;
 
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        if (database != null) appDatabaseProvider.overrideWithValue(database!),
         appLocaleProvider.overrideWith(
           () => AppLocale(
             languageOverride == null ? null : Locale(languageOverride!),
