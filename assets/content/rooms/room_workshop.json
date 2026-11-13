@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_workshop",
+  "chapterId": "chapter_01",
+  "titleKey": "roomWorkshopTitle",
+  "descriptionKey": "roomWorkshopDescription",
+  "backgroundAsset": "assets/art/rooms/room_workshop.png",
+  "hotspots": [
+    {
+      "id": "hot_wk_back_study",
+      "bounds": {
+        "x": 0.02,
+        "y": 0.28,
+        "width": 0.05,
+        "height": 0.4
+      },
+      "labelKey": "hotWkBack",
+      "interactionType": "navigate",
+      "targetId": "room_study"
+    },
+    {
+      "id": "hot_wk_gear_wall",
+      "bounds": {
+        "x": 0.08,
+        "y": 0.18,
+        "width": 0.3,
+        "height": 0.45
+      },
+      "labelKey": "hotWkGearWall",
+      "interactionType": "puzzle",
+      "targetId": "puz_wk_gears"
+    },
+    {
+      "id": "hot_wk_wall_clock",
+      "bounds": {
+        "x": 0.55,
+        "y": 0.15,
+        "width": 0.14,
+        "height": 0.24
+      },
+      "labelKey": "hotWkWallClock",
+      "interactionType": "discover_clue",
+      "targetId": "clue_workshop_clock",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_wk_gears"
+        }
+      ]
+    },
+    {
+      "id": "hot_wk_blueprint",
+      "bounds": {
+        "x": 0.55,
+        "y": 0.45,
+        "width": 0.22,
+        "height": 0.28
+      },
+      "labelKey": "hotWkBlueprint",
+      "interactionType": "discover_clue",
+      "targetId": "clue_blueprint"
+    },
+    {
+      "id": "hot_wk_lever_board",
+      "bounds": {
+        "x": 0.3,
+        "y": 0.55,
+        "width": 0.22,
+        "height": 0.3
+      },
+      "labelKey": "hotWkLevers",
+      "interactionType": "puzzle",
+      "targetId": "puz_wk_levers"
+    },
+    {
+      "id": "hot_wk_parts_cabinet",
+      "bounds": {
+        "x": 0.8,
+        "y": 0.45,
+        "width": 0.16,
+        "height": 0.35
+      },
+      "labelKey": "hotWkCabinet",
+      "interactionType": "puzzle",
+      "targetId": "puz_wk_code"
+    },
+    {
+      "id": "hot_wk_floorboard",
+      "bounds": {
+        "x": 0.42,
+        "y": 0.78,
+        "width": 0.16,
+        "height": 0.14
+      },
+      "labelKey": "hotWkFloorboard",
+      "interactionType": "puzzle",
+      "targetId": "puz_wk_floorboard",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_wk_levers"
+        }
+      ]
+    },
+    {
+      "id": "hot_wk_crane",
+      "bounds": {
+        "x": 0.08,
+        "y": 0.6,
+        "width": 0.24,
+        "height": 0.32
+      },
+      "labelKey": "hotWkCrane",
+      "interactionType": "puzzle",
+      "targetId": "puz_wk_crane"
+    },
+    {
+      "id": "hot_wk_gallery_exit",
+      "bounds": {
+        "x": 0.86,
+        "y": 0.28,
+        "width": 0.12,
+        "height": 0.52
+      },
+      "labelKey": "hotWkGalleryExit",
+      "interactionType": "navigate",
+      "targetId": "room_gallery",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_wk_crane"
+        }
+      ]
+    }
+  ],
+  "entryConditions": []
+}

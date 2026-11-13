@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_st_astrolabe",
+  "roomId": "room_study",
+  "hotspotId": "hot_st_astrolabe",
+  "puzzleType": "symbol_matching",
+  "titleKey": "puz.puz_st_astrolabe.title",
+  "instructionsKey": "puz.puz_st_astrolabe.instr",
+  "initialState": {
+    "labelKeys": {
+      "star": "symStar",
+      "moon": "symMoon",
+      "key": "symKey",
+      "sun": "symSun",
+      "gear": "symGear"
+    }
+  },
+  "solutionConfig": {
+    "symbols": [
+      "star",
+      "moon",
+      "key",
+      "sun"
+    ],
+    "choices": [
+      "star",
+      "moon",
+      "key",
+      "sun",
+      "gear"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_astrolabe"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_moon_phases"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_st_astrolabe.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_st_astrolabe.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_st_astrolabe.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

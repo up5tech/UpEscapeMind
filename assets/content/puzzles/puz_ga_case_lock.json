@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ga_case_lock",
+  "roomId": "room_gallery",
+  "hotspotId": "hot_ga_reliquary",
+  "puzzleType": "keypad",
+  "titleKey": "puz.puz_ga_case_lock.title",
+  "instructionsKey": "puz.puz_ga_case_lock.instr",
+  "initialState": {
+    "digits": 4
+  },
+  "solutionConfig": {
+    "code": "1849"
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_elias_birth"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_seal_phrase"
+    },
+    {
+      "type": "unlock_room",
+      "targetId": "room_observatory"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ga_case_lock.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ga_case_lock.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ga_case_lock.l3"
+    }
+  ],
+  "resetPolicy": "reset_on_exit"
+}

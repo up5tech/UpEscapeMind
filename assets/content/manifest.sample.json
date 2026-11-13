@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    "chapters/chapter_sample.json",
+    "rooms/room_sample.json",
+    "rooms/room_sample_exit.json",
+    "puzzles/puz_sample_lock.json",
+    "items/item_sample_key.json",
+    "items/item_sample_gear.json",
+    "items/item_sample_hook.json",
+    "items/comb_sample_hook.json",
+    "clues/clue_sample_note.json",
+    "clues/clue_sample_lock_opened.json"
+  ]
+}

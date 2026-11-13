@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_observatory",
+  "chapterId": "chapter_01",
+  "titleKey": "roomObservatoryTitle",
+  "descriptionKey": "roomObservatoryDescription",
+  "backgroundAsset": "assets/art/rooms/room_observatory.png",
+  "hotspots": [
+    {
+      "id": "hot_ob_back_gallery",
+      "bounds": {
+        "x": 0.02,
+        "y": 0.34,
+        "width": 0.03,
+        "height": 0.34
+      },
+      "labelKey": "hotObBack",
+      "interactionType": "navigate",
+      "targetId": "room_gallery"
+    },
+    {
+      "id": "hot_ob_star_chart",
+      "bounds": {
+        "x": 0.3,
+        "y": 0.15,
+        "width": 0.4,
+        "height": 0.3
+      },
+      "labelKey": "hotObStarChart",
+      "interactionType": "puzzle",
+      "targetId": "puz_ob_starchart"
+    },
+    {
+      "id": "hot_ob_orrery",
+      "bounds": {
+        "x": 0.12,
+        "y": 0.45,
+        "width": 0.3,
+        "height": 0.35
+      },
+      "labelKey": "hotObOrrery",
+      "interactionType": "puzzle",
+      "targetId": "puz_ob_orrery"
+    },
+    {
+      "id": "hot_ob_telescope",
+      "bounds": {
+        "x": 0.62,
+        "y": 0.35,
+        "width": 0.26,
+        "height": 0.45
+      },
+      "labelKey": "hotObTelescope",
+      "interactionType": "puzzle",
+      "targetId": "puz_ob_telescope"
+    },
+    {
+      "id": "hot_ob_exit_door",
+      "bounds": {
+        "x": 0.86,
+        "y": 0.3,
+        "width": 0.12,
+        "height": 0.48
+      },
+      "labelKey": "hotObExitDoor",
+      "interactionType": "inspect",
+      "descriptionKey": "hotObExitDoorDesc"
+    }
+  ],
+  "entryConditions": []
+}

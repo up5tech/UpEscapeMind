@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ga_portraits",
+  "roomId": "room_gallery",
+  "hotspotId": "hot_ga_medallions",
+  "puzzleType": "sequence",
+  "titleKey": "puz.puz_ga_portraits.title",
+  "instructionsKey": "puz.puz_ga_portraits.instr",
+  "initialState": {
+    "labelKeys": {
+      "med_1802": "year1802",
+      "med_1827": "year1827",
+      "med_1851": "year1851",
+      "med_1868": "year1868"
+    }
+  },
+  "solutionConfig": {
+    "order": [
+      "med_1802",
+      "med_1827",
+      "med_1851",
+      "med_1868"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_portrait_dates"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ga_portraits.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ga_portraits.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ga_portraits.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

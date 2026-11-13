@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_dial_order",
+  "titleKey": "clueDialOrderTitle",
+  "bodyKey": "clueDialOrderBody",
+  "sourceRoomId": "room_observatory",
+  "optional": false
+}

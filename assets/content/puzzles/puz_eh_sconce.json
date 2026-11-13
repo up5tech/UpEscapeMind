@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_eh_sconce",
+  "roomId": "room_entrance",
+  "hotspotId": "hot_eh_sconce_panel",
+  "puzzleType": "mechanical_state",
+  "titleKey": "puz.puz_eh_sconce.title",
+  "instructionsKey": "puz.puz_eh_sconce.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "targetState": [
+      true,
+      false,
+      true
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_eh_secret"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_eh_sconce.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_eh_sconce.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_eh_sconce.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

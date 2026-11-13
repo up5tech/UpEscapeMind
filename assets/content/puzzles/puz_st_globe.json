@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_st_globe",
+  "roomId": "room_study",
+  "hotspotId": "hot_st_globe",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_st_globe.title",
+  "instructionsKey": "puz.puz_st_globe.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      210
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_st_astrolabe"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "unlock_room",
+      "targetId": "room_workshop"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_st_globe.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_st_globe.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_st_globe.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

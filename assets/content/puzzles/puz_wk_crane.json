@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_wk_crane",
+  "roomId": "room_workshop",
+  "hotspotId": "hot_wk_crane",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_wk_crane.title",
+  "instructionsKey": "puz.puz_wk_crane.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      300
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_wk_gears"
+    },
+    {
+      "type": "item_collected",
+      "targetId": "item_crank"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "unlock_room",
+      "targetId": "room_gallery"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_wk_crane.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_wk_crane.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_wk_crane.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

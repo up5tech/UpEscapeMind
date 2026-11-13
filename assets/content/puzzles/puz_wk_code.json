@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_wk_code",
+  "roomId": "room_workshop",
+  "hotspotId": "hot_wk_parts_cabinet",
+  "puzzleType": "keypad",
+  "titleKey": "puz.puz_wk_code.title",
+  "instructionsKey": "puz.puz_wk_code.instr",
+  "initialState": {
+    "digits": 4
+  },
+  "solutionConfig": {
+    "code": "2436"
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_crank"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_wk_code.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_wk_code.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_wk_code.l3"
+    }
+  ],
+  "resetPolicy": "reset_on_exit"
+}

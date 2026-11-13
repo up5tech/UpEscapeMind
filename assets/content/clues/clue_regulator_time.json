@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_regulator_time",
+  "titleKey": "clueRegulatorTitle",
+  "bodyKey": "clueRegulatorBody",
+  "sourceRoomId": "room_study",
+  "optional": false
+}

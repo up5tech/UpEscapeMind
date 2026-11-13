@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ga_moon_dial",
+  "roomId": "room_gallery",
+  "hotspotId": "hot_ga_moon_dial",
+  "puzzleType": "symbol_matching",
+  "titleKey": "puz.puz_ga_moon_dial.title",
+  "instructionsKey": "puz.puz_ga_moon_dial.instr",
+  "initialState": {
+    "labelKeys": {
+      "moon_new": "moonNew",
+      "moon_crescent": "moonCrescent",
+      "moon_half": "moonHalf",
+      "moon_full": "moonFull"
+    }
+  },
+  "solutionConfig": {
+    "symbols": [
+      "moon_new",
+      "moon_crescent",
+      "moon_half",
+      "moon_full"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_ga_frames"
+    },
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_moon_phases"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_vale_note_4"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ga_moon_dial.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ga_moon_dial.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ga_moon_dial.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

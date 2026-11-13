@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_book_dates",
+  "titleKey": "clueBookDatesTitle",
+  "bodyKey": "clueBookDatesBody",
+  "sourceRoomId": "room_study",
+  "optional": true
+}

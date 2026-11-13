@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_blueprint",
+  "titleKey": "clueBlueprintTitle",
+  "bodyKey": "clueBlueprintBody",
+  "sourceRoomId": "room_workshop",
+  "optional": true
+}

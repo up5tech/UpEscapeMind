@@ -166,13 +166,10 @@ class MainMenuScreen extends ConsumerWidget {
     );
     await repo.saveProgress(progress);
     ref.invalidate(gameProgressProvider);
+    // The prologue frames the house once per new game, then enters the
+    // first room (design/02 §7).
     if (context.mounted) {
-      unawaited(
-        context.pushNamed(
-          'room',
-          pathParameters: {'roomId': firstChapter.roomIds.first},
-        ),
-      );
+      unawaited(context.pushNamed('prologue'));
     }
   }
 }

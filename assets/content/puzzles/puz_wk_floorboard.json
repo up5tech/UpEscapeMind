@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_wk_floorboard",
+  "roomId": "room_workshop",
+  "hotspotId": "hot_wk_floorboard",
+  "puzzleType": "hidden_object",
+  "titleKey": "puz.puz_wk_floorboard.title",
+  "instructionsKey": "puz.puz_wk_floorboard.instr",
+  "initialState": {
+    "imageAsset": "assets/art/puzzles/floorboards.png"
+  },
+  "solutionConfig": {
+    "regions": [
+      {
+        "id": "board_1",
+        "x": 0.0417,
+        "y": 0.3,
+        "width": 0.1667,
+        "height": 0.45
+      },
+      {
+        "id": "board_2",
+        "x": 0.225,
+        "y": 0.3,
+        "width": 0.1667,
+        "height": 0.45
+      },
+      {
+        "id": "board_3",
+        "x": 0.4083,
+        "y": 0.3,
+        "width": 0.1667,
+        "height": 0.45
+      },
+      {
+        "id": "board_4",
+        "x": 0.5917,
+        "y": 0.3,
+        "width": 0.1667,
+        "height": 0.45
+      },
+      {
+        "id": "board_5",
+        "x": 0.775,
+        "y": 0.3,
+        "width": 0.1667,
+        "height": 0.45
+      }
+    ],
+    "targetId": "board_2"
+  },
+  "validationConfig": {
+    "hitPadding": 0.02
+  },
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_wk_levers"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_brass_frame"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_vale_note_3"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_wk_floorboard.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_wk_floorboard.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_wk_floorboard.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

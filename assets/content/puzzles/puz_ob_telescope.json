@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ob_telescope",
+  "roomId": "room_observatory",
+  "hotspotId": "hot_ob_telescope",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_ob_telescope.title",
+  "instructionsKey": "puz.puz_ob_telescope.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      150
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_ob_orrery"
+    },
+    {
+      "type": "item_collected",
+      "targetId": "item_focus_lens"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "consume_item",
+      "targetId": "item_focus_lens"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_epilogue"
+    },
+    {
+      "type": "complete_chapter",
+      "targetId": "chapter_01"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ob_telescope.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ob_telescope.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ob_telescope.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

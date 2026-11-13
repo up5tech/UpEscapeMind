@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_seal_year",
+  "titleKey": "clueSealYearTitle",
+  "bodyKey": "clueSealYearBody",
+  "sourceRoomId": "room_study",
+  "optional": false
+}

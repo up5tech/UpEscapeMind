@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "chapter",
+  "id": "chapter_01",
+  "titleKey": "chapter01Title",
+  "descriptionKey": "chapter01Description",
+  "order": 0,
+  "roomIds": [
+    "room_entrance",
+    "room_study",
+    "room_workshop",
+    "room_gallery",
+    "room_observatory"
+  ],
+  "unlockConditions": []
+}

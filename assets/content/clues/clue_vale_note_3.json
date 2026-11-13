@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_vale_note_3",
+  "titleKey": "clueValeNote3Title",
+  "bodyKey": "clueValeNote3Body",
+  "sourceRoomId": "room_workshop",
+  "optional": true
+}

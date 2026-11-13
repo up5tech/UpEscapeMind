@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_gallery_clock",
+  "titleKey": "clueGaChronoTitle",
+  "bodyKey": "clueGaChronoBody",
+  "sourceRoomId": "room_gallery",
+  "optional": false
+}

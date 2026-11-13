@@ -73,11 +73,13 @@ flutter:
     - assets/art/rooms/
     - assets/art/objects/
     - assets/art/items/
+    - assets/art/puzzles/
     - assets/art/ui/
     - assets/art/effects/
     - assets/audio/music/
     - assets/audio/sfx/
     - assets/content/manifest.json
+    - assets/content/manifest.sample.json
     - assets/content/chapters/
     - assets/content/rooms/
     - assets/content/puzzles/

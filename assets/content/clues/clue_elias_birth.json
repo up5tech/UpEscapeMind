@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_elias_birth",
+  "titleKey": "clueEliasBirthTitle",
+  "bodyKey": "clueEliasBirthBody",
+  "sourceRoomId": "room_gallery",
+  "optional": false
+}

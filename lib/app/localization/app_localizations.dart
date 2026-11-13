@@ -290,6 +290,42 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get commonClose;
 
+  /// No description provided for @commonNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get commonNext;
+
+  /// No description provided for @prologueCard1.
+  ///
+  /// In en, this message translates to:
+  /// **'You woke on the floor of the Meridian House. Every clock has stopped — each at a different time.'**
+  String get prologueCard1;
+
+  /// No description provided for @prologueCard2.
+  ///
+  /// In en, this message translates to:
+  /// **'\"The archive keeps what the house forgets. — E.V.\"'**
+  String get prologueCard2;
+
+  /// No description provided for @prologueCard3.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone arranged all of this for you. Start looking.'**
+  String get prologueCard3;
+
+  /// No description provided for @prologueSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get prologueSkip;
+
+  /// No description provided for @prologueEnter.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the house'**
+  String get prologueEnter;
+
   /// No description provided for @commonCancel.
   ///
   /// In en, this message translates to:

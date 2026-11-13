@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "item",
+  "id": "item_brass_frame",
+  "nameKey": "itemFrameName",
+  "descriptionKey": "itemFrameDesc",
+  "iconAsset": "assets/art/items/item_brass_frame.png",
+  "tags": [
+    "part"
+  ],
+  "canBeCombined": true
+}

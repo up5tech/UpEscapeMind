@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ga_frames",
+  "roomId": "room_gallery",
+  "hotspotId": "hot_ga_empty_frames",
+  "puzzleType": "symbol_matching",
+  "titleKey": "puz.puz_ga_frames.title",
+  "instructionsKey": "puz.puz_ga_frames.instr",
+  "initialState": {
+    "labelKeys": {
+      "key": "symKey",
+      "star": "symStar",
+      "moon": "symMoon",
+      "gear": "symGear"
+    }
+  },
+  "solutionConfig": {
+    "symbols": [
+      "key",
+      "star",
+      "moon"
+    ],
+    "choices": [
+      "key",
+      "star",
+      "moon",
+      "gear"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_gallery_letter"
+    }
+  ],
+  "successActions": [],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ga_frames.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ga_frames.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ga_frames.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

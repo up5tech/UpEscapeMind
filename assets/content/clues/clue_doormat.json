@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_doormat",
+  "titleKey": "clueDoormatTitle",
+  "bodyKey": "clueDoormatBody",
+  "sourceRoomId": "room_entrance",
+  "optional": true
+}

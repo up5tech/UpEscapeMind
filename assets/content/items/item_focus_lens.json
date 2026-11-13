@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "item",
+  "id": "item_focus_lens",
+  "nameKey": "itemFocusName",
+  "descriptionKey": "itemFocusDesc",
+  "iconAsset": "assets/art/items/item_focus_lens.png",
+  "tags": [
+    "part"
+  ],
+  "canBeCombined": false
+}

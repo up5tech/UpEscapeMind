@@ -338,6 +338,7 @@ abstract final class ContentValidator {
           errors.add(e.message);
         }
       }
+      _checkPuzzleDisplayAssets(puzzle, errors, localizationKeys);
 
       for (final pre in puzzle.prerequisites) {
         _checkPrerequisite(c, pre, '$where.prerequisites', errors);
@@ -356,6 +357,86 @@ abstract final class ContentValidator {
       if (puzzle.hints.length > 3) {
         errors.add('$where: more than 3 hints');
       }
+    }
+  }
+
+  /// Engine display requirements that go beyond the typed validators:
+  /// scene images for tap families must exist, and every selectable
+  /// symbol/candidate must carry a localized label key.
+  static void _checkPuzzleDisplayAssets(
+    PuzzleDefinition puzzle,
+    List<String> errors,
+    Set<String>? localizationKeys,
+  ) {
+    final where = 'puzzle "${puzzle.id}"';
+    final image = puzzle.initialState['imageAsset'];
+    if (puzzle.type == PuzzleType.hiddenObject ||
+        puzzle.type == PuzzleType.observation) {
+      if (image is! String || image.isEmpty) {
+        errors.add('$where: initialState."imageAsset" is required for '
+            'tap puzzles');
+      } else if (!image.startsWith('assets/')) {
+        errors.add('$where: imageAsset "$image" must start with "assets/"');
+      }
+    }
+
+    final labelKeys = puzzle.initialState['labelKeys'];
+    final labels = labelKeys is Map<String, dynamic>
+        ? labelKeys.keys.toSet()
+        : <String>{};
+    void requireLabel(String id) {
+      if (!labels.contains(id)) {
+        errors.add(
+          '$where: initialState.labelKeys missing entry for "$id"',
+        );
+      } else if (localizationKeys != null) {
+        _checkKey(
+          labelKeys![id] as String,
+          '$where.initialState.labelKeys["$id"]',
+          errors,
+          localizationKeys: localizationKeys,
+        );
+      }
+    }
+
+    switch (puzzle.type) {
+      case PuzzleType.symbolMatching:
+        final choices = puzzle.solutionConfig['choices'];
+        final ids = choices is List
+            ? choices.whereType<String>().toList()
+            : (puzzle.solutionConfig['symbols']
+                    as List? ?? const [])
+                .whereType<String>()
+                .toList();
+        for (final id in ids) {
+          requireLabel(id);
+        }
+      case PuzzleType.sequence:
+        for (final id in (puzzle.solutionConfig['order']
+                as List? ?? const []).whereType<String>()) {
+          requireLabel(id);
+        }
+      case PuzzleType.observation:
+        for (final id in (puzzle.solutionConfig['targets']
+                as List? ?? const []).whereType<String>()) {
+          requireLabel(id);
+        }
+      case PuzzleType.logicDeduction:
+        final fields = puzzle.initialState['fields'];
+        if (fields is List) {
+          for (final f in fields.whereType<Map<String, dynamic>>()) {
+            if (localizationKeys != null && f['labelKey'] is String) {
+              _checkKey(
+                f['labelKey'] as String,
+                '$where initialState field "${f['id']}"',
+                errors,
+                localizationKeys: localizationKeys,
+              );
+            }
+          }
+        }
+      default:
+        break;
     }
   }
 
@@ -621,6 +702,10 @@ abstract final class ContentValidator {
     for (final item in c.items) {
       paths.add(item.iconAsset);
       if (item.inspectionAsset != null) paths.add(item.inspectionAsset!);
+    }
+    for (final puzzle in c.puzzles) {
+      final image = puzzle.initialState['imageAsset'];
+      if (image is String && image.isNotEmpty) paths.add(image);
     }
 
     for (final path in paths.toList()..sort()) {

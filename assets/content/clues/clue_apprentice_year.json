@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_apprentice_year",
+  "titleKey": "clueApprenticeTitle",
+  "bodyKey": "clueApprenticeBody",
+  "sourceRoomId": "room_study",
+  "optional": false
+}

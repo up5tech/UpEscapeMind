@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_clock_1024",
+  "titleKey": "clueClock1024Title",
+  "bodyKey": "clueClock1024Body",
+  "sourceRoomId": "room_entrance",
+  "optional": false
+}

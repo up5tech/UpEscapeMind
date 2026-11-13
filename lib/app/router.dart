@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/chapters/chapters_screen.dart';
 import '../features/home/main_menu_screen.dart';
+import '../features/home/prologue_screen.dart';
 import '../features/home/splash_screen.dart';
 import '../features/journal/journal_screen.dart';
 import '../features/progress/chapter_summary_screen.dart';
@@ -17,6 +18,7 @@ import 'providers/app_providers.dart';
 abstract final class AppRoutes {
   static const String splash = '/';
   static const String menu = '/menu';
+  static const String prologue = '/prologue';
   static const String chapters = '/chapters';
   static const String settings = '/settings';
   static const String credits = '/credits';
@@ -39,6 +41,11 @@ GoRouter createAppRouter(WidgetRef ref) {
         path: AppRoutes.menu,
         name: 'menu',
         builder: (context, state) => const MainMenuScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.prologue,
+        name: 'prologue',
+        builder: (context, state) => const PrologueScreen(),
       ),
       GoRoute(
         path: AppRoutes.chapters,

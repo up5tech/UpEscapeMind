@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_workshop_clock",
+  "titleKey": "clueWkClockTitle",
+  "bodyKey": "clueWkClockBody",
+  "sourceRoomId": "room_workshop",
+  "optional": false
+}

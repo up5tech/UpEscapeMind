@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ob_orrery",
+  "roomId": "room_observatory",
+  "hotspotId": "hot_ob_orrery",
+  "puzzleType": "logic_deduction",
+  "titleKey": "puz.puz_ob_orrery.title",
+  "instructionsKey": "puz.puz_ob_orrery.instr",
+  "initialState": {
+    "fields": [
+      {
+        "id": "t1",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "orreryRing1"
+      },
+      {
+        "id": "t2",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "orreryRing2"
+      },
+      {
+        "id": "t3",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "orreryRing3"
+      },
+      {
+        "id": "year",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "orreryYear"
+      }
+    ]
+  },
+  "solutionConfig": {
+    "answer": {
+      "t1": "0815",
+      "t2": "0347",
+      "t3": "0658",
+      "year": "1892"
+    }
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_dial_order"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_orrery_solution"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ob_orrery.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ob_orrery.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ob_orrery.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

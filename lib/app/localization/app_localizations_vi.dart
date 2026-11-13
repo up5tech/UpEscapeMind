@@ -112,6 +112,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonClose => 'Đóng';
 
   @override
+  String get commonNext => 'Tiếp';
+
+  @override
+  String get prologueCard1 =>
+      'Bạn tỉnh dậy trên sàn dinh thự Meridian. Mọi chiếc đồng hồ đều đã dừng — mỗi chiếc một giờ khác nhau.';
+
+  @override
+  String get prologueCard2 =>
+      '\"Kho lưu trữ giữ lại điều ngôi nhà lãng quên. — E.V.\"';
+
+  @override
+  String get prologueCard3 =>
+      'Có người đã sắp xếp tất cả những điều này cho bạn. Hãy bắt đầu tìm.';
+
+  @override
+  String get prologueSkip => 'Bỏ qua';
+
+  @override
+  String get prologueEnter => 'Bước vào ngôi nhà';
+
+  @override
   String get commonCancel => 'Hủy';
 
   @override

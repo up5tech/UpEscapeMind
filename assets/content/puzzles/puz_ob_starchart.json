@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_ob_starchart",
+  "roomId": "room_observatory",
+  "hotspotId": "hot_ob_star_chart",
+  "puzzleType": "observation",
+  "titleKey": "puz.puz_ob_starchart.title",
+  "instructionsKey": "puz.puz_ob_starchart.instr",
+  "initialState": {
+    "imageAsset": "assets/art/puzzles/star_chart.png",
+    "labelKeys": {
+      "gallery": "sigilFrame",
+      "study": "sigilKey",
+      "workshop": "sigilGear"
+    }
+  },
+  "solutionConfig": {
+    "regions": [
+      {
+        "id": "gallery",
+        "x": 0.18,
+        "y": 0.27,
+        "width": 0.14,
+        "height": 0.16
+      },
+      {
+        "id": "study",
+        "x": 0.48,
+        "y": 0.47,
+        "width": 0.14,
+        "height": 0.16
+      },
+      {
+        "id": "workshop",
+        "x": 0.73,
+        "y": 0.69,
+        "width": 0.14,
+        "height": 0.16
+      }
+    ],
+    "targets": [
+      "gallery",
+      "study",
+      "workshop"
+    ]
+  },
+  "validationConfig": {
+    "hitPadding": 0.03
+  },
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_dial_order"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_ob_starchart.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_ob_starchart.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_ob_starchart.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

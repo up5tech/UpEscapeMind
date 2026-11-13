@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_seal_phrase",
+  "titleKey": "clueSealPhraseTitle",
+  "bodyKey": "clueSealPhraseBody",
+  "sourceRoomId": "room_gallery",
+  "optional": false
+}

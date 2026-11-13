@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_moon_phases",
+  "titleKey": "clueMoonPhasesTitle",
+  "bodyKey": "clueMoonPhasesBody",
+  "sourceRoomId": "room_study",
+  "optional": true
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_portrait_dates",
+  "titleKey": "cluePortraitDatesTitle",
+  "bodyKey": "cluePortraitDatesBody",
+  "sourceRoomId": "room_gallery",
+  "optional": false
+}

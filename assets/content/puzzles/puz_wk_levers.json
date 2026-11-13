@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_wk_levers",
+  "roomId": "room_workshop",
+  "hotspotId": "hot_wk_lever_board",
+  "puzzleType": "mechanical_state",
+  "titleKey": "puz.puz_wk_levers.title",
+  "instructionsKey": "puz.puz_wk_levers.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "targetState": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_wk_levers.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_wk_levers.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_wk_levers.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

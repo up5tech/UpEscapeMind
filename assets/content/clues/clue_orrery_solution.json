@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_orrery_solution",
+  "titleKey": "clueOrrerySolTitle",
+  "bodyKey": "clueOrrerySolBody",
+  "sourceRoomId": "room_observatory",
+  "optional": true
+}

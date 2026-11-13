@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_entrance",
+  "chapterId": "chapter_01",
+  "titleKey": "roomEntranceTitle",
+  "descriptionKey": "roomEntranceDescription",
+  "backgroundAsset": "assets/art/rooms/room_entrance.png",
+  "hotspots": [
+    {
+      "id": "hot_eh_grandfather_clock",
+      "bounds": {
+        "x": 0.06,
+        "y": 0.14,
+        "width": 0.2,
+        "height": 0.52
+      },
+      "labelKey": "hotEhClock",
+      "interactionType": "discover_clue",
+      "targetId": "clue_clock_1024"
+    },
+    {
+      "id": "hot_eh_marks_band",
+      "bounds": {
+        "x": 0.4,
+        "y": 0.22,
+        "width": 0.12,
+        "height": 0.07
+      },
+      "labelKey": "hotEhMarksBand",
+      "interactionType": "discover_clue",
+      "targetId": "clue_marks_order"
+    },
+    {
+      "id": "hot_eh_study_door",
+      "bounds": {
+        "x": 0.52,
+        "y": 0.18,
+        "width": 0.26,
+        "height": 0.62
+      },
+      "labelKey": "hotEhStudyDoor",
+      "interactionType": "puzzle",
+      "targetId": "puz_eh_door_lock"
+    },
+    {
+      "id": "hot_eh_study_exit",
+      "bounds": {
+        "x": 0.56,
+        "y": 0.3,
+        "width": 0.18,
+        "height": 0.44
+      },
+      "labelKey": "hotEhStudyExit",
+      "interactionType": "navigate",
+      "targetId": "room_study",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_eh_door_lock"
+        }
+      ]
+    },
+    {
+      "id": "hot_eh_marks",
+      "bounds": {
+        "x": 0.4,
+        "y": 0.3,
+        "width": 0.12,
+        "height": 0.3
+      },
+      "labelKey": "hotEhMarks",
+      "interactionType": "puzzle",
+      "targetId": "puz_eh_marks"
+    },
+    {
+      "id": "hot_eh_doormat",
+      "bounds": {
+        "x": 0.46,
+        "y": 0.72,
+        "width": 0.22,
+        "height": 0.14
+      },
+      "labelKey": "hotEhDoormat",
+      "interactionType": "discover_clue",
+      "targetId": "clue_doormat"
+    },
+    {
+      "id": "hot_eh_sconce_panel",
+      "bounds": {
+        "x": 0.14,
+        "y": 0.34,
+        "width": 0.18,
+        "height": 0.34
+      },
+      "labelKey": "hotEhSconce",
+      "interactionType": "puzzle",
+      "targetId": "puz_eh_sconce"
+    },
+    {
+      "id": "hot_eh_painting",
+      "bounds": {
+        "x": 0.3,
+        "y": 0.5,
+        "width": 0.1,
+        "height": 0.16
+      },
+      "labelKey": "hotEhPainting",
+      "interactionType": "inspect",
+      "descriptionKey": "hotEhPaintingDesc"
+    },
+    {
+      "id": "hot_eh_window",
+      "bounds": {
+        "x": 0.78,
+        "y": 0.1,
+        "width": 0.16,
+        "height": 0.5
+      },
+      "labelKey": "hotEhWindow",
+      "interactionType": "inspect",
+      "descriptionKey": "hotEhWindowDesc"
+    }
+  ],
+  "entryConditions": []
+}

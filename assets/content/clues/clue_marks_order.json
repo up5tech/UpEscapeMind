@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_marks_order",
+  "titleKey": "clueMarksOrderTitle",
+  "bodyKey": "clueMarksOrderBody",
+  "sourceRoomId": "room_entrance",
+  "optional": false
+}

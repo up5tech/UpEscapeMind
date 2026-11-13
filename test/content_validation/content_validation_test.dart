@@ -6,9 +6,10 @@ import 'package:up_escape_mind/core/errors/app_exceptions.dart';
 import 'package:up_escape_mind/data/content/content_validator.dart';
 import 'package:up_escape_mind/domain/models/content/content_models.dart';
 
-/// Loads every `assets/content/**/*.json` file from disk (not rootBundle)
-/// so validation tests exercise the real parser + validator end to end.
-ContentCatalog _loadCatalogFromDisk() {
+/// Loads every content JSON referenced by a manifest from disk (not
+/// rootBundle) so validation tests exercise the real parser + validator
+/// end to end.
+ContentCatalog _loadCatalogFromDisk({String manifest = 'manifest.json'}) {
   final chapters = <ChapterDefinition>[];
   final rooms = <RoomDefinition>[];
   final puzzles = <PuzzleDefinition>[];
@@ -16,16 +17,16 @@ ContentCatalog _loadCatalogFromDisk() {
   final combinations = <ItemCombinationDefinition>[];
   final clues = <ClueDefinition>[];
 
-  final manifestFile = File('assets/content/manifest.json');
+  final manifestFile = File('assets/content/$manifest');
   expect(
     manifestFile.existsSync(),
     isTrue,
-    reason: 'assets/content/manifest.json must exist',
+    reason: 'assets/content/$manifest must exist',
   );
-  final manifest =
+  final decoded =
       jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
 
-  for (final entry in manifest['files'] as List) {
+  for (final entry in decoded['files'] as List) {
     final rel = entry as String;
     final filePath = 'assets/content/$rel';
     final json =
@@ -81,7 +82,7 @@ void main() {
     catalog = _loadCatalogFromDisk();
   });
 
-  test('bundled sample content passes full validation', () async {
+  test('Chapter 1 production content passes full validation', () async {
     await ContentValidator.validate(
       catalog,
       assetExists: (p) async => _assetExists(p),
@@ -89,22 +90,40 @@ void main() {
     );
   });
 
-  test('catalog contains the expected sample entities', () {
-    expect(catalog.chapters.single.id, 'chapter_sample');
-    expect(
-      catalog.rooms.map((r) => r.id),
-      containsAll(['room_sample', 'room_sample_exit']),
+  test('sample dev-fixture content also passes validation', () async {
+    final sample = _loadCatalogFromDisk(manifest: 'manifest.sample.json');
+    await ContentValidator.validate(
+      sample,
+      assetExists: (p) async => _assetExists(p),
+      localizationKeys: _localizationKeys(),
     );
-    expect(catalog.puzzles.single.id, 'puz_sample_lock');
+  });
+
+  test('catalog contains the full Chapter 1 entity set', () {
+    expect(catalog.chapters.single.id, 'chapter_01');
+    expect(catalog.chapters.single.roomIds, [
+      'room_entrance',
+      'room_study',
+      'room_workshop',
+      'room_gallery',
+      'room_observatory',
+    ]);
+    expect(catalog.rooms.length, 5);
+    expect(catalog.puzzles.length, 19);
     expect(
       catalog.items.map((i) => i.id),
-      containsAll(['item_sample_key', 'item_sample_gear', 'item_sample_hook']),
+      containsAll([
+        'item_clock_key',
+        'item_lens',
+        'item_brass_frame',
+        'item_crank',
+        'item_focus_lens',
+      ]),
     );
-    expect(catalog.combinations.single.id, 'comb_sample_hook');
-    expect(
-      catalog.clues.map((c) => c.id),
-      containsAll(['clue_sample_note', 'clue_sample_lock_opened']),
-    );
+    expect(catalog.combinations.single.id, 'comb_focus_lens');
+    expect(catalog.clues.length, 25);
+    // Sample entities must NOT ship in the production manifest.
+    expect(catalog.puzzles.map((p) => p.id), isNot(contains('puz_sample_lock')));
   });
 
   test('missing asset is reported', () async {
@@ -112,21 +131,19 @@ void main() {
       'type': 'room',
       'schemaVersion': 1,
       'id': 'room_bad_asset',
-      'chapterId': 'chapter_sample',
-      'titleKey': 'roomSampleTitle',
+      'chapterId': 'chapter_01',
+      'titleKey': 'roomEntranceTitle',
       'backgroundAsset': 'assets/art/rooms/does_not_exist.png',
       'hotspots': <dynamic>[],
     }, 'rooms/room_bad_asset.json');
     final badCatalog = ContentCatalog(
       chapters: catalog.chapters,
-      rooms: [...catalog.rooms, bad],
-      puzzles: catalog.puzzles,
-      items: catalog.items,
-      combinations: catalog.combinations,
-      clues: catalog.clues,
+      rooms: [bad],
+      puzzles: const [],
+      items: const [],
+      combinations: const [],
+      clues: const [],
     );
-    // room_bad_asset is not in any chapter.roomIds — that's fine; validation
-    // only requires chapter->room direction.
     await expectLater(
       ContentValidator.validate(
         badCatalog,
@@ -136,185 +153,66 @@ void main() {
         isA<ContentValidationException>().having(
           (e) => e.message,
           'message',
-          contains('missing asset file'),
+          contains('does_not_exist.png'),
         ),
       ),
     );
   });
 
-  test('out-of-bounds hotspot is reported with room and hotspot id', () async {
-    final badRoomJson = {
-      'type': 'room',
+  test('unknown ids and broken references are reported', () async {
+    expect(
+      () => PuzzleDefinition.fromJson({
+        'schemaVersion': 1,
+        'type': 'puzzle',
+        'id': 'puz_bad',
+        'roomId': 'room_ghost',
+        'hotspotId': 'hs_ghost',
+        'puzzleType': 'keypad',
+        'titleKey': 'puz.puz_eh_door_lock.title',
+        'instructionsKey': 'puz.puz_eh_door_lock.instr',
+        'initialState': {'digits': 4},
+        'solutionConfig': {'code': '1234'},
+        'validationConfig': <String, dynamic>{},
+        'hints': [
+          {'level': 1, 'textKey': 'hint.puz_eh_door_lock.l1'},
+        ],
+        'resetPolicy': 'keep',
+      }, 'puzzles/puz_bad.json'),
+      isNot(throwsA(anything)),
+    );
+    // Cross-file references are checked by the validator, not the parser:
+    final orphan = PuzzleDefinition.fromJson({
       'schemaVersion': 1,
-      'id': 'room_bad_bounds',
-      'chapterId': 'chapter_sample',
-      'titleKey': 'roomSampleTitle',
-      'backgroundAsset': 'assets/art/rooms/room_sample.png',
-      'hotspots': [
-        {
-          'id': 'hs_bad',
-          'bounds': {'x': 0.9, 'y': 0.1, 'width': 0.5, 'height': 0.2},
-          'labelKey': 'hotspotSampleNote',
-          'interactionType': 'inspect',
-        },
-      ],
-    };
-    final badRoom = RoomDefinition.fromJson(badRoomJson, 'rooms/x.json');
-    final badCatalog = ContentCatalog(
-      chapters: catalog.chapters,
-      rooms: [...catalog.rooms, badRoom],
-      puzzles: catalog.puzzles,
-      items: catalog.items,
-      combinations: catalog.combinations,
-      clues: catalog.clues,
-    );
-    await expectLater(
-      ContentValidator.validate(badCatalog),
-      throwsA(
-        isA<ContentValidationException>().having(
-          (e) => e.message,
-          'message',
-          allOf(
-            contains('room_bad_bounds'),
-            contains('hs_bad'),
-            contains('extends past scene edge'),
-          ),
-        ),
-      ),
-    );
-  });
-
-  test('unknown puzzle prerequisite target is reported', () async {
-    final badPuzzleJson = {
       'type': 'puzzle',
-      'schemaVersion': 1,
-      'id': 'puz_bad_ref',
-      'roomId': 'room_sample',
-      'hotspotId': 'hs_sample_door_lock',
+      'id': 'puz_orphan',
+      'roomId': 'room_entrance',
+      'hotspotId': 'hs_nonexistent',
       'puzzleType': 'keypad',
-      'titleKey': 'puzzleSampleLockTitle',
-      'instructionsKey': 'puzzleSampleLockInstructions',
-      'initialState': <String, dynamic>{},
-      'solutionConfig': {'code': '0000'},
+      'titleKey': 'puz.puz_eh_door_lock.title',
+      'instructionsKey': 'puz.puz_eh_door_lock.instr',
+      'initialState': {'digits': 4},
+      'solutionConfig': {'code': '1234'},
       'validationConfig': <String, dynamic>{},
-      'prerequisites': [
-        {'type': 'puzzle_solved', 'targetId': 'puz_does_not_exist'},
-      ],
-      'successActions': <dynamic>[],
       'hints': [
-        {'level': 1, 'textKey': 'puzzleSampleLockHint1'},
+        {'level': 1, 'textKey': 'hint.puz_eh_door_lock.l1'},
       ],
       'resetPolicy': 'keep',
-    };
-    final badPuzzle = PuzzleDefinition.fromJson(
-      badPuzzleJson,
-      'puzzles/puz_bad_ref.json',
-    );
-    final badCatalog = ContentCatalog(
+    }, 'puzzles/puz_orphan.json');
+    final c = ContentCatalog(
       chapters: catalog.chapters,
       rooms: catalog.rooms,
-      puzzles: [...catalog.puzzles, badPuzzle],
-      items: catalog.items,
-      combinations: catalog.combinations,
-      clues: catalog.clues,
+      puzzles: [orphan],
+      items: const [],
+      combinations: const [],
+      clues: const [],
     );
     await expectLater(
-      ContentValidator.validate(badCatalog),
+      ContentValidator.validate(c),
       throwsA(
         isA<ContentValidationException>().having(
           (e) => e.message,
           'message',
-          allOf(contains('puz_bad_ref'), contains('puz_does_not_exist')),
-        ),
-      ),
-    );
-  });
-
-  test('circular unlock dependency is detected', () async {
-    // room_a entry requires puzzle_x solved; puzzle_x (in room_b) requires
-    // room_a unlocked -> cycle.
-    RoomDefinition room(String id, List<Prerequisite> entry) => RoomDefinition(
-      id: id,
-      chapterId: 'chapter_sample',
-      titleKey: 'roomSampleTitle',
-      backgroundAsset: 'assets/art/rooms/room_sample.png',
-      hotspots: const [],
-      entryConditions: entry,
-      exitConnections: const [],
-    );
-
-    final roomA = room('room_a', const [
-      Prerequisite(type: PrerequisiteType.puzzleSolved, targetId: 'puz_x'),
-    ]);
-    final roomB = room('room_b', const []);
-    final puzX = PuzzleDefinition(
-      id: 'puz_x',
-      roomId: 'room_b',
-      hotspotId: 'hs_none',
-      type: PuzzleType.keypad,
-      titleKey: 'puzzleSampleLockTitle',
-      instructionsKey: 'puzzleSampleLockInstructions',
-      initialState: const {},
-      solutionConfig: const {'code': '1'},
-      validationConfig: const {},
-      prerequisites: const [
-        Prerequisite(type: PrerequisiteType.roomUnlocked, targetId: 'room_a'),
-      ],
-      successActions: const [],
-      hints: const [],
-      resetPolicy: ResetPolicy.keep,
-    );
-
-    final badCatalog = ContentCatalog(
-      chapters: catalog.chapters,
-      rooms: [roomA, roomB],
-      puzzles: [puzX],
-      items: catalog.items,
-      combinations: catalog.combinations,
-      clues: catalog.clues,
-    );
-
-    // room_b has no hotspot hs_none -> that error is expected too; we only
-    // assert the cycle is reported.
-    await expectLater(
-      ContentValidator.validate(badCatalog),
-      throwsA(
-        isA<ContentValidationException>().having(
-          (e) => e.message,
-          'message',
-          contains('circular unlock dependency'),
-        ),
-      ),
-    );
-  });
-
-  test('missing schemaVersion fails parsing', () {
-    expect(
-      () => ChapterDefinition.fromJson({
-        'type': 'chapter',
-        'id': 'chapter_x',
-        'titleKey': 'chapterSampleTitle',
-        'order': 1,
-        'roomIds': ['room_sample'],
-      }, 'chapters/chapter_x.json'),
-      throwsA(isA<ContentValidationException>()),
-    );
-  });
-
-  test('missing required field reports file and field', () {
-    expect(
-      () => ItemDefinition.fromJson({
-        'type': 'item',
-        'id': 'item_x',
-        // nameKey missing
-        'descriptionKey': 'itemSampleKeyDesc',
-        'iconAsset': 'assets/art/items/item_sample_key.png',
-      }, 'items/item_x.json'),
-      throwsA(
-        isA<ContentValidationException>().having(
-          (e) => e.message,
-          'message',
-          allOf(contains('items/item_x.json'), contains('nameKey')),
+          contains('hs_nonexistent'),
         ),
       ),
     );

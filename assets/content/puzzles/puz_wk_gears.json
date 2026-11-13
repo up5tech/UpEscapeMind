@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_wk_gears",
+  "roomId": "room_workshop",
+  "hotspotId": "hot_wk_gear_wall",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_wk_gears.title",
+  "instructionsKey": "puz.puz_wk_gears.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      0,
+      120,
+      240
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_wk_gears.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_wk_gears.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_wk_gears.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

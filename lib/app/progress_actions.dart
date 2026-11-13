@@ -4,6 +4,7 @@ import '../core/constants/app_constants.dart';
 import '../domain/models/content/item_combination_definition.dart';
 import '../domain/models/content/prerequisites.dart';
 import '../domain/models/progress.dart';
+import '../domain/use_cases/progress_reducer.dart';
 import 'providers/app_providers.dart';
 
 /// Durable game-state mutations. Every method loads the latest progress,
@@ -70,7 +71,7 @@ class ProgressActions {
     return _mutate((p) {
       var next = p;
       for (final action in actions) {
-        next = _applySuccessAction(next, action);
+        next = applySuccessAction(next, action);
       }
       return next;
     });
@@ -85,25 +86,13 @@ class ProgressActions {
   Future<bool> combineItems(ItemCombinationDefinition recipe) async {
     var applied = false;
     await _mutate((p) {
-      if (!recipe.inputItemIds.every(p.hasItem)) return p;
-      if (p.hasItem(recipe.resultItemId)) return p;
-
-      applied = true;
-      var next = p.copyWith(
-        collectedItemIds: [...p.collectedItemIds, recipe.resultItemId],
+      final next = applyCombination(
+        p: p,
+        inputItemIds: recipe.inputItemIds,
+        resultItemId: recipe.resultItemId,
+        consumeInputItems: recipe.consumeInputItems,
       );
-      if (recipe.consumeInputItems) {
-        final consumed = [...p.consumedItemIds];
-        for (final input in recipe.inputItemIds) {
-          if (!consumed.contains(input)) consumed.add(input);
-        }
-        next = next.copyWith(
-          collectedItemIds: next.collectedItemIds
-              .where((id) => !recipe.inputItemIds.contains(id))
-              .toList(),
-          consumedItemIds: consumed,
-        );
-      }
+      applied = !identical(next, p);
       return next;
     });
     return applied;
@@ -136,13 +125,7 @@ class ProgressActions {
     List<String> beforeCompleted = const [];
     final next = await _mutate((p) {
       beforeCompleted = p.completedChapterIds;
-      var progress = p.isPuzzleSolved(puzzleId)
-          ? p
-          : p.copyWith(solvedPuzzleIds: [...p.solvedPuzzleIds, puzzleId]);
-      for (final action in successActions) {
-        progress = _applySuccessAction(progress, action);
-      }
-      return progress;
+      return applyPuzzleSolve(p, puzzleId, successActions);
     });
     return [
       for (final id in next.completedChapterIds)
@@ -150,52 +133,6 @@ class ProgressActions {
     ];
   }
 
-  GameProgress _applySuccessAction(GameProgress p, SuccessAction action) {
-    List<String> addUnique(List<String> list, String id) =>
-        list.contains(id) ? list : [...list, id];
-
-    return switch (action.type) {
-      SuccessActionType.unlockRoom => p.copyWith(
-        unlockedRoomIds: addUnique(p.unlockedRoomIds, action.targetId),
-      ),
-      SuccessActionType.collectItem =>
-        p.hasItem(action.targetId)
-            ? p
-            : p.copyWith(
-                collectedItemIds: addUnique(
-                  p.collectedItemIds,
-                  action.targetId,
-                ),
-              ),
-      SuccessActionType.consumeItem =>
-        p.consumedItemIds.contains(action.targetId)
-            ? p
-            : p.copyWith(
-                collectedItemIds: p.collectedItemIds
-                    .where((id) => id != action.targetId)
-                    .toList(),
-                consumedItemIds: addUnique(p.consumedItemIds, action.targetId),
-              ),
-      SuccessActionType.discoverClue =>
-        p.discoveredClueIds.contains(action.targetId)
-            ? p
-            : p.copyWith(
-                discoveredClueIds: addUnique(
-                  p.discoveredClueIds,
-                  action.targetId,
-                ),
-              ),
-      SuccessActionType.completeChapter =>
-        p.completedChapterIds.contains(action.targetId)
-            ? p
-            : p.copyWith(
-                completedChapterIds: addUnique(
-                  p.completedChapterIds,
-                  action.targetId,
-                ),
-              ),
-    };
-  }
 }
 
 final progressActionsProvider = Provider<ProgressActions>(

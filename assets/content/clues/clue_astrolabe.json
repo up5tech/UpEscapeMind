@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_astrolabe",
+  "titleKey": "clueAstrolabeTitle",
+  "bodyKey": "clueAstrolabeBody",
+  "sourceRoomId": "room_study",
+  "optional": false
+}

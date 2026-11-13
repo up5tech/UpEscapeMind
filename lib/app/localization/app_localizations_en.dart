@@ -109,6 +109,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonClose => 'Close';
 
   @override
+  String get commonNext => 'Next';
+
+  @override
+  String get prologueCard1 =>
+      'You woke on the floor of the Meridian House. Every clock has stopped — each at a different time.';
+
+  @override
+  String get prologueCard2 =>
+      '\"The archive keeps what the house forgets. — E.V.\"';
+
+  @override
+  String get prologueCard3 =>
+      'Someone arranged all of this for you. Start looking.';
+
+  @override
+  String get prologueSkip => 'Skip';
+
+  @override
+  String get prologueEnter => 'Enter the house';
+
+  @override
   String get commonCancel => 'Cancel';
 
   @override

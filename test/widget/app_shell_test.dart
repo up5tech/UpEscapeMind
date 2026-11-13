@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:up_escape_mind/core/constants/app_constants.dart';
+import 'package:up_escape_mind/data/content/content_loader.dart';
 import 'package:up_escape_mind/data/content/content_strings.dart';
 import 'package:up_escape_mind/data/database/app_database.dart';
 import 'package:up_escape_mind/data/repositories/asset_content_repository.dart';
@@ -21,7 +22,9 @@ void main() {
   late final ContentStrings strings;
 
   setUpAll(() async {
-    catalog = await AssetContentRepository().loadCatalog();
+    catalog = await AssetContentRepository(
+      loader: ContentLoader(manifestName: 'manifest.sample.json'),
+    ).loadCatalog();
     strings = await ContentStrings.load();
   });
 

@@ -15,7 +15,12 @@ import 'content_validator.dart';
 /// `schemaVersion` and a `type` discriminator; mismatches fail loudly.
 /// Fully offline — no network access.
 class ContentLoader {
-  const ContentLoader();
+  const ContentLoader({this.manifestName = 'manifest.json'});
+
+  /// Which manifest under `assets/content/` to load. Tests use
+  /// `manifest.sample.json` for the dev fixture entities; the app ships
+  /// with the production `manifest.json` (Chapter 1).
+  final String manifestName;
 
   static const _contentRoot = 'assets/content';
 
@@ -29,21 +34,21 @@ class ContentLoader {
     Future<bool> Function(String assetPath)? assetExists,
     Set<String>? localizationKeys,
   }) async {
-    final manifestRaw = await _loadText('$_contentRoot/manifest.json');
-    final manifest = _decodeObject(manifestRaw, 'manifest.json');
+    final manifestRaw = await _loadText('$_contentRoot/$manifestName');
+    final manifest = _decodeObject(manifestRaw, manifestName);
 
     final schemaVersion = manifest['schemaVersion'];
     if (schemaVersion != AppConstants.contentSchemaVersion) {
       throw ContentValidationException(
-        'manifest.json: unsupported schemaVersion $schemaVersion '
+        '$manifestName: unsupported schemaVersion $schemaVersion '
         '(expected ${AppConstants.contentSchemaVersion})',
       );
     }
 
     final files = manifest['files'];
     if (files is! List || files.isEmpty) {
-      throw const ContentValidationException(
-        'manifest.json: "files" must be a non-empty list',
+      throw ContentValidationException(
+        '$manifestName: "files" must be a non-empty list',
       );
     }
 
@@ -56,8 +61,8 @@ class ContentLoader {
 
     for (final entry in files) {
       if (entry is! String || entry.isEmpty) {
-        throw const ContentValidationException(
-          'manifest.json: "files[]" entries must be non-empty strings',
+        throw ContentValidationException(
+          '$manifestName: "files[]" entries must be non-empty strings',
         );
       }
       final path = '$_contentRoot/$entry';

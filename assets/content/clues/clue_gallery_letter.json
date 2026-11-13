@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_gallery_letter",
+  "titleKey": "clueGaLetterTitle",
+  "bodyKey": "clueGaLetterBody",
+  "sourceRoomId": "room_gallery",
+  "optional": true
+}

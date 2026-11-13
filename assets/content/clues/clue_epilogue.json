@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_epilogue",
+  "titleKey": "clueEpilogueTitle",
+  "bodyKey": "clueEpilogueBody",
+  "sourceRoomId": "room_observatory",
+  "optional": false
+}

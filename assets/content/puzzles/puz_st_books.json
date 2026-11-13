@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_st_books",
+  "roomId": "room_study",
+  "hotspotId": "hot_st_bookshelf",
+  "puzzleType": "sequence",
+  "titleKey": "puz.puz_st_books.title",
+  "instructionsKey": "puz.puz_st_books.instr",
+  "initialState": {
+    "labelKeys": {
+      "book_1861": "year1861",
+      "book_1874": "year1874",
+      "book_1892": "year1892"
+    }
+  },
+  "solutionConfig": {
+    "order": [
+      "book_1861",
+      "book_1874",
+      "book_1892"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_lens"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_astrolabe"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_book_dates"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_st_books.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_st_books.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_st_books.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_study",
+  "chapterId": "chapter_01",
+  "titleKey": "roomStudyTitle",
+  "descriptionKey": "roomStudyDescription",
+  "backgroundAsset": "assets/art/rooms/room_study.png",
+  "hotspots": [
+    {
+      "id": "hot_st_back_entrance",
+      "bounds": {
+        "x": 0.02,
+        "y": 0.3,
+        "width": 0.06,
+        "height": 0.44
+      },
+      "labelKey": "hotStBack",
+      "interactionType": "navigate",
+      "targetId": "room_entrance"
+    },
+    {
+      "id": "hot_st_bookshelf",
+      "bounds": {
+        "x": 0.58,
+        "y": 0.16,
+        "width": 0.32,
+        "height": 0.48
+      },
+      "labelKey": "hotStBookshelf",
+      "interactionType": "puzzle",
+      "targetId": "puz_st_books"
+    },
+    {
+      "id": "hot_st_regulator",
+      "bounds": {
+        "x": 0.1,
+        "y": 0.3,
+        "width": 0.16,
+        "height": 0.42
+      },
+      "labelKey": "hotStRegulator",
+      "interactionType": "use_item",
+      "descriptionKey": "hotStRegulatorDesc",
+      "acceptedItemIds": [
+        "item_clock_key"
+      ],
+      "consumeItemOnUse": false,
+      "successActions": [
+        {
+          "type": "discover_clue",
+          "targetId": "clue_regulator_time"
+        }
+      ]
+    },
+    {
+      "id": "hot_st_certificate",
+      "bounds": {
+        "x": 0.34,
+        "y": 0.18,
+        "width": 0.18,
+        "height": 0.22
+      },
+      "labelKey": "hotStCertificate",
+      "interactionType": "discover_clue",
+      "targetId": "clue_apprentice_year"
+    },
+    {
+      "id": "hot_st_safe",
+      "bounds": {
+        "x": 0.74,
+        "y": 0.52,
+        "width": 0.18,
+        "height": 0.3
+      },
+      "labelKey": "hotStSafe",
+      "interactionType": "puzzle",
+      "targetId": "puz_st_safe"
+    },
+    {
+      "id": "hot_st_astrolabe",
+      "bounds": {
+        "x": 0.36,
+        "y": 0.48,
+        "width": 0.16,
+        "height": 0.24
+      },
+      "labelKey": "hotStAstrolabe",
+      "interactionType": "puzzle",
+      "targetId": "puz_st_astrolabe"
+    },
+    {
+      "id": "hot_st_globe",
+      "bounds": {
+        "x": 0.52,
+        "y": 0.55,
+        "width": 0.2,
+        "height": 0.3
+      },
+      "labelKey": "hotStGlobe",
+      "interactionType": "puzzle",
+      "targetId": "puz_st_globe"
+    },
+    {
+      "id": "hot_st_desk",
+      "bounds": {
+        "x": 0.2,
+        "y": 0.62,
+        "width": 0.3,
+        "height": 0.26
+      },
+      "labelKey": "hotStDesk",
+      "interactionType": "discover_clue",
+      "targetId": "clue_vale_letter"
+    },
+    {
+      "id": "hot_st_workshop_exit",
+      "bounds": {
+        "x": 0.86,
+        "y": 0.3,
+        "width": 0.12,
+        "height": 0.5
+      },
+      "labelKey": "hotStWorkshopExit",
+      "interactionType": "navigate",
+      "targetId": "room_workshop",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_st_globe"
+        }
+      ]
+    }
+  ],
+  "entryConditions": []
+}

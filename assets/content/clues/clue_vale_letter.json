@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_vale_letter",
+  "titleKey": "clueValeLetterTitle",
+  "bodyKey": "clueValeLetterBody",
+  "sourceRoomId": "room_study",
+  "optional": true
+}

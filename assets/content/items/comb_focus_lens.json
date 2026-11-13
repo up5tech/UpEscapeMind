@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "item_combination",
+  "id": "comb_focus_lens",
+  "inputItemIds": [
+    "item_lens",
+    "item_brass_frame"
+  ],
+  "resultItemId": "item_focus_lens",
+  "consumeInputItems": true,
+  "resultMessageKey": "combFocusLensResult"
+}

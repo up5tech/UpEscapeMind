@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_vale_note_4",
+  "titleKey": "clueValeNote4Title",
+  "bodyKey": "clueValeNote4Body",
+  "sourceRoomId": "room_gallery",
+  "optional": true
+}

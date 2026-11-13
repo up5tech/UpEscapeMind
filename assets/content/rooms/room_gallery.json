@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_gallery",
+  "chapterId": "chapter_01",
+  "titleKey": "roomGalleryTitle",
+  "descriptionKey": "roomGalleryDescription",
+  "backgroundAsset": "assets/art/rooms/room_gallery.png",
+  "hotspots": [
+    {
+      "id": "hot_ga_back_workshop",
+      "bounds": {
+        "x": 0.02,
+        "y": 0.32,
+        "width": 0.03,
+        "height": 0.36
+      },
+      "labelKey": "hotGaBack",
+      "interactionType": "navigate",
+      "targetId": "room_workshop"
+    },
+    {
+      "id": "hot_ga_medallions",
+      "bounds": {
+        "x": 0.1,
+        "y": 0.2,
+        "width": 0.34,
+        "height": 0.4
+      },
+      "labelKey": "hotGaMedallions",
+      "interactionType": "puzzle",
+      "targetId": "puz_ga_portraits"
+    },
+    {
+      "id": "hot_ga_central_portrait",
+      "bounds": {
+        "x": 0.5,
+        "y": 0.22,
+        "width": 0.16,
+        "height": 0.36
+      },
+      "labelKey": "hotGaPortrait",
+      "interactionType": "discover_clue",
+      "targetId": "clue_elias_birth",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_ga_portraits"
+        }
+      ]
+    },
+    {
+      "id": "hot_ga_letter",
+      "bounds": {
+        "x": 0.7,
+        "y": 0.6,
+        "width": 0.12,
+        "height": 0.16
+      },
+      "labelKey": "hotGaLetter",
+      "interactionType": "discover_clue",
+      "targetId": "clue_gallery_letter"
+    },
+    {
+      "id": "hot_ga_empty_frames",
+      "bounds": {
+        "x": 0.72,
+        "y": 0.18,
+        "width": 0.24,
+        "height": 0.38
+      },
+      "labelKey": "hotGaFrames",
+      "interactionType": "puzzle",
+      "targetId": "puz_ga_frames"
+    },
+    {
+      "id": "hot_ga_moon_dial",
+      "bounds": {
+        "x": 0.36,
+        "y": 0.55,
+        "width": 0.18,
+        "height": 0.3
+      },
+      "labelKey": "hotGaMoonDial",
+      "interactionType": "puzzle",
+      "targetId": "puz_ga_moon_dial",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_ga_frames"
+        }
+      ]
+    },
+    {
+      "id": "hot_ga_reliquary",
+      "bounds": {
+        "x": 0.86,
+        "y": 0.42,
+        "width": 0.12,
+        "height": 0.3
+      },
+      "labelKey": "hotGaReliquary",
+      "interactionType": "puzzle",
+      "targetId": "puz_ga_case_lock"
+    },
+    {
+      "id": "hot_ga_chronometer",
+      "bounds": {
+        "x": 0.58,
+        "y": 0.12,
+        "width": 0.12,
+        "height": 0.2
+      },
+      "labelKey": "hotGaChronometer",
+      "interactionType": "discover_clue",
+      "targetId": "clue_gallery_clock"
+    },
+    {
+      "id": "hot_ga_observatory_exit",
+      "bounds": {
+        "x": 0.06,
+        "y": 0.28,
+        "width": 0.12,
+        "height": 0.5
+      },
+      "labelKey": "hotGaObsExit",
+      "interactionType": "navigate",
+      "targetId": "room_observatory",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_ga_case_lock"
+        }
+      ]
+    }
+  ],
+  "entryConditions": []
+}

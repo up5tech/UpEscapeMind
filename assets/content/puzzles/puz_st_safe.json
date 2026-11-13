@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_st_safe",
+  "roomId": "room_study",
+  "hotspotId": "hot_st_safe",
+  "puzzleType": "keypad",
+  "titleKey": "puz.puz_st_safe.title",
+  "instructionsKey": "puz.puz_st_safe.instr",
+  "initialState": {
+    "digits": 4
+  },
+  "solutionConfig": {
+    "code": "1874"
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_vale_note_2"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_seal_year"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_st_safe.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_st_safe.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_st_safe.l3"
+    }
+  ],
+  "resetPolicy": "reset_on_exit"
+}
