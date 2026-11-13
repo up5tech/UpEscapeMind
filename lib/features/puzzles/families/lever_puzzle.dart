@@ -46,9 +46,9 @@ class _LeverPuzzleState extends ConsumerState<LeverPuzzle> {
       where: 'puzzle "${widget.puzzle.id}"',
     );
     _states = List<bool>.from(_validator.startState);
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     if (stored is List<bool> && stored.length == _states.length) {
       for (var i = 0; i < stored.length; i++) {
         _states[i] = stored[i];
@@ -102,12 +102,12 @@ class _LeverPuzzleState extends ConsumerState<LeverPuzzle> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              PuzzleInstructions(
-                text: widget.s(widget.puzzle.instructionsKey),
-              ),
+              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 12,
+                runSpacing: 12,
                 children: [
                   for (var i = 0; i < _states.length; i++)
                     Padding(
@@ -117,6 +117,7 @@ class _LeverPuzzleState extends ConsumerState<LeverPuzzle> {
                             '${idLabel(widget.puzzle.initialState, 'lever_$i', widget.s)} '
                             '${_states[i] ? l10n.leverUp : l10n.leverDown}',
                         button: true,
+                        toggled: _states[i],
                         child: InkWell(
                           key: ValueKey('lever_$i'),
                           onTap: () => _flip(i),

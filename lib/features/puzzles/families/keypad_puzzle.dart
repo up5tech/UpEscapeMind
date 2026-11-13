@@ -47,9 +47,9 @@ class _KeypadPuzzleState extends ConsumerState<KeypadPuzzle> {
       validationConfig: widget.puzzle.validationConfig,
       where: 'puzzle "${widget.puzzle.id}"',
     );
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     _entered = stored is String && stored.isNotEmpty && isDigitString(stored)
         ? stored.split('')
         : <String>[];
@@ -229,8 +229,8 @@ class _KeypadKey extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(10),
           child: Container(
-            width: 72,
-            height: 56,
+            constraints: const BoxConstraints(minWidth: 72, minHeight: 56),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),

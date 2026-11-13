@@ -110,6 +110,17 @@ void main() {
     );
   });
 
+  testWidgets('room scene hotspot is exposed as an accessible button', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    await pumpApp(tester, progress: progressWith());
+    await openSampleRoom(tester);
+
+    expect(find.bySemanticsLabel('Một mẩu ghi chú'), findsOneWidget);
+    semantics.dispose();
+  });
+
   testWidgets('locked room route redirects to chapter map', (tester) async {
     await pumpApp(tester, progress: progressWith());
 

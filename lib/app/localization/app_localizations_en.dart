@@ -160,6 +160,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get puzzleReset => 'Reset';
 
   @override
+  String get rotationDecrease => 'Rotate counterclockwise';
+
+  @override
+  String get rotationIncrease => 'Rotate clockwise';
+
+  @override
   String get leverUp => 'Up';
 
   @override
@@ -168,6 +174,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String observationProgress(int found, int total) {
     return 'Found $found of $total.';
+  }
+
+  @override
+  String tapRegionOption(int index) {
+    return 'Target $index';
   }
 
   @override

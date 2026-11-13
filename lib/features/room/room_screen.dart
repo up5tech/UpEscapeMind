@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -100,6 +103,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           Expanded(
             child: RoomScene(
               backgroundAsset: room.backgroundAsset,
+              sceneLabel: strings.forLocale(locale, room.titleKey),
               hotspots: hotspots,
               onHotspotTap: (hotspot) => _handleHotspot(
                 context,
@@ -172,6 +176,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         if (clueId == null) return;
         final isNew = !progress.discoveredClueIds.contains(clueId);
         await actions.discoverClue(clueId);
+        if (isNew) await _playHaptic();
         if (isNew && context.mounted) {
           final title = catalog.cluesById[clueId] != null
               ? s(catalog.cluesById[clueId]!.titleKey)
@@ -183,6 +188,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         if (itemId == null) return;
         final isNew = !progress.hasItem(itemId);
         await actions.collectItem(itemId);
+        if (isNew) await _playHaptic();
         if (context.mounted) {
           final name = catalog.itemsById[itemId] != null
               ? s(catalog.itemsById[itemId]!.nameKey)
@@ -269,6 +275,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     final ok = await ref.read(progressActionsProvider).combineItems(recipe);
     if (!mounted) return;
     if (ok) {
+      unawaited(_playHaptic());
       setState(() {
         _combineMode = false;
         _combineSelection.clear();
@@ -424,6 +431,17 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         );
       },
     );
+  }
+
+  Future<void> _playHaptic() async {
+    try {
+      final repository = ref.read(settingsRepositoryProvider);
+      if (await repository.isHapticsEnabled()) {
+        await HapticFeedback.selectionClick();
+      }
+    } on Object {
+      // Haptics are optional; unsupported devices must not interrupt play.
+    }
   }
 
   void _toast(BuildContext context, String message) {

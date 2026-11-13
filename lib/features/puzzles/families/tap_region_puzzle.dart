@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
@@ -63,9 +64,9 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
       where: 'puzzle "${widget.puzzle.id}"',
       ordered: widget.puzzle.type == PuzzleType.observation,
     );
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     if (_ordered && stored is List<String>) {
       _taps.addAll(stored);
     }
@@ -78,21 +79,24 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
   }
 
   void _resolveImageSize() {
-    final stream =
-        AssetImage(_imageAsset).resolve(createLocalImageConfiguration(context));
+    final stream = AssetImage(_imageAsset)
+        .resolve(createLocalImageConfiguration(context));
     late final ImageStreamListener listener;
-    listener = ImageStreamListener((info, _) {
-      if (!mounted) return;
-      setState(() {
-        _imageSize = Size(
-          info.image.width.toDouble(),
-          info.image.height.toDouble(),
-        );
-      });
-      stream.removeListener(listener);
-    }, onError: (_, _) {
-      stream.removeListener(listener);
-    });
+    listener = ImageStreamListener(
+      (info, _) {
+        if (!mounted) return;
+        setState(() {
+          _imageSize = Size(
+            info.image.width.toDouble(),
+            info.image.height.toDouble(),
+          );
+        });
+        stream.removeListener(listener);
+      },
+      onError: (_, _) {
+        stream.removeListener(listener);
+      },
+    );
     _imageStream = stream;
     _listener = listener;
     stream.addListener(listener);
@@ -175,9 +179,7 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PuzzleInstructions(
-                text: widget.s(widget.puzzle.instructionsKey),
-              ),
+              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
               const SizedBox(height: 12),
               PuzzleFeedback(visible: _wrong),
               if (_ordered)
@@ -189,9 +191,8 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
                       _validator.targets?.length ?? 0,
                     ),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.secondaryText,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: AppColors.secondaryText),
                   ),
                 ),
               Expanded(
@@ -219,30 +220,55 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
         final originX = (box.width - dispW) / 2;
         final originY = (box.height - dispH) / 2;
 
-        return GestureDetector(
-          key: const ValueKey('tap_scene'),
-          behavior: HitTestBehavior.opaque,
-          onTapUp: (event) {
-            final local = event.localPosition;
-            final nx = (local.dx - originX) / dispW;
-            final ny = (local.dy - originY) / dispH;
-            if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return;
-            _handleTap(TapPoint(nx, ny));
+        final regionNames = <String, String>{
+          for (var i = 0; i < _validator.regions.length; i++)
+            _validator.regions[i].id: _ordered
+                ? idLabel(
+                    widget.puzzle.initialState,
+                    _validator.regions[i].id,
+                    widget.s,
+                  )
+                : AppLocalizations.of(context).tapRegionOption(i + 1),
+        };
+        return Semantics(
+          container: true,
+          label: widget.s(widget.puzzle.instructionsKey),
+          customSemanticsActions: {
+            for (final region in _validator.regions)
+              CustomSemanticsAction(label: regionNames[region.id]!): () {
+                _handleTap(
+                  TapPoint(
+                    region.x + region.width / 2,
+                    region.y + region.height / 2,
+                  ),
+                );
+              },
           },
-          child: Stack(
-            children: [
-              Positioned(
-                left: originX,
-                top: originY,
-                width: dispW,
-                height: dispH,
-                child: Image.asset(
-                  _imageAsset,
-                  fit: BoxFit.fill,
-                  semanticLabel: widget.s(widget.puzzle.titleKey),
+          child: GestureDetector(
+            key: const ValueKey('tap_scene'),
+            behavior: HitTestBehavior.opaque,
+            onTapUp: (event) {
+              final local = event.localPosition;
+              final nx = (local.dx - originX) / dispW;
+              final ny = (local.dy - originY) / dispH;
+              if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return;
+              _handleTap(TapPoint(nx, ny));
+            },
+            child: Stack(
+              children: [
+                Positioned(
+                  left: originX,
+                  top: originY,
+                  width: dispW,
+                  height: dispH,
+                  child: Image.asset(
+                    _imageAsset,
+                    fit: BoxFit.fill,
+                    semanticLabel: widget.s(widget.puzzle.titleKey),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

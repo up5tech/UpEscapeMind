@@ -32,11 +32,16 @@ class _PrologueScreenState extends ConsumerState<PrologueScreen> {
 
   void _next(AppLocalizations l10n) {
     if (_page < _cardCount - 1) {
-      _controller.animateToPage(
-        _page + 1,
-        duration: const Duration(milliseconds: 260),
-        curve: Curves.easeOut,
-      );
+      final reduceMotion = MediaQuery.disableAnimationsOf(context);
+      if (reduceMotion) {
+        _controller.jumpToPage(_page + 1);
+      } else {
+        _controller.animateToPage(
+          _page + 1,
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOut,
+        );
+      }
     } else {
       _enterHouse();
     }
@@ -80,9 +85,8 @@ class _PrologueScreenState extends ConsumerState<PrologueScreen> {
                 child: Center(
                   child: Text(
                     cards[i],
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.parchmentText,
-                    ),
+                    style: Theme.of(context).textTheme.titleLarge
+                        ?.copyWith(color: AppColors.parchmentText),
                     textAlign: TextAlign.center,
                   ),
                 ),

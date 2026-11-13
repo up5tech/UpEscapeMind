@@ -163,6 +163,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get puzzleReset => 'Đặt lại';
 
   @override
+  String get rotationDecrease => 'Xoay ngược chiều kim đồng hồ';
+
+  @override
+  String get rotationIncrease => 'Xoay theo chiều kim đồng hồ';
+
+  @override
   String get leverUp => 'Lên';
 
   @override
@@ -171,6 +177,11 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String observationProgress(int found, int total) {
     return 'Đã tìm thấy $found/$total.';
+  }
+
+  @override
+  String tapRegionOption(int index) {
+    return 'Mục tiêu $index';
   }
 
   @override

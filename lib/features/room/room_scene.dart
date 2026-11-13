@@ -23,11 +23,13 @@ class RoomScene extends StatefulWidget {
   const RoomScene({
     super.key,
     required this.backgroundAsset,
+    required this.sceneLabel,
     required this.hotspots,
     required this.onHotspotTap,
   });
 
   final String backgroundAsset;
+  final String sceneLabel;
   final List<RoomHotspotView> hotspots;
   final ValueChanged<RoomHotspotView> onHotspotTap;
 
@@ -119,7 +121,7 @@ class _RoomSceneState extends State<RoomScene> {
               child: Image.asset(
                 widget.backgroundAsset,
                 fit: BoxFit.fill,
-                semanticLabel: widget.backgroundAsset,
+                semanticLabel: widget.sceneLabel,
               ),
             ),
             for (final hotspot in widget.hotspots)
@@ -194,13 +196,25 @@ class _HotspotTargetState extends State<_HotspotTarget> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
-        onTapDown: (_) => setState(() => _pressed = true),
-        onTapUp: (_) => setState(() => _pressed = false),
-        onTapCancel: () => setState(() => _pressed = false),
+        onTapDown: (_) {
+          if (!MediaQuery.disableAnimationsOf(context)) {
+            setState(() => _pressed = true);
+          }
+        },
+        onTapUp: (_) {
+          if (_pressed) setState(() => _pressed = false);
+        },
+        onTapCancel: () {
+          if (_pressed) setState(() => _pressed = false);
+        },
         child: Center(
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 120),
-            opacity: _pressed ? 0.9 : 0.45,
+            duration: MediaQuery.disableAnimationsOf(context)
+                ? Duration.zero
+                : const Duration(milliseconds: 120),
+            opacity: MediaQuery.disableAnimationsOf(context) || _pressed
+                ? 0.9
+                : 0.45,
             child: Container(
               width: 10,
               height: 10,

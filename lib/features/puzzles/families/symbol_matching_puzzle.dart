@@ -47,9 +47,9 @@ class _SymbolMatchingPuzzleState extends ConsumerState<SymbolMatchingPuzzle> {
       where: 'puzzle "${widget.puzzle.id}"',
     );
     _picks = List<String?>.filled(_validator.slotCount, null);
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     if (stored is List<String?> && stored.length == _validator.slotCount) {
       for (var i = 0; i < _picks.length; i++) {
         final pick = stored[i];
@@ -142,12 +142,12 @@ class _SymbolMatchingPuzzleState extends ConsumerState<SymbolMatchingPuzzle> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              PuzzleInstructions(
-                text: widget.s(widget.puzzle.instructionsKey),
-              ),
+              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   for (var i = 0; i < _picks.length; i++)
                     Padding(

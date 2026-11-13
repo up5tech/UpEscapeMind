@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/localization/app_localizations.dart';
 import '../../app/progress_actions.dart';
+import '../../app/providers/app_providers.dart';
 import '../../app/theme/app_colors.dart';
 import '../../core/widgets/widgets.dart';
 import '../../domain/models/content/content_models.dart';
@@ -38,11 +40,15 @@ Future<PuzzleAttemptResult> submitPuzzleAttempt(
 ) async {
   final verdict = buildPuzzleValidator(puzzle).evaluateInput(input);
   if (verdict != PuzzleVerdict.correct) {
+    if (verdict == PuzzleVerdict.incorrect) {
+      await _playHaptic(ref, HapticFeedback.lightImpact);
+    }
     return PuzzleAttemptResult(
       verdict: verdict,
       newlyCompletedChapterIds: const [],
     );
   }
+  await _playHaptic(ref, HapticFeedback.mediumImpact);
   final completed = await ref
       .read(progressActionsProvider)
       .solvePuzzle(puzzle.id, puzzle.successActions);
@@ -50,6 +56,19 @@ Future<PuzzleAttemptResult> submitPuzzleAttempt(
     verdict: verdict,
     newlyCompletedChapterIds: completed,
   );
+}
+
+Future<void> _playHaptic(
+  WidgetRef ref,
+  Future<void> Function() feedback,
+) async {
+  try {
+    if (await ref.read(settingsRepositoryProvider).isHapticsEnabled()) {
+      await feedback();
+    }
+  } on Object {
+    // Haptics are optional; unsupported devices must not interrupt gameplay.
+  }
 }
 
 /// Shows the solved snackbar, leaves the puzzle screen — and when this
@@ -93,9 +112,8 @@ class PuzzleFeedback extends StatelessWidget {
       child: Text(
         l10n.puzzleIncorrectMessage,
         key: const ValueKey('puzzle_feedback'),
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.clockRed,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium
+            ?.copyWith(color: AppColors.clockRed),
         textAlign: TextAlign.center,
       ),
     );
@@ -133,9 +151,7 @@ class PuzzleActionRow extends StatelessWidget {
             onPressed: onReset,
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.parchmentText,
-              side: BorderSide(
-                color: AppColors.brass.withValues(alpha: 0.5),
-              ),
+              side: BorderSide(color: AppColors.brass.withValues(alpha: 0.5)),
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             child: Text(l10n.puzzleReset),

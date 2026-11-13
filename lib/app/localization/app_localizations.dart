@@ -386,6 +386,18 @@ abstract class AppLocalizations {
   /// **'Reset'**
   String get puzzleReset;
 
+  /// No description provided for @rotationDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate counterclockwise'**
+  String get rotationDecrease;
+
+  /// No description provided for @rotationIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate clockwise'**
+  String get rotationIncrease;
+
   /// No description provided for @leverUp.
   ///
   /// In en, this message translates to:
@@ -403,6 +415,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Found {found} of {total}.'**
   String observationProgress(int found, int total);
+
+  /// No description provided for @tapRegionOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Target {index}'**
+  String tapRegionOption(int index);
 
   /// No description provided for @hintsAction.
   ///

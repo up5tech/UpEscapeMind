@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/localization/app_localizations.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../domain/models/content/content_models.dart';
@@ -48,9 +49,9 @@ class _RotationPuzzleState extends ConsumerState<RotationPuzzle> {
       where: 'puzzle "${widget.puzzle.id}"',
     );
     _angles = List<double>.from(_validator.startAngles);
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     if (stored is List<double> && stored.length == _angles.length) {
       for (var i = 0; i < stored.length; i++) {
         _angles[i] = _validator.snap(stored[i]);
@@ -108,9 +109,7 @@ class _RotationPuzzleState extends ConsumerState<RotationPuzzle> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              PuzzleInstructions(
-                text: widget.s(widget.puzzle.instructionsKey),
-              ),
+              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
               const SizedBox(height: 24),
               for (var i = 0; i < _angles.length; i++)
                 Padding(
@@ -177,20 +176,28 @@ class _DialControl extends StatelessWidget {
       children: [
         Semantics(
           label: label,
+          value: '${angle.round()}°',
+          increasedValue: '${(angle + nudge).round()}°',
+          decreasedValue: '${(angle - nudge).round()}°',
+          slider: true,
+          onIncrease: () => onAngleChanged(angle + nudge),
+          onDecrease: () => onAngleChanged(angle - nudge),
           child: GestureDetector(
             onPanUpdate: (event) {
-              onAngleChanged(_angleAt(const Size(180, 180), event.localPosition));
+              onAngleChanged(
+                _angleAt(const Size(180, 180), event.localPosition),
+              );
             },
             onTapUp: (event) {
-              onAngleChanged(_angleAt(const Size(180, 180), event.localPosition));
+              onAngleChanged(
+                _angleAt(const Size(180, 180), event.localPosition),
+              );
             },
             child: SizedBox(
               key: ValueKey('rotation_dial_$index'),
               width: 180,
               height: 180,
-              child: CustomPaint(
-                painter: _DialPainter(angle: angle),
-              ),
+              child: CustomPaint(painter: _DialPainter(angle: angle)),
             ),
           ),
         ),
@@ -200,18 +207,19 @@ class _DialControl extends StatelessWidget {
           children: [
             IconButton(
               key: ValueKey('rotation_minus_$index'),
+              tooltip: AppLocalizations.of(context).rotationDecrease,
               onPressed: () => onAngleChanged(angle - nudge),
               icon: const Icon(Icons.rotate_left),
               color: AppColors.parchmentText,
             ),
             Text(
               label,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.parchmentText,
-              ),
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(color: AppColors.parchmentText),
             ),
             IconButton(
               key: ValueKey('rotation_plus_$index'),
+              tooltip: AppLocalizations.of(context).rotationIncrease,
               onPressed: () => onAngleChanged(angle + nudge),
               icon: const Icon(Icons.rotate_right),
               color: AppColors.parchmentText,
@@ -248,7 +256,8 @@ class _DialPainter extends CustomPainter {
 
     // Rotating marker.
     final radians = angle * math.pi / 180;
-    final markerEnd = center +
+    final markerEnd =
+        center +
         Offset(radius * math.sin(radians), -radius * math.cos(radians));
     final marker = Paint()
       ..color = AppColors.clockRed
