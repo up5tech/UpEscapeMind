@@ -136,6 +136,23 @@ class AppLocalizationsVi extends AppLocalizations {
   String get keypadDelete => 'Xóa';
 
   @override
+  String get puzzleCheck => 'Kiểm tra';
+
+  @override
+  String get puzzleReset => 'Đặt lại';
+
+  @override
+  String get leverUp => 'Lên';
+
+  @override
+  String get leverDown => 'Xuống';
+
+  @override
+  String observationProgress(int found, int total) {
+    return 'Đã tìm thấy $found/$total.';
+  }
+
+  @override
   String itemCollectedMessage(String name) {
     return 'Đã nhặt được $name.';
   }

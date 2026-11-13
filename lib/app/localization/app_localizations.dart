@@ -338,6 +338,36 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get keypadDelete;
 
+  /// No description provided for @puzzleCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get puzzleCheck;
+
+  /// No description provided for @puzzleReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get puzzleReset;
+
+  /// No description provided for @leverUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up'**
+  String get leverUp;
+
+  /// No description provided for @leverDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down'**
+  String get leverDown;
+
+  /// No description provided for @observationProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {found} of {total}.'**
+  String observationProgress(int found, int total);
+
   /// No description provided for @itemCollectedMessage.
   ///
   /// In en, this message translates to:

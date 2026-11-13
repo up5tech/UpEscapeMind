@@ -133,6 +133,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keypadDelete => 'Delete';
 
   @override
+  String get puzzleCheck => 'Check';
+
+  @override
+  String get puzzleReset => 'Reset';
+
+  @override
+  String get leverUp => 'Up';
+
+  @override
+  String get leverDown => 'Down';
+
+  @override
+  String observationProgress(int found, int total) {
+    return 'Found $found of $total.';
+  }
+
+  @override
   String itemCollectedMessage(String name) {
     return 'Picked up $name.';
   }

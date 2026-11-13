@@ -1,5 +1,7 @@
 import '../../core/errors/app_exceptions.dart';
 import '../../domain/models/content/content_models.dart';
+import '../../domain/validators/puzzle_validator.dart';
+import '../../domain/validators/puzzle_validator_factory.dart';
 
 /// Development-time content validation (PLAN.md §10.3, Phase 2).
 ///
@@ -323,6 +325,17 @@ abstract final class ContentValidator {
             '$where: solutionConfig missing required key "$key" '
             'for type "${puzzle.type.jsonValue}"',
           );
+        }
+      }
+
+      // Deep, family-specific configuration check through the same typed
+      // validators the engine uses at runtime — bad puzzle config fails
+      // content validation, not the app.
+      if (isScreenPuzzleType(puzzle.type)) {
+        try {
+          buildPuzzleValidator(puzzle);
+        } on ContentValidationException catch (e) {
+          errors.add(e.message);
         }
       }
 
