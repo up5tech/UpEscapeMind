@@ -156,6 +156,12 @@ class _ChapterCard extends StatelessWidget {
               unlocked: _isUnlocked(room),
               current: progress?.currentRoomId == room.id,
               l10n: l10n,
+              onTap: _isUnlocked(room)
+                  ? () => context.pushNamed(
+                      'room',
+                      pathParameters: {'roomId': room.id},
+                    )
+                  : null,
             ),
         ],
       ),
@@ -178,6 +184,7 @@ class _RoomTile extends StatelessWidget {
     required this.unlocked,
     required this.current,
     required this.l10n,
+    this.onTap,
   });
 
   final RoomDefinition room;
@@ -185,6 +192,7 @@ class _RoomTile extends StatelessWidget {
   final bool unlocked;
   final bool current;
   final AppLocalizations l10n;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +227,7 @@ class _RoomTile extends StatelessWidget {
                 color: AppColors.disabledText,
               ),
             ),
-      onTap: null, // Room screen navigation lands in Phase 5.
+      onTap: unlocked ? onTap : null,
     );
   }
 }

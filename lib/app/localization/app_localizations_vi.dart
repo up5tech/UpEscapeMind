@@ -116,4 +116,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get commonConfirm => 'Xác nhận';
+
+  @override
+  String get roomLockedMessage => 'Khu vực này vẫn đang bị khóa.';
+
+  @override
+  String get puzzleLockedMessage => 'Câu đố này chưa thể mở ra lúc này.';
+
+  @override
+  String get puzzleIncorrectMessage => 'Chưa chính xác. Hãy thử lại.';
+
+  @override
+  String get puzzleSolvedMessage => 'Chính xác! Câu đố đã được giải.';
+
+  @override
+  String get keypadClear => 'Xóa hết';
+
+  @override
+  String get keypadDelete => 'Xóa';
+
+  @override
+  String itemCollectedMessage(String name) {
+    return 'Đã nhặt được $name.';
+  }
+
+  @override
+  String alreadyHaveItemMessage(String name) {
+    return 'Bạn đã có $name rồi.';
+  }
+
+  @override
+  String clueDiscoveredMessage(String title) {
+    return 'Manh mối mới trong Nhật ký: $title.';
+  }
 }

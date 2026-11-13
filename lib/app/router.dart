@@ -4,6 +4,8 @@ import '../features/chapters/chapters_screen.dart';
 import '../features/home/main_menu_screen.dart';
 import '../features/home/splash_screen.dart';
 import '../features/journal/journal_screen.dart';
+import '../features/puzzles/puzzle_screen.dart';
+import '../features/room/room_screen.dart';
 import '../features/settings/credits_screen.dart';
 import '../features/settings/settings_screen.dart';
 
@@ -16,6 +18,8 @@ abstract final class AppRoutes {
   static const String settings = '/settings';
   static const String credits = '/credits';
   static const String journal = '/journal';
+  static const String room = '/room/:roomId';
+  static const String puzzle = '/puzzle/:puzzleId';
 }
 
 GoRouter createAppRouter() {
@@ -51,6 +55,18 @@ GoRouter createAppRouter() {
         path: AppRoutes.journal,
         name: 'journal',
         builder: (context, state) => const JournalScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.room,
+        name: 'room',
+        builder: (context, state) =>
+            RoomScreen(roomId: state.pathParameters['roomId']!),
+      ),
+      GoRoute(
+        path: AppRoutes.puzzle,
+        name: 'puzzle',
+        builder: (context, state) =>
+            PuzzleScreen(puzzleId: state.pathParameters['puzzleId']!),
       ),
     ],
   );

@@ -301,6 +301,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get commonConfirm;
+
+  /// No description provided for @roomLockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This area is still locked.'**
+  String get roomLockedMessage;
+
+  /// No description provided for @puzzleLockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This puzzle cannot be opened yet.'**
+  String get puzzleLockedMessage;
+
+  /// No description provided for @puzzleIncorrectMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite right. Try again.'**
+  String get puzzleIncorrectMessage;
+
+  /// No description provided for @puzzleSolvedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct! The puzzle is solved.'**
+  String get puzzleSolvedMessage;
+
+  /// No description provided for @keypadClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get keypadClear;
+
+  /// No description provided for @keypadDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get keypadDelete;
+
+  /// No description provided for @itemCollectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up {name}.'**
+  String itemCollectedMessage(String name);
+
+  /// No description provided for @alreadyHaveItemMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have {name}.'**
+  String alreadyHaveItemMessage(String name);
+
+  /// No description provided for @clueDiscoveredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'New clue in your Journal: {title}.'**
+  String clueDiscoveredMessage(String title);
 }
 
 class _AppLocalizationsDelegate

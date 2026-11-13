@@ -34,5 +34,24 @@
   "commonBack": "Quay lại",
   "commonClose": "Đóng",
   "commonCancel": "Hủy",
-  "commonConfirm": "Xác nhận"
+  "commonConfirm": "Xác nhận",
+
+  "roomLockedMessage": "Khu vực này vẫn đang bị khóa.",
+  "puzzleLockedMessage": "Câu đố này chưa thể mở ra lúc này.",
+  "puzzleIncorrectMessage": "Chưa chính xác. Hãy thử lại.",
+  "puzzleSolvedMessage": "Chính xác! Câu đố đã được giải.",
+  "keypadClear": "Xóa hết",
+  "keypadDelete": "Xóa",
+  "@itemCollectedMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "itemCollectedMessage": "Đã nhặt được {name}.",
+  "@alreadyHaveItemMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "alreadyHaveItemMessage": "Bạn đã có {name} rồi.",
+  "@clueDiscoveredMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "clueDiscoveredMessage": "Manh mối mới trong Nhật ký: {title}."
 }

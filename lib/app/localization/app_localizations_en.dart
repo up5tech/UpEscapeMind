@@ -113,4 +113,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonConfirm => 'Confirm';
+
+  @override
+  String get roomLockedMessage => 'This area is still locked.';
+
+  @override
+  String get puzzleLockedMessage => 'This puzzle cannot be opened yet.';
+
+  @override
+  String get puzzleIncorrectMessage => 'Not quite right. Try again.';
+
+  @override
+  String get puzzleSolvedMessage => 'Correct! The puzzle is solved.';
+
+  @override
+  String get keypadClear => 'Clear';
+
+  @override
+  String get keypadDelete => 'Delete';
+
+  @override
+  String itemCollectedMessage(String name) {
+    return 'Picked up $name.';
+  }
+
+  @override
+  String alreadyHaveItemMessage(String name) {
+    return 'You already have $name.';
+  }
+
+  @override
+  String clueDiscoveredMessage(String title) {
+    return 'New clue in your Journal: $title.';
+  }
 }

@@ -114,8 +114,12 @@ class MainMenuScreen extends ConsumerWidget {
   }
 
   void _onContinue(BuildContext context, GameProgress progress) {
-    // Room route lands in Phase 5; until then return to the chapter map.
-    unawaited(context.pushNamed('chapters'));
+    final roomId = progress.currentRoomId;
+    if (roomId == null) {
+      unawaited(context.pushNamed('chapters'));
+      return;
+    }
+    unawaited(context.pushNamed('room', pathParameters: {'roomId': roomId}));
   }
 
   Future<void> _onNewGame(BuildContext context, WidgetRef ref) async {
@@ -163,7 +167,12 @@ class MainMenuScreen extends ConsumerWidget {
     await repo.saveProgress(progress);
     ref.invalidate(gameProgressProvider);
     if (context.mounted) {
-      unawaited(context.pushNamed('chapters'));
+      unawaited(
+        context.pushNamed(
+          'room',
+          pathParameters: {'roomId': firstChapter.roomIds.first},
+        ),
+      );
     }
   }
 }

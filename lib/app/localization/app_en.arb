@@ -34,5 +34,24 @@
   "commonBack": "Back",
   "commonClose": "Close",
   "commonCancel": "Cancel",
-  "commonConfirm": "Confirm"
+  "commonConfirm": "Confirm",
+
+  "roomLockedMessage": "This area is still locked.",
+  "puzzleLockedMessage": "This puzzle cannot be opened yet.",
+  "puzzleIncorrectMessage": "Not quite right. Try again.",
+  "puzzleSolvedMessage": "Correct! The puzzle is solved.",
+  "keypadClear": "Clear",
+  "keypadDelete": "Delete",
+  "@itemCollectedMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "itemCollectedMessage": "Picked up {name}.",
+  "@alreadyHaveItemMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "alreadyHaveItemMessage": "You already have {name}.",
+  "@clueDiscoveredMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "clueDiscoveredMessage": "New clue in your Journal: {title}."
 }
