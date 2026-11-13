@@ -14,10 +14,18 @@ import '../puzzle_widgets.dart';
 /// symbol from the authored palette. The puzzle auto-checks when every
 /// slot is filled; input persists within the session per resetPolicy.
 class SymbolMatchingPuzzle extends ConsumerStatefulWidget {
-  const SymbolMatchingPuzzle({super.key, required this.puzzle, required this.s});
+  const SymbolMatchingPuzzle({
+    super.key,
+    required this.puzzle,
+    required this.s,
+    this.hintAction,
+  });
 
   final PuzzleDefinition puzzle;
   final String Function(String) s;
+
+  /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
+  final Widget? hintAction;
 
   @override
   ConsumerState<SymbolMatchingPuzzle> createState() =>
@@ -104,17 +112,20 @@ class _SymbolMatchingPuzzleState extends ConsumerState<SymbolMatchingPuzzle> {
   }
 
   Future<void> _submit() async {
-    final verdict = await submitPuzzleAttempt(
+    final result = await submitPuzzleAttempt(
       context,
       ref,
       widget.puzzle,
       List<String?>.unmodifiable(_picks),
     );
     if (!mounted) return;
-    if (verdict == PuzzleVerdict.correct) {
+    if (result.verdict == PuzzleVerdict.correct) {
       setState(() => _solved = true);
-      await finishPuzzleSolved(context);
-    } else if (verdict == PuzzleVerdict.incorrect) {
+      await finishPuzzleSolved(
+        context,
+        newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+      );
+    } else if (result.verdict == PuzzleVerdict.incorrect) {
       setState(() => _wrong = true);
     }
   }
@@ -125,6 +136,7 @@ class _SymbolMatchingPuzzleState extends ConsumerState<SymbolMatchingPuzzle> {
     return AppScaffold(
       title: widget.s(widget.puzzle.titleKey),
       showBackButton: true,
+      actions: [if (widget.hintAction != null) widget.hintAction!],
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),

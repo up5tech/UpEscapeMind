@@ -74,7 +74,7 @@ class _AppShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = createAppRouter();
+    final router = createAppRouter(ref);
     final localeOverride = ref.watch(appLocaleProvider);
 
     return MaterialApp.router(

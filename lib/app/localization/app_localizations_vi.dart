@@ -153,6 +153,97 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get hintsAction => 'Gợi ý';
+
+  @override
+  String get hintsTitle => 'Gợi ý';
+
+  @override
+  String hintLevelTitle(int level) {
+    return 'Gợi ý $level';
+  }
+
+  @override
+  String get hintNextButton => 'Xem gợi ý tiếp theo';
+
+  @override
+  String get hintWalkthroughConfirmTitle => 'Xem bài giải từng bước?';
+
+  @override
+  String get hintWalkthroughConfirmBody =>
+      'Gợi ý cấp 3 sẽ hướng dẫn giải từng bước. Việc dùng gợi ý không ảnh hưởng đến tiến trình hay đánh giá của bạn.';
+
+  @override
+  String get prereqMissingPuzzle => 'Hãy giải một câu đố khác trước.';
+
+  @override
+  String get prereqMissingItem => 'Bạn vẫn cần tìm thêm một vật phẩm.';
+
+  @override
+  String get prereqMissingItemUse =>
+      'Bạn cần dùng đúng vật phẩm ở một nơi khác trước đã.';
+
+  @override
+  String get prereqMissingClue => 'Nhật ký của bạn vẫn thiếu một manh mối.';
+
+  @override
+  String get prereqMissingArea => 'Một khu vực vẫn đang bị khóa.';
+
+  @override
+  String get prereqMissingChapter => 'Bạn cần hoàn thành một chương trước.';
+
+  @override
+  String get summaryTitle => 'Hoàn thành chương!';
+
+  @override
+  String get summaryAreas => 'Khu vực';
+
+  @override
+  String get statsTitle => 'Thống kê';
+
+  @override
+  String get summaryStarsLabel => 'Đánh giá';
+
+  @override
+  String get starRuleOne => 'Hoàn thành mục tiêu cuối của chương.';
+
+  @override
+  String get starRuleTwo => 'Giải mọi câu đố, kể cả câu đố tùy chọn.';
+
+  @override
+  String get starRuleThree =>
+      'Tìm mọi manh mối, mẩu ghi chú và bí mật, kể cả loại tùy chọn.';
+
+  @override
+  String get badgeNoWalkthrough => 'Không dùng bài giải từng bước';
+
+  @override
+  String get viewSummary => 'Xem tổng kết';
+
+  @override
+  String get statChaptersCompleted => 'Chương đã hoàn thành';
+
+  @override
+  String statAreasDiscovered(int found, int total) {
+    return 'Khu vực đã khám phá: $found/$total';
+  }
+
+  @override
+  String statPuzzlesSolved(int found, int total) {
+    return 'Câu đố đã giải: $found/$total';
+  }
+
+  @override
+  String statOptionalCluesFound(int found, int total) {
+    return 'Manh mối tùy chọn đã tìm: $found/$total';
+  }
+
+  @override
+  String statHintsLevel(int level, int count) {
+    return 'Gợi ý đã mở cấp $level: $count';
+  }
+
+  @override
   String itemCollectedMessage(String name) {
     return 'Đã nhặt được $name.';
   }

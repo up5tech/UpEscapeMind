@@ -83,6 +83,7 @@ class _ChapterList extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: _ChapterCard(
               chapter: chapter,
+              catalog: catalog,
               status: _chapterStatus(chapter),
               title: s(chapter.titleKey),
               l10n: l10n,
@@ -115,6 +116,7 @@ class _ChapterList extends StatelessWidget {
 class _ChapterCard extends StatelessWidget {
   const _ChapterCard({
     required this.chapter,
+    required this.catalog,
     required this.status,
     required this.title,
     required this.l10n,
@@ -125,6 +127,7 @@ class _ChapterCard extends StatelessWidget {
   });
 
   final ChapterDefinition chapter;
+  final ContentCatalog catalog;
   final String status;
   final String title;
   final AppLocalizations l10n;
@@ -154,6 +157,7 @@ class _ChapterCard extends StatelessWidget {
               room: room,
               title: strings.forLocale(locale, room.titleKey),
               unlocked: _isUnlocked(room),
+              completed: _isRoomComplete(room),
               current: progress?.currentRoomId == room.id,
               l10n: l10n,
               onTap: _isUnlocked(room)
@@ -163,9 +167,31 @@ class _ChapterCard extends StatelessWidget {
                     )
                   : null,
             ),
+          if (progress?.completedChapterIds.contains(chapter.id) ?? false)
+            TextButton(
+              key: ValueKey('chapter_view_summary_${chapter.id}'),
+              onPressed: () => context.pushNamed(
+                'chapterSummary',
+                pathParameters: {'chapterId': chapter.id},
+              ),
+              child: Text(l10n.viewSummary),
+            ),
         ],
       ),
     );
+  }
+
+  /// Phase 8 room completion state: every authored puzzle of the room
+  /// solved. Transition-only rooms never show the mark.
+  bool _isRoomComplete(RoomDefinition room) {
+    final progress = this.progress;
+    if (progress == null) return false;
+    final puzzles = [
+      for (final p in catalog.puzzles)
+        if (p.roomId == room.id) p,
+    ];
+    if (puzzles.isEmpty) return false;
+    return puzzles.every((p) => progress.isPuzzleSolved(p.id));
   }
 
   bool _isUnlocked(RoomDefinition room) {
@@ -183,6 +209,7 @@ class _RoomTile extends StatelessWidget {
     required this.title,
     required this.unlocked,
     required this.current,
+    required this.completed,
     required this.l10n,
     this.onTap,
   });
@@ -191,6 +218,9 @@ class _RoomTile extends StatelessWidget {
   final String title;
   final bool unlocked;
   final bool current;
+
+  /// All authored puzzles of this room solved (Phase 8 room state).
+  final bool completed;
   final AppLocalizations l10n;
   final VoidCallback? onTap;
 
@@ -219,14 +249,21 @@ class _RoomTile extends StatelessWidget {
               ),
             )
           : null,
-      trailing: unlocked
-          ? null
-          : Text(
+      trailing: !unlocked
+          ? Text(
               l10n.chapterLocked,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.disabledText,
               ),
-            ),
+            )
+          : completed
+          ? Icon(
+              key: ValueKey('room_complete_${room.id}'),
+              Icons.check_circle,
+              size: 20,
+              color: AppColors.brass,
+            )
+          : null,
       onTap: unlocked ? onTap : null,
     );
   }

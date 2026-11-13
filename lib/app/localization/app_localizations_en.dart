@@ -150,6 +150,98 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get hintsAction => 'Hints';
+
+  @override
+  String get hintsTitle => 'Hints';
+
+  @override
+  String hintLevelTitle(int level) {
+    return 'Hint $level';
+  }
+
+  @override
+  String get hintNextButton => 'View next hint';
+
+  @override
+  String get hintWalkthroughConfirmTitle =>
+      'Show the step-by-step walkthrough?';
+
+  @override
+  String get hintWalkthroughConfirmBody =>
+      'Hint level 3 explains the solution step by step. Your progress is not affected either way.';
+
+  @override
+  String get prereqMissingPuzzle => 'Solve another puzzle first.';
+
+  @override
+  String get prereqMissingItem => 'You still need to find an item.';
+
+  @override
+  String get prereqMissingItemUse =>
+      'You need to use the right item somewhere else first.';
+
+  @override
+  String get prereqMissingClue => 'A clue is still missing from your Journal.';
+
+  @override
+  String get prereqMissingArea => 'Another area is still locked.';
+
+  @override
+  String get prereqMissingChapter => 'A chapter must be completed first.';
+
+  @override
+  String get summaryTitle => 'Chapter complete!';
+
+  @override
+  String get summaryAreas => 'Areas';
+
+  @override
+  String get statsTitle => 'Statistics';
+
+  @override
+  String get summaryStarsLabel => 'Rating';
+
+  @override
+  String get starRuleOne => 'Finish the chapter\'s final objective.';
+
+  @override
+  String get starRuleTwo => 'Solve every puzzle, including optional ones.';
+
+  @override
+  String get starRuleThree =>
+      'Discover every clue, note and secret, including optional ones.';
+
+  @override
+  String get badgeNoWalkthrough => 'No walkthrough used';
+
+  @override
+  String get viewSummary => 'View summary';
+
+  @override
+  String get statChaptersCompleted => 'Chapters completed';
+
+  @override
+  String statAreasDiscovered(int found, int total) {
+    return 'Areas discovered: $found/$total';
+  }
+
+  @override
+  String statPuzzlesSolved(int found, int total) {
+    return 'Puzzles solved: $found/$total';
+  }
+
+  @override
+  String statOptionalCluesFound(int found, int total) {
+    return 'Optional clues found: $found/$total';
+  }
+
+  @override
+  String statHintsLevel(int level, int count) {
+    return 'Hints opened, level $level: $count';
+  }
+
+  @override
   String itemCollectedMessage(String name) {
     return 'Picked up $name.';
   }

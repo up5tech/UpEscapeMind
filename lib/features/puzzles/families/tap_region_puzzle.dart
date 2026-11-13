@@ -19,10 +19,18 @@ import '../puzzle_widgets.dart';
 /// - observation: tap the authored regions in sequence; a wrong tap
 ///   gently resets the chain without touching durable state.
 class TapRegionPuzzle extends ConsumerStatefulWidget {
-  const TapRegionPuzzle({super.key, required this.puzzle, required this.s});
+  const TapRegionPuzzle({
+    super.key,
+    required this.puzzle,
+    required this.s,
+    this.hintAction,
+  });
 
   final PuzzleDefinition puzzle;
   final String Function(String) s;
+
+  /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
+  final Widget? hintAction;
 
   @override
   ConsumerState<TapRegionPuzzle> createState() => _TapRegionPuzzleState();
@@ -113,17 +121,20 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
         _taps.add(hit);
       });
       _syncSession();
-      final verdict = await submitPuzzleAttempt(
+      final result = await submitPuzzleAttempt(
         context,
         ref,
         widget.puzzle,
         List<String>.unmodifiable(_taps),
       );
       if (!mounted) return;
-      if (verdict == PuzzleVerdict.correct) {
+      if (result.verdict == PuzzleVerdict.correct) {
         setState(() => _solved = true);
-        await finishPuzzleSolved(context);
-      } else if (verdict == PuzzleVerdict.incorrect) {
+        await finishPuzzleSolved(
+          context,
+          newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+        );
+      } else if (result.verdict == PuzzleVerdict.incorrect) {
         setState(() {
           _wrong = true;
           _taps.clear();
@@ -131,16 +142,19 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
         _syncSession();
       }
     } else {
-      final verdict = await submitPuzzleAttempt(
+      final result = await submitPuzzleAttempt(
         context,
         ref,
         widget.puzzle,
         TapPoint(point.x, point.y),
       );
       if (!mounted) return;
-      if (verdict == PuzzleVerdict.correct) {
+      if (result.verdict == PuzzleVerdict.correct) {
         setState(() => _solved = true);
-        await finishPuzzleSolved(context);
+        await finishPuzzleSolved(
+          context,
+          newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+        );
       } else {
         setState(() => _wrong = true);
       }
@@ -154,6 +168,7 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
     return AppScaffold(
       title: widget.s(widget.puzzle.titleKey),
       showBackButton: true,
+      actions: [if (widget.hintAction != null) widget.hintAction!],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

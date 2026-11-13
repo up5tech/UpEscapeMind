@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/localization/app_localizations.dart';
 import '../../app/providers/app_providers.dart';
+import '../../app/theme/app_colors.dart';
 import '../../core/widgets/widgets.dart';
 import '../../domain/models/content/content_models.dart';
 import '../../domain/rules/prerequisite_evaluator.dart';
+import '../hints/hint_sheet.dart';
 import 'families/keypad_puzzle.dart';
 import 'families/lever_puzzle.dart';
 import 'families/logic_deduction_puzzle.dart';
@@ -15,7 +17,8 @@ import 'families/symbol_matching_puzzle.dart';
 import 'families/tap_region_puzzle.dart';
 import 'puzzle_sessions.dart';
 
-/// Entry point of the reusable puzzle engine (Phase 7).
+/// Entry point of the reusable puzzle engine (Phase 7) and the hint
+/// access point (Phase 8).
 ///
 /// Resolves the puzzle from the validated content catalog, gates it by
 /// prerequisites and solved state, then dispatches to the family UI.
@@ -95,6 +98,19 @@ class _PuzzleScreenState extends ConsumerState<PuzzleScreen> {
 
     String s(String key) => strings.forLocale(locale, key);
 
+    /// Hints are always available for unsolved puzzles — including locked
+    /// ones, so a stuck player can always get a nudge (PLAN §6.2: never
+    /// block, never punish).
+    Widget? hintAction;
+    if (!progress.isPuzzleSolved(puzzle.id)) {
+      hintAction = IconButton(
+        key: const ValueKey('puzzle_hint_action'),
+        icon: const Icon(Icons.lightbulb_outline, color: AppColors.brass),
+        tooltip: l10n.hintsAction,
+        onPressed: () => showHintSheet(context, puzzle),
+      );
+    }
+
     if (progress.isPuzzleSolved(puzzle.id)) {
       return AppScaffold(
         title: s(puzzle.titleKey),
@@ -112,17 +128,38 @@ class _PuzzleScreenState extends ConsumerState<PuzzleScreen> {
       );
     }
 
-    if (!prerequisitesMet(puzzle.prerequisites, progress)) {
+    final unmet = unmetPrerequisites(puzzle.prerequisites, progress);
+    if (unmet.isNotEmpty) {
       return AppScaffold(
         title: s(puzzle.titleKey),
         showBackButton: true,
+        actions: [hintAction!],
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Text(
-              l10n.puzzleLockedMessage,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  l10n.puzzleLockedMessage,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                // Explain WHAT KIND of discovery is still needed, without
+                // exposing the solution (PLAN §6.3).
+                for (final condition in unmet)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text(
+                      _prerequisiteHint(l10n, condition),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.secondaryText,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -130,23 +167,42 @@ class _PuzzleScreenState extends ConsumerState<PuzzleScreen> {
     }
 
     return switch (puzzle.type) {
-      PuzzleType.keypad => KeypadPuzzle(puzzle: puzzle, s: s),
+      PuzzleType.keypad => KeypadPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
       PuzzleType.symbolMatching =>
-        SymbolMatchingPuzzle(puzzle: puzzle, s: s),
-      PuzzleType.sequence => SequencePuzzle(puzzle: puzzle, s: s),
-      PuzzleType.rotation => RotationPuzzle(puzzle: puzzle, s: s),
+        SymbolMatchingPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
+      PuzzleType.sequence =>
+        SequencePuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
+      PuzzleType.rotation =>
+        RotationPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
       PuzzleType.logicDeduction =>
-        LogicDeductionPuzzle(puzzle: puzzle, s: s),
-      PuzzleType.mechanicalState => LeverPuzzle(puzzle: puzzle, s: s),
+        LogicDeductionPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
+      PuzzleType.mechanicalState =>
+        LeverPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
       PuzzleType.hiddenObject ||
-      PuzzleType.observation => TapRegionPuzzle(puzzle: puzzle, s: s),
+      PuzzleType.observation =>
+        TapRegionPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
       PuzzleType.itemUse ||
       PuzzleType.itemCombination =>
         AppScaffold(
           title: s(puzzle.titleKey),
           showBackButton: true,
+          actions: [hintAction!],
           body: Center(child: Text(l10n.errorGeneric)),
         ),
+    };
+  }
+
+  static String _prerequisiteHint(
+    AppLocalizations l10n,
+    Prerequisite condition,
+  ) {
+    return switch (condition.type) {
+      PrerequisiteType.puzzleSolved => l10n.prereqMissingPuzzle,
+      PrerequisiteType.itemCollected => l10n.prereqMissingItem,
+      PrerequisiteType.itemConsumed => l10n.prereqMissingItemUse,
+      PrerequisiteType.clueDiscovered => l10n.prereqMissingClue,
+      PrerequisiteType.roomUnlocked => l10n.prereqMissingArea,
+      PrerequisiteType.chapterCompleted => l10n.prereqMissingChapter,
     };
   }
 }

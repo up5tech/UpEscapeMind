@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/localization/app_localizations.dart';
 import '../../app/progress_actions.dart';
@@ -11,30 +14,67 @@ import '../../domain/validators/puzzle_validator_factory.dart';
 
 /// Shared building blocks for the Phase 7 puzzle-family UIs.
 
+/// Outcome of one submission: the verdict plus any chapters that became
+/// completed by this exact solve (drives the one-time chapter summary).
+class PuzzleAttemptResult {
+  const PuzzleAttemptResult({
+    required this.verdict,
+    required this.newlyCompletedChapterIds,
+  });
+
+  final PuzzleVerdict verdict;
+  final List<String> newlyCompletedChapterIds;
+}
+
 /// Submits [input] for [puzzle]. On [PuzzleVerdict.correct] the durable
 /// mutation goes through [ProgressActions.solvePuzzle], which is idempotent
-/// — reopening a solved puzzle can never grant rewards twice.
-Future<PuzzleVerdict> submitPuzzleAttempt(
+/// — reopening a solved puzzle can never grant rewards twice, and a
+/// chapter completion is granted exactly once.
+Future<PuzzleAttemptResult> submitPuzzleAttempt(
   BuildContext context,
   WidgetRef ref,
   PuzzleDefinition puzzle,
   Object? input,
 ) async {
   final verdict = buildPuzzleValidator(puzzle).evaluateInput(input);
-  if (verdict == PuzzleVerdict.correct) {
-    await ref
-        .read(progressActionsProvider)
-        .solvePuzzle(puzzle.id, puzzle.successActions);
+  if (verdict != PuzzleVerdict.correct) {
+    return PuzzleAttemptResult(
+      verdict: verdict,
+      newlyCompletedChapterIds: const [],
+    );
   }
-  return verdict;
+  final completed = await ref
+      .read(progressActionsProvider)
+      .solvePuzzle(puzzle.id, puzzle.successActions);
+  return PuzzleAttemptResult(
+    verdict: verdict,
+    newlyCompletedChapterIds: completed,
+  );
 }
 
-/// Shows the solved snackbar and leaves the puzzle screen.
-Future<void> finishPuzzleSolved(BuildContext context) async {
+/// Shows the solved snackbar, leaves the puzzle screen — and when this
+/// solve completed a chapter, REPLACES the puzzle route with that
+/// chapter's summary (opened exactly once, on the same navigation frame
+/// so the pop+push cannot race).
+Future<void> finishPuzzleSolved(
+  BuildContext context, {
+  List<String> newlyCompletedChapterIds = const [],
+}) async {
   final l10n = AppLocalizations.of(context);
+  final go = GoRouter.of(context);
+  final navigator = Navigator.of(context);
   ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text(l10n.puzzleSolvedMessage)));
-  if (context.mounted) Navigator.of(context).pop();
+  if (newlyCompletedChapterIds.isNotEmpty) {
+    unawaited(
+      go.replaceNamed(
+        'chapterSummary',
+        pathParameters: {'chapterId': newlyCompletedChapterIds.first},
+      ),
+    );
+  } else if (navigator.mounted) {
+    navigator.pop();
+  }
 }
 
 /// Transient "not quite right" line. Removed from the tree when hidden so

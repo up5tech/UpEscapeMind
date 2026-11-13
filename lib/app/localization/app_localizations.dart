@@ -368,6 +368,162 @@ abstract class AppLocalizations {
   /// **'Found {found} of {total}.'**
   String observationProgress(int found, int total);
 
+  /// No description provided for @hintsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints'**
+  String get hintsAction;
+
+  /// No description provided for @hintsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints'**
+  String get hintsTitle;
+
+  /// No description provided for @hintLevelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint {level}'**
+  String hintLevelTitle(int level);
+
+  /// No description provided for @hintNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View next hint'**
+  String get hintNextButton;
+
+  /// No description provided for @hintWalkthroughConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the step-by-step walkthrough?'**
+  String get hintWalkthroughConfirmTitle;
+
+  /// No description provided for @hintWalkthroughConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint level 3 explains the solution step by step. Your progress is not affected either way.'**
+  String get hintWalkthroughConfirmBody;
+
+  /// No description provided for @prereqMissingPuzzle.
+  ///
+  /// In en, this message translates to:
+  /// **'Solve another puzzle first.'**
+  String get prereqMissingPuzzle;
+
+  /// No description provided for @prereqMissingItem.
+  ///
+  /// In en, this message translates to:
+  /// **'You still need to find an item.'**
+  String get prereqMissingItem;
+
+  /// No description provided for @prereqMissingItemUse.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to use the right item somewhere else first.'**
+  String get prereqMissingItemUse;
+
+  /// No description provided for @prereqMissingClue.
+  ///
+  /// In en, this message translates to:
+  /// **'A clue is still missing from your Journal.'**
+  String get prereqMissingClue;
+
+  /// No description provided for @prereqMissingArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Another area is still locked.'**
+  String get prereqMissingArea;
+
+  /// No description provided for @prereqMissingChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'A chapter must be completed first.'**
+  String get prereqMissingChapter;
+
+  /// No description provided for @summaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter complete!'**
+  String get summaryTitle;
+
+  /// No description provided for @summaryAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'Areas'**
+  String get summaryAreas;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statsTitle;
+
+  /// No description provided for @summaryStarsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get summaryStarsLabel;
+
+  /// No description provided for @starRuleOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish the chapter\'s final objective.'**
+  String get starRuleOne;
+
+  /// No description provided for @starRuleTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'Solve every puzzle, including optional ones.'**
+  String get starRuleTwo;
+
+  /// No description provided for @starRuleThree.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover every clue, note and secret, including optional ones.'**
+  String get starRuleThree;
+
+  /// No description provided for @badgeNoWalkthrough.
+  ///
+  /// In en, this message translates to:
+  /// **'No walkthrough used'**
+  String get badgeNoWalkthrough;
+
+  /// No description provided for @viewSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'View summary'**
+  String get viewSummary;
+
+  /// No description provided for @statChaptersCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapters completed'**
+  String get statChaptersCompleted;
+
+  /// No description provided for @statAreasDiscovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Areas discovered: {found}/{total}'**
+  String statAreasDiscovered(int found, int total);
+
+  /// No description provided for @statPuzzlesSolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Puzzles solved: {found}/{total}'**
+  String statPuzzlesSolved(int found, int total);
+
+  /// No description provided for @statOptionalCluesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional clues found: {found}/{total}'**
+  String statOptionalCluesFound(int found, int total);
+
+  /// No description provided for @statHintsLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints opened, level {level}: {count}'**
+  String statHintsLevel(int level, int count);
+
   /// No description provided for @itemCollectedMessage.
   ///
   /// In en, this message translates to:

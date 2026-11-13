@@ -15,10 +15,18 @@ import '../puzzle_widgets.dart';
 /// angles. Drag to turn, or use the ± buttons for accessibility. The
 /// answer is checked explicitly; angles persist within the session.
 class RotationPuzzle extends ConsumerStatefulWidget {
-  const RotationPuzzle({super.key, required this.puzzle, required this.s});
+  const RotationPuzzle({
+    super.key,
+    required this.puzzle,
+    required this.s,
+    this.hintAction,
+  });
 
   final PuzzleDefinition puzzle;
   final String Function(String) s;
+
+  /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
+  final Widget? hintAction;
 
   @override
   ConsumerState<RotationPuzzle> createState() => _RotationPuzzleState();
@@ -71,17 +79,20 @@ class _RotationPuzzleState extends ConsumerState<RotationPuzzle> {
   }
 
   Future<void> _submit() async {
-    final verdict = await submitPuzzleAttempt(
+    final result = await submitPuzzleAttempt(
       context,
       ref,
       widget.puzzle,
       List<double>.unmodifiable(_angles),
     );
     if (!mounted) return;
-    if (verdict == PuzzleVerdict.correct) {
+    if (result.verdict == PuzzleVerdict.correct) {
       setState(() => _solved = true);
-      await finishPuzzleSolved(context);
-    } else if (verdict == PuzzleVerdict.incorrect) {
+      await finishPuzzleSolved(
+        context,
+        newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+      );
+    } else if (result.verdict == PuzzleVerdict.incorrect) {
       setState(() => _wrong = true);
     }
   }
@@ -91,6 +102,7 @@ class _RotationPuzzleState extends ConsumerState<RotationPuzzle> {
     return AppScaffold(
       title: widget.s(widget.puzzle.titleKey),
       showBackButton: true,
+      actions: [if (widget.hintAction != null) widget.hintAction!],
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),

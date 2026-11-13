@@ -1,13 +1,16 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/chapters/chapters_screen.dart';
 import '../features/home/main_menu_screen.dart';
 import '../features/home/splash_screen.dart';
 import '../features/journal/journal_screen.dart';
+import '../features/progress/chapter_summary_screen.dart';
 import '../features/puzzles/puzzle_screen.dart';
 import '../features/room/room_screen.dart';
 import '../features/settings/credits_screen.dart';
 import '../features/settings/settings_screen.dart';
+import 'providers/app_providers.dart';
 
 /// Named routes for the app shell. Feature routes (room, puzzle, inventory,
 /// journal, hints) are registered in their own phase once those screens exist.
@@ -20,9 +23,10 @@ abstract final class AppRoutes {
   static const String journal = '/journal';
   static const String room = '/room/:roomId';
   static const String puzzle = '/puzzle/:puzzleId';
+  static const String chapterSummary = '/chapter-summary/:chapterId';
 }
 
-GoRouter createAppRouter() {
+GoRouter createAppRouter(WidgetRef ref) {
   return GoRouter(
     initialLocation: AppRoutes.splash,
     routes: [
@@ -67,6 +71,26 @@ GoRouter createAppRouter() {
         name: 'puzzle',
         builder: (context, state) =>
             PuzzleScreen(puzzleId: state.pathParameters['puzzleId']!),
+      ),
+      GoRoute(
+        path: AppRoutes.chapterSummary,
+        name: 'chapterSummary',
+        // Locked content must not be reachable via direct navigation
+        // (AGENTS): only completed chapters may show their summary.
+        // Async read — the redirect fires immediately after the solve
+        // transaction, so the provider may still be mid-reload.
+        redirect: (context, state) async {
+          final chapterId = state.pathParameters['chapterId']!;
+          final progress = await ref.read(gameProgressProvider.future);
+          if (progress != null &&
+              progress.completedChapterIds.contains(chapterId)) {
+            return null;
+          }
+          return AppRoutes.chapters;
+        },
+        builder: (context, state) => ChapterSummaryScreen(
+          chapterId: state.pathParameters['chapterId']!,
+        ),
       ),
     ],
   );

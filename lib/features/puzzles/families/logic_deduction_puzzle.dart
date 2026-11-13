@@ -17,10 +17,14 @@ class LogicDeductionPuzzle extends ConsumerStatefulWidget {
     super.key,
     required this.puzzle,
     required this.s,
+    this.hintAction,
   });
 
   final PuzzleDefinition puzzle;
   final String Function(String) s;
+
+  /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
+  final Widget? hintAction;
 
   @override
   ConsumerState<LogicDeductionPuzzle> createState() =>
@@ -72,17 +76,20 @@ class _LogicDeductionPuzzleState extends ConsumerState<LogicDeductionPuzzle> {
   }
 
   Future<void> _submit() async {
-    final verdict = await submitPuzzleAttempt(
+    final result = await submitPuzzleAttempt(
       context,
       ref,
       widget.puzzle,
       Map<String, String>.of(_currentInput()),
     );
     if (!mounted) return;
-    if (verdict == PuzzleVerdict.correct) {
+    if (result.verdict == PuzzleVerdict.correct) {
       setState(() => _solved = true);
-      await finishPuzzleSolved(context);
-    } else if (verdict == PuzzleVerdict.incorrect) {
+      await finishPuzzleSolved(
+        context,
+        newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+      );
+    } else if (result.verdict == PuzzleVerdict.incorrect) {
       setState(() => _wrong = true);
     }
   }
@@ -93,6 +100,7 @@ class _LogicDeductionPuzzleState extends ConsumerState<LogicDeductionPuzzle> {
     return AppScaffold(
       title: widget.s(widget.puzzle.titleKey),
       showBackButton: true,
+      actions: [if (widget.hintAction != null) widget.hintAction!],
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),

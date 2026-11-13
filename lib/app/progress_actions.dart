@@ -109,21 +109,45 @@ class ProgressActions {
     return applied;
   }
 
+  /// Records hint level [level] (1–3) as revealed for [puzzleId].
+  /// Monotonic: revealing a lower level never un-reveals a higher one.
+  /// Saved immediately (PLAN §6.2 — revealed levels persist across
+  /// sessions and reopenings).
+  Future<void> revealHint(String puzzleId, int level) {
+    return _mutate((p) {
+      if (level < 1 || level > 3) return p;
+      if (p.hintLevelFor(puzzleId) >= level) return p;
+      return p.copyWith(
+        revealedHintLevels: {...p.revealedHintLevels, puzzleId: level},
+      );
+    });
+  }
+
   /// Marks [puzzleId] solved and applies its [SuccessAction]s.
   /// Idempotent: re-solving grants nothing twice.
-  Future<void> solvePuzzle(
+  ///
+  /// Returns the chapter ids that became completed by THIS call (empty
+  /// when no chapter finished or when the completion already existed),
+  /// so the UI can open the chapter summary exactly once.
+  Future<List<String>> solvePuzzle(
     String puzzleId,
     List<SuccessAction> successActions,
-  ) {
-    return _mutate((p) {
-      var next = p.isPuzzleSolved(puzzleId)
+  ) async {
+    List<String> beforeCompleted = const [];
+    final next = await _mutate((p) {
+      beforeCompleted = p.completedChapterIds;
+      var progress = p.isPuzzleSolved(puzzleId)
           ? p
           : p.copyWith(solvedPuzzleIds: [...p.solvedPuzzleIds, puzzleId]);
       for (final action in successActions) {
-        next = _applySuccessAction(next, action);
+        progress = _applySuccessAction(progress, action);
       }
-      return next;
+      return progress;
     });
+    return [
+      for (final id in next.completedChapterIds)
+        if (!beforeCompleted.contains(id)) id,
+    ];
   }
 
   GameProgress _applySuccessAction(GameProgress p, SuccessAction action) {

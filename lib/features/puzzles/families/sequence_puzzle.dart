@@ -12,10 +12,18 @@ import '../puzzle_widgets.dart';
 /// `sequence` family UI: tap candidates in the intended order. Tapping a
 /// placed slot removes it again. Checked explicitly via the Check action.
 class SequencePuzzle extends ConsumerStatefulWidget {
-  const SequencePuzzle({super.key, required this.puzzle, required this.s});
+  const SequencePuzzle({
+    super.key,
+    required this.puzzle,
+    required this.s,
+    this.hintAction,
+  });
 
   final PuzzleDefinition puzzle;
   final String Function(String) s;
+
+  /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
+  final Widget? hintAction;
 
   @override
   ConsumerState<SequencePuzzle> createState() => _SequencePuzzleState();
@@ -72,17 +80,20 @@ class _SequencePuzzleState extends ConsumerState<SequencePuzzle> {
   }
 
   Future<void> _submit() async {
-    final verdict = await submitPuzzleAttempt(
+    final result = await submitPuzzleAttempt(
       context,
       ref,
       widget.puzzle,
       List<String>.unmodifiable(_picks),
     );
     if (!mounted) return;
-    if (verdict == PuzzleVerdict.correct) {
+    if (result.verdict == PuzzleVerdict.correct) {
       setState(() => _solved = true);
-      await finishPuzzleSolved(context);
-    } else if (verdict == PuzzleVerdict.incorrect) {
+      await finishPuzzleSolved(
+        context,
+        newlyCompletedChapterIds: result.newlyCompletedChapterIds,
+      );
+    } else if (result.verdict == PuzzleVerdict.incorrect) {
       setState(() => _wrong = true);
     }
   }
@@ -93,6 +104,7 @@ class _SequencePuzzleState extends ConsumerState<SequencePuzzle> {
     return AppScaffold(
       title: widget.s(widget.puzzle.titleKey),
       showBackButton: true,
+      actions: [if (widget.hintAction != null) widget.hintAction!],
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
