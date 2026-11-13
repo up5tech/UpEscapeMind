@@ -1,0 +1,42 @@
+{
+  "@@locale": "en",
+  "appName": "Up Escape Mind",
+  "appTagline": "An escape-room mystery, fully offline.",
+
+  "menuContinue": "Continue",
+  "menuNewGame": "New Game",
+  "menuChapters": "Chapters",
+  "menuSettings": "Settings",
+  "menuCredits": "Credits",
+
+  "chaptersTitle": "Chapters",
+  "chapter1Title": "The Clockmaker's Archive",
+  "chapterLocked": "Locked",
+  "chapterAvailable": "Available",
+  "chapterInProgress": "In Progress",
+  "chapterCompleted": "Completed",
+  "noSaveExists": "No save found. Start a new game to begin.",
+  "newGameConfirmTitle": "Start a new game?",
+  "newGameConfirmBody": "This will replace your existing save.",
+
+  "roomEntranceTitle": "Entrance Hall",
+  "roomStudyTitle": "Clockmaker's Study",
+  "roomWorkshopTitle": "Workshop",
+  "roomGalleryTitle": "Portrait Gallery",
+  "roomObservatoryTitle": "Sealed Observatory",
+
+  "settingsTitle": "Settings",
+  "settingsMusic": "Music",
+  "settingsSoundEffects": "Sound effects",
+  "settingsHaptics": "Haptics",
+  "settingsLanguage": "Language",
+  "languageSystemDefault": "System default",
+
+  "creditsTitle": "Credits",
+  "creditsBody": "Up Escape Mind — a single-player offline escape-room adventure.",
+
+  "commonBack": "Back",
+  "commonClose": "Close",
+  "commonCancel": "Cancel",
+  "commonConfirm": "Confirm"
+}

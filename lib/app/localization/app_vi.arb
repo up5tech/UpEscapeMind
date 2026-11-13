@@ -1,0 +1,42 @@
+{
+  "@@locale": "vi",
+  "appName": "Up Escape Mind",
+  "appTagline": "Trò chơi giải đố thoát hiểm, chơi hoàn toàn ngoại tuyến.",
+
+  "menuContinue": "Tiếp tục",
+  "menuNewGame": "Chơi mới",
+  "menuChapters": "Chương",
+  "menuSettings": "Cài đặt",
+  "menuCredits": "Ghi công",
+
+  "chaptersTitle": "Các chương",
+  "chapter1Title": "Kho Lưu Trữ của Thợ Làm Đồng Hồ",
+  "chapterLocked": "Đã khóa",
+  "chapterAvailable": "Có thể chơi",
+  "chapterInProgress": "Đang chơi",
+  "chapterCompleted": "Đã hoàn thành",
+  "noSaveExists": "Chưa có dữ liệu lưu. Bắt đầu trò chơi mới để chơi.",
+  "newGameConfirmTitle": "Bắt đầu trò chơi mới?",
+  "newGameConfirmBody": "Thao tác này sẽ thay thế dữ liệu lưu hiện tại.",
+
+  "roomEntranceTitle": "Sảnh Chính",
+  "roomStudyTitle": "Phòng Nghiên Cứu của Thợ Làm Đồng Hồ",
+  "roomWorkshopTitle": "Xưởng",
+  "roomGalleryTitle": "Phòng Chân Dung",
+  "roomObservatoryTitle": "Đài Thiên Văn Phong Ấn",
+
+  "settingsTitle": "Cài đặt",
+  "settingsMusic": "Nhạc nền",
+  "settingsSoundEffects": "Hiệu ứng âm thanh",
+  "settingsHaptics": "Rung phản hồi",
+  "settingsLanguage": "Ngôn ngữ",
+  "languageSystemDefault": "Theo hệ thống",
+
+  "creditsTitle": "Ghi công",
+  "creditsBody": "Up Escape Mind — trò chơi phiêu lưu giải đố một người chơi, chơi ngoại tuyến.",
+
+  "commonBack": "Quay lại",
+  "commonClose": "Đóng",
+  "commonCancel": "Hủy",
+  "commonConfirm": "Xác nhận"
+}
