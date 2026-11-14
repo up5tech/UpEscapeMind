@@ -28,11 +28,21 @@ class ProgressActions {
     return next;
   }
 
-  /// Marks [roomId] as the player's current location.
+  /// Marks [roomId] as the player's current location. Entering a room
+  /// also records it as unlocked so chapter-gated entry rooms (Phase 12)
+  /// persist as discovered without a save migration.
   Future<void> enterRoom(String roomId) {
-    return _mutate(
-      (p) => p.currentRoomId == roomId ? p : p.copyWith(currentRoomId: roomId),
-    );
+    return _mutate((p) {
+      if (p.currentRoomId == roomId && p.isRoomUnlocked(roomId)) {
+        return p;
+      }
+      return p.copyWith(
+        currentRoomId: roomId,
+        unlockedRoomIds: p.isRoomUnlocked(roomId)
+            ? p.unlockedRoomIds
+            : [...p.unlockedRoomIds, roomId],
+      );
+    });
   }
 
   /// Adds [itemId] to the inventory. No-op if already collected.

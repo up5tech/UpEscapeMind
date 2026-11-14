@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_sundial_time",
+  "titleKey": "clueCvSundialTimeTitle",
+  "bodyKey": "clueCvSundialTimeBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": false
+}

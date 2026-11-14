@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_pm_pressure_plate",
+  "titleKey": "cluePmPressureTitle",
+  "bodyKey": "cluePmPressureBody",
+  "sourceRoomId": "room_pump_room",
+  "optional": false
+}

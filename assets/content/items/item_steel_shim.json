@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "item",
+  "id": "item_steel_shim",
+  "nameKey": "itemSteelShimName",
+  "descriptionKey": "itemSteelShimDesc",
+  "iconAsset": "assets/art/items/item_steel_shim.png",
+  "tags": [
+    "tool"
+  ],
+  "canBeCombined": false
+}

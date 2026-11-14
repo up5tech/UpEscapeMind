@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_fountain",
+  "titleKey": "clueCvFountainTitle",
+  "bodyKey": "clueCvFountainBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": true
+}

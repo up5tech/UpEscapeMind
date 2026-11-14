@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_or_sundial",
+  "roomId": "room_orangery",
+  "hotspotId": "hot_or_sundial",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_or_sundial.title",
+  "instructionsKey": "puz.puz_or_sundial.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      195
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_pm_pressure"
+    },
+    {
+      "type": "item_collected",
+      "targetId": "item_prismatic_lens"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "consume_item",
+      "targetId": "item_prismatic_lens"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_or_farewell"
+    },
+    {
+      "type": "complete_chapter",
+      "targetId": "chapter_02"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_or_sundial.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_or_sundial.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_or_sundial.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_pm_seed_tray",
+  "roomId": "room_pump_room",
+  "hotspotId": "hot_pm_seed_tray",
+  "puzzleType": "hidden_object",
+  "titleKey": "puz.puz_pm_seed_tray.title",
+  "instructionsKey": "puz.puz_pm_seed_tray.instr",
+  "initialState": {
+    "imageAsset": "assets/art/puzzles/seed_tray.png"
+  },
+  "solutionConfig": {
+    "regions": [
+      {
+        "id": "pot_1",
+        "x": 0.0417,
+        "y": 0.32,
+        "width": 0.1667,
+        "height": 0.44
+      },
+      {
+        "id": "pot_2",
+        "x": 0.225,
+        "y": 0.32,
+        "width": 0.1667,
+        "height": 0.44
+      },
+      {
+        "id": "pot_3",
+        "x": 0.4083,
+        "y": 0.32,
+        "width": 0.1667,
+        "height": 0.44
+      },
+      {
+        "id": "pot_4",
+        "x": 0.5917,
+        "y": 0.32,
+        "width": 0.1667,
+        "height": 0.44
+      },
+      {
+        "id": "pot_5",
+        "x": 0.775,
+        "y": 0.32,
+        "width": 0.1667,
+        "height": 0.44
+      }
+    ],
+    "targetId": "pot_4"
+  },
+  "validationConfig": {
+    "hitPadding": 0.02
+  },
+  "prerequisites": [
+    {
+      "type": "puzzle_solved",
+      "targetId": "puz_pm_flywheel"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_steel_shim"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_pm_vale_note_2"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_pm_seed_tray.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_pm_seed_tray.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_pm_seed_tray.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

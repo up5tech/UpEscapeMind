@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_or_bud_case",
+  "roomId": "room_orangery",
+  "hotspotId": "hot_or_bud_case",
+  "puzzleType": "keypad",
+  "titleKey": "puz.puz_or_bud_case.title",
+  "instructionsKey": "puz.puz_or_bud_case.instr",
+  "initialState": {
+    "digits": 4
+  },
+  "solutionConfig": {
+    "code": "2863"
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_or_vale_letter"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_or_bud_secret"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_or_bud_case.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_or_bud_case.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_or_bud_case.l3"
+    }
+  ],
+  "resetPolicy": "reset_on_exit"
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_or_farewell",
+  "titleKey": "clueOrFarewellTitle",
+  "bodyKey": "clueOrFarewellBody",
+  "sourceRoomId": "room_orangery",
+  "optional": false
+}

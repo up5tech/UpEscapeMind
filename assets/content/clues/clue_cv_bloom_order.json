@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_bloom_order",
+  "titleKey": "clueCvBloomOrderTitle",
+  "bodyKey": "clueCvBloomOrderBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": false
+}

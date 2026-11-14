@@ -12,6 +12,7 @@ import 'package:up_escape_mind/domain/models/content/puzzle_definition.dart';
 import 'package:up_escape_mind/domain/models/progress.dart';
 import 'package:up_escape_mind/domain/rules/chapter_rating.dart';
 import 'package:up_escape_mind/domain/rules/prerequisite_evaluator.dart';
+import 'package:up_escape_mind/domain/rules/room_access.dart';
 import 'package:up_escape_mind/domain/use_cases/progress_reducer.dart';
 import 'package:up_escape_mind/domain/validators/puzzle_validator.dart';
 import 'package:up_escape_mind/domain/validators/puzzle_validator_factory.dart';
@@ -46,8 +47,7 @@ void main() {
       case PuzzleType.keypad:
         return p.solutionConfig['code'] as String;
       case PuzzleType.symbolMatching:
-        return (p.solutionConfig['symbols'] as List)
-            .cast<String?>();
+        return (p.solutionConfig['symbols'] as List).cast<String?>();
       case PuzzleType.sequence:
         return (p.solutionConfig['order'] as List).cast<String>();
       case PuzzleType.rotation:
@@ -88,8 +88,8 @@ void main() {
       // 1. Every discoverable clue in an unlocked room, once its
       //    visibility conditions hold (a thorough player inspects all).
       for (final room in catalog.rooms.where(
-            (r) => p.isRoomUnlocked(r.id) || r.id == 'room_entrance',
-          )) {
+        (r) => isRoomAccessible(catalog, p, r) || r.id == 'room_entrance',
+      )) {
         for (final h in room.hotspots) {
           if (h.interactionType == HotspotInteraction.discoverClue &&
               prerequisitesMet(h.visibilityConditions, p) &&
@@ -144,8 +144,10 @@ void main() {
 
       // 3. Every puzzle whose room is reachable and prerequisites hold.
       for (final puzzle in catalog.puzzles) {
+        final room = catalog.roomsById[puzzle.roomId]!;
         final roomReachable =
-            p.isRoomUnlocked(puzzle.roomId) || puzzle.roomId == 'room_entrance';
+            isRoomAccessible(catalog, p, room) ||
+            puzzle.roomId == 'room_entrance';
         if (!roomReachable ||
             p.isPuzzleSolved(puzzle.id) ||
             !prerequisitesMet(puzzle.prerequisites, p)) {
@@ -154,8 +156,11 @@ void main() {
         // The engine must accept the authored solution.
         final verdict = buildPuzzleValidator(puzzle)
             .evaluateInput(authoredSolutionInput(puzzle));
-        expect(verdict, PuzzleVerdict.correct,
-            reason: '${puzzle.id} authored solution must validate');
+        expect(
+          verdict,
+          PuzzleVerdict.correct,
+          reason: '${puzzle.id} authored solution must validate',
+        );
         p = applyPuzzleSolve(p, puzzle.id, puzzle.successActions);
         changed = true;
       }
@@ -166,19 +171,24 @@ void main() {
     return p;
   }
 
-  test('Chapter 1 is fully solvable from a fresh save (no soft locks)', () {
+  test('production content is fully solvable from a fresh save '
+      '(no soft locks)', () {
     final fresh = GameProgress.newGame(
       AppConstants.defaultSaveSlotId,
       'room_entrance',
     );
     final done = settle(fresh);
 
-    // All 19 puzzles solved, all 25 clues journaled, chapter completed.
-    expect(done.solvedPuzzleIds.toSet(),
-        catalog.puzzles.map((p) => p.id).toSet());
-    expect(done.discoveredClueIds.toSet(),
-        catalog.clues.map((c) => c.id).toSet());
-    expect(done.completedChapterIds, ['chapter_01']);
+    // All puzzles solved, all clues journaled, both chapters completed.
+    expect(
+      done.solvedPuzzleIds.toSet(),
+      catalog.puzzles.map((p) => p.id).toSet(),
+    );
+    expect(
+      done.discoveredClueIds.toSet(),
+      catalog.clues.map((c) => c.id).toSet(),
+    );
+    expect(done.completedChapterIds, containsAll(['chapter_01', 'chapter_02']));
     // The combine consumed lens + frame; the telescope finale consumed
     // the assembled focusing lens (the one intentional in-game use).
     expect(
@@ -199,24 +209,31 @@ void main() {
     final done = settle(fresh);
     final replayed = settle(done);
     expect(jsonEncode(replayed.toJson()), jsonEncode(done.toJson()));
-    expect(replayed.completedChapterIds.length, 1);
+    expect(replayed.completedChapterIds.length, 2);
     expect(replayed.solvedPuzzleIds.length, catalog.puzzles.length);
   });
 
-  test('full completion earns 3 stars and the no-walkthrough badge', () {
+  test('full completion earns 3 stars and the no-walkthrough badge '
+      'in every chapter', () {
     final fresh = GameProgress.newGame(
       AppConstants.defaultSaveSlotId,
       'room_entrance',
     );
     final done = settle(fresh);
-    final rating = rateChapter(
-      chapter: catalog.chapters.single,
-      catalog: catalog,
-      progress: done,
-    );
-    expect(rating.stars, 3);
-    expect(rating.noWalkthroughBadge, isTrue);
-    expect(rating.rooms.every((r) => r.isComplete), isTrue);
+    for (final chapter in catalog.chapters) {
+      final rating = rateChapter(
+        chapter: chapter,
+        catalog: catalog,
+        progress: done,
+      );
+      expect(rating.stars, 3, reason: chapter.id);
+      expect(rating.noWalkthroughBadge, isTrue, reason: chapter.id);
+      expect(
+        rating.rooms.every((r) => r.isComplete),
+        isTrue,
+        reason: chapter.id,
+      );
+    }
   });
 
   test('hints exist at all three levels for every puzzle', () {
@@ -229,19 +246,21 @@ void main() {
   test('every combination and required item chain is obtainable', () {
     // item_focus_lens ← comb of lens (books) + frame (floorboard);
     // both feed puzzles exist and their prerequisites are satisfiable.
-    final lensSource = catalog.puzzles
-        .where((p) => p.successActions.any(
-              (a) =>
-                  a.type == SuccessActionType.collectItem &&
-                  a.targetId == 'item_lens',
-            ));
+    final lensSource = catalog.puzzles.where(
+      (p) => p.successActions.any(
+        (a) =>
+            a.type == SuccessActionType.collectItem &&
+            a.targetId == 'item_lens',
+      ),
+    );
     expect(lensSource, isNotEmpty);
-    final frameSource = catalog.puzzles
-        .where((p) => p.successActions.any(
-              (a) =>
-                  a.type == SuccessActionType.collectItem &&
-                  a.targetId == 'item_brass_frame',
-            ));
+    final frameSource = catalog.puzzles.where(
+      (p) => p.successActions.any(
+        (a) =>
+            a.type == SuccessActionType.collectItem &&
+            a.targetId == 'item_brass_frame',
+      ),
+    );
     expect(frameSource, isNotEmpty);
   });
 
@@ -250,21 +269,36 @@ void main() {
       for (final pre in puzzle.prerequisites) {
         switch (pre.type) {
           case PrerequisiteType.puzzleSolved:
-            expect(catalog.puzzlesById.containsKey(pre.targetId), isTrue,
-                reason: pre.targetId);
+            expect(
+              catalog.puzzlesById.containsKey(pre.targetId),
+              isTrue,
+              reason: pre.targetId,
+            );
           case PrerequisiteType.itemCollected:
           case PrerequisiteType.itemConsumed:
-            expect(catalog.itemsById.containsKey(pre.targetId), isTrue,
-                reason: pre.targetId);
+            expect(
+              catalog.itemsById.containsKey(pre.targetId),
+              isTrue,
+              reason: pre.targetId,
+            );
           case PrerequisiteType.clueDiscovered:
-            expect(catalog.cluesById.containsKey(pre.targetId), isTrue,
-                reason: pre.targetId);
+            expect(
+              catalog.cluesById.containsKey(pre.targetId),
+              isTrue,
+              reason: pre.targetId,
+            );
           case PrerequisiteType.roomUnlocked:
-            expect(catalog.roomsById.containsKey(pre.targetId), isTrue,
-                reason: pre.targetId);
+            expect(
+              catalog.roomsById.containsKey(pre.targetId),
+              isTrue,
+              reason: pre.targetId,
+            );
           case PrerequisiteType.chapterCompleted:
-            expect(catalog.chaptersById.containsKey(pre.targetId), isTrue,
-                reason: pre.targetId);
+            expect(
+              catalog.chaptersById.containsKey(pre.targetId),
+              isTrue,
+              reason: pre.targetId,
+            );
         }
       }
     }

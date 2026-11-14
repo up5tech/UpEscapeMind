@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_cv_door_lock",
+  "roomId": "room_conservatory",
+  "hotspotId": "hot_cv_pump_door",
+  "puzzleType": "keypad",
+  "titleKey": "puz.puz_cv_door_lock.title",
+  "instructionsKey": "puz.puz_cv_door_lock.instr",
+  "initialState": {
+    "digits": 4
+  },
+  "solutionConfig": {
+    "code": "0715"
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_cv_sundial_time"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "unlock_room",
+      "targetId": "room_pump_room"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_cv_door_lock.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_cv_door_lock.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_cv_door_lock.l3"
+    }
+  ],
+  "resetPolicy": "reset_on_exit"
+}

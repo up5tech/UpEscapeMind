@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_orangery",
+  "chapterId": "chapter_02",
+  "titleKey": "roomOrangeryTitle",
+  "descriptionKey": "roomOrangeryDescription",
+  "backgroundAsset": "assets/art/rooms/room_orangery.png",
+  "hotspots": [
+    {
+      "id": "hot_or_back",
+      "bounds": {
+        "x": 0.02,
+        "y": 0.3,
+        "width": 0.06,
+        "height": 0.44
+      },
+      "labelKey": "hotOrBack",
+      "interactionType": "navigate",
+      "targetId": "room_pump_room"
+    },
+    {
+      "id": "hot_or_sundial",
+      "bounds": {
+        "x": 0.08,
+        "y": 0.16,
+        "width": 0.28,
+        "height": 0.36
+      },
+      "labelKey": "hotOrSundial",
+      "interactionType": "puzzle",
+      "targetId": "puz_or_sundial"
+    },
+    {
+      "id": "hot_or_bud_case",
+      "bounds": {
+        "x": 0.4,
+        "y": 0.14,
+        "width": 0.2,
+        "height": 0.26
+      },
+      "labelKey": "hotOrBudCase",
+      "interactionType": "puzzle",
+      "targetId": "puz_or_bud_case"
+    },
+    {
+      "id": "hot_or_specimen",
+      "bounds": {
+        "x": 0.64,
+        "y": 0.18,
+        "width": 0.18,
+        "height": 0.24
+      },
+      "labelKey": "hotOrSpecimen",
+      "interactionType": "use_item",
+      "descriptionKey": "hotOrSpecimenDesc",
+      "acceptedItemIds": [
+        "item_steel_shim"
+      ],
+      "consumeItemOnUse": false,
+      "successActions": [
+        {
+          "type": "discover_clue",
+          "targetId": "clue_or_specimen"
+        }
+      ]
+    },
+    {
+      "id": "hot_or_letter",
+      "bounds": {
+        "x": 0.4,
+        "y": 0.6,
+        "width": 0.12,
+        "height": 0.14
+      },
+      "labelKey": "hotOrLetter",
+      "interactionType": "discover_clue",
+      "targetId": "clue_or_vale_letter"
+    },
+    {
+      "id": "hot_or_tree",
+      "bounds": {
+        "x": 0.66,
+        "y": 0.48,
+        "width": 0.28,
+        "height": 0.4
+      },
+      "labelKey": "hotOrTree",
+      "interactionType": "inspect",
+      "descriptionKey": "hotOrTreeDesc"
+    },
+    {
+      "id": "hot_or_fountain",
+      "bounds": {
+        "x": 0.36,
+        "y": 0.6,
+        "width": 0.24,
+        "height": 0.22
+      },
+      "labelKey": "hotOrFountain",
+      "interactionType": "inspect",
+      "descriptionKey": "hotOrFountainDesc"
+    }
+  ],
+  "entryConditions": []
+}

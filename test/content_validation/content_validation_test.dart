@@ -100,16 +100,19 @@ void main() {
   });
 
   test('catalog contains the full Chapter 1 entity set', () {
-    expect(catalog.chapters.single.id, 'chapter_01');
-    expect(catalog.chapters.single.roomIds, [
+    final ch1 = catalog.chaptersById['chapter_01']!;
+    expect(ch1.roomIds, [
       'room_entrance',
       'room_study',
       'room_workshop',
       'room_gallery',
       'room_observatory',
     ]);
-    expect(catalog.rooms.length, 5);
-    expect(catalog.puzzles.length, 19);
+    expect(catalog.rooms.where((r) => r.chapterId == 'chapter_01').length, 5);
+    expect(
+      catalog.puzzles.where((p) => p.roomId.startsWith('room_')).length,
+      greaterThanOrEqualTo(19),
+    );
     expect(
       catalog.items.map((i) => i.id),
       containsAll([
@@ -120,10 +123,70 @@ void main() {
         'item_focus_lens',
       ]),
     );
-    expect(catalog.combinations.single.id, 'comb_focus_lens');
-    expect(catalog.clues.length, 25);
+    expect(catalog.combinationsById.keys, contains('comb_focus_lens'));
+    expect(
+      catalog.clues
+          .where(
+            (c) =>
+                c.sourceRoomId.startsWith('room_entrance') ||
+                c.sourceRoomId.startsWith('room_study') ||
+                c.sourceRoomId.startsWith('room_workshop') ||
+                c.sourceRoomId.startsWith('room_gallery') ||
+                c.sourceRoomId.startsWith('room_observatory'),
+          )
+          .length,
+      25,
+    );
     // Sample entities must NOT ship in the production manifest.
-    expect(catalog.puzzles.map((p) => p.id), isNot(contains('puz_sample_lock')));
+    expect(
+      catalog.puzzles.map((p) => p.id),
+      isNot(contains('puz_sample_lock')),
+    );
+  });
+
+  test('catalog contains the Chapter 2 entity set', () {
+    final ch2 = catalog.chaptersById['chapter_02']!;
+    expect(ch2.order, greaterThan(catalog.chaptersById['chapter_01']!.order));
+    expect(ch2.roomIds, [
+      'room_conservatory',
+      'room_pump_room',
+      'room_orangery',
+    ]);
+    // Chapter 2 opens only after Chapter 1 is completed.
+    expect(ch2.unlockConditions.single.targetId, 'chapter_01');
+    expect(catalog.rooms.where((r) => r.chapterId == 'chapter_02').length, 3);
+    expect(
+      catalog.puzzles
+          .where(
+            (p) =>
+                p.roomId == 'room_conservatory' ||
+                p.roomId == 'room_pump_room' ||
+                p.roomId == 'room_orangery',
+          )
+          .length,
+      10,
+    );
+    expect(
+      catalog.items.map((i) => i.id),
+      containsAll([
+        'item_copper_ring',
+        'item_glass_vial',
+        'item_prismatic_lens',
+        'item_steel_shim',
+      ]),
+    );
+    expect(catalog.combinationsById.keys, contains('comb_prismatic_lens'));
+    expect(
+      catalog.clues
+          .where(
+            (c) =>
+                c.sourceRoomId == 'room_conservatory' ||
+                c.sourceRoomId == 'room_pump_room' ||
+                c.sourceRoomId == 'room_orangery',
+          )
+          .length,
+      15,
+    );
   });
 
   test('missing asset is reported', () async {

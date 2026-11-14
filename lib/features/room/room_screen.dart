@@ -14,6 +14,7 @@ import '../../data/content/content_strings.dart';
 import '../../domain/models/content/content_models.dart';
 import '../../domain/models/progress.dart';
 import '../../domain/rules/prerequisite_evaluator.dart';
+import '../../domain/rules/room_access.dart';
 import '../inventory/inventory_panel.dart';
 import 'room_scene.dart';
 
@@ -60,7 +61,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     final canEnter =
         room != null &&
         progress != null &&
-        progress.isRoomUnlocked(room.id) &&
+        isRoomAccessible(catalog, progress, room) &&
         prerequisitesMet(room.entryConditions, progress);
 
     if (!canEnter) {
@@ -328,7 +329,7 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     final target = catalog.roomsById[targetRoomId];
     final allowed =
         target != null &&
-        progress.isRoomUnlocked(target.id) &&
+        isRoomAccessible(catalog, progress, target) &&
         prerequisitesMet(target.entryConditions, progress);
     if (!allowed) {
       _toast(context, l10n.roomLockedMessage);

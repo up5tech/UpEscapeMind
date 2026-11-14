@@ -9,6 +9,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../../data/content/content_strings.dart';
 import '../../../domain/models/content/content_models.dart';
 import '../../../domain/models/progress.dart';
+import '../../../domain/rules/room_access.dart';
 
 /// Chapter selection + room map, driven by the bundled content catalog and
 /// persisted [GameProgress]. Room navigation itself lands in Phase 5; tiles
@@ -106,9 +107,12 @@ class _ChapterList extends StatelessWidget {
     if (progress!.completedChapterIds.contains(chapter.id)) {
       return l10n.chapterCompleted;
     }
-    final touched = chapter.roomIds.any(
-      (id) => progress!.isRoomUnlocked(id) || progress!.currentRoomId == id,
-    );
+    final touched = chapter.roomIds.any((id) {
+      final room = catalog.roomsById[id];
+      return room != null &&
+          (isRoomAccessible(catalog, progress!, room) ||
+              progress!.currentRoomId == id);
+    });
     return touched ? l10n.chapterInProgress : l10n.chapterAvailable;
   }
 }
@@ -196,10 +200,12 @@ class _ChapterCard extends StatelessWidget {
 
   bool _isUnlocked(RoomDefinition room) {
     if (progress == null) {
-      // No save yet: only the chapter's entry room is reachable.
-      return room.id == chapter.roomIds.first;
+      // No save yet: only entry rooms of chapters with no unlock
+      // conditions are reachable (Chapter 1's entrance hall).
+      return room.id == chapter.roomIds.first &&
+          chapter.unlockConditions.isEmpty;
     }
-    return progress!.isRoomUnlocked(room.id);
+    return isRoomAccessible(catalog, progress!, room);
   }
 }
 

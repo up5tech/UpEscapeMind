@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_cv_irrigation",
+  "roomId": "room_conservatory",
+  "hotspotId": "hot_cv_irrigation",
+  "puzzleType": "mechanical_state",
+  "titleKey": "puz.puz_cv_irrigation.title",
+  "instructionsKey": "puz.puz_cv_irrigation.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "targetState": [
+      true,
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_cv_irrigation_schedule"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_cv_greenhouse_secret"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_cv_irrigation.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_cv_irrigation.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_cv_irrigation.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

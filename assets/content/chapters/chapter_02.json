@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "chapter",
+  "id": "chapter_02",
+  "titleKey": "chapter02Title",
+  "descriptionKey": "chapter02Description",
+  "order": 1,
+  "roomIds": [
+    "room_conservatory",
+    "room_pump_room",
+    "room_orangery"
+  ],
+  "unlockConditions": [
+    {
+      "type": "chapter_completed",
+      "targetId": "chapter_01"
+    }
+  ]
+}

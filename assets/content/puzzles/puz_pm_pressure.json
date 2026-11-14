@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_pm_pressure",
+  "roomId": "room_pump_room",
+  "hotspotId": "hot_pm_manifold",
+  "puzzleType": "logic_deduction",
+  "titleKey": "puz.puz_pm_pressure.title",
+  "instructionsKey": "puz.puz_pm_pressure.instr",
+  "initialState": {
+    "fields": [
+      {
+        "id": "inlet",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "pmInlet"
+      },
+      {
+        "id": "outlet",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "pmOutlet"
+      },
+      {
+        "id": "relief",
+        "kind": "digits",
+        "maxLength": 4,
+        "labelKey": "pmRelief"
+      }
+    ]
+  },
+  "solutionConfig": {
+    "answer": {
+      "inlet": "0415",
+      "outlet": "0930",
+      "relief": "1268"
+    }
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_pm_pressure_plate"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "unlock_room",
+      "targetId": "room_orangery"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_pm_pressure.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_pm_pressure.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_pm_pressure.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

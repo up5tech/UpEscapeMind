@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_or_vale_letter",
+  "titleKey": "clueOrValeLetterTitle",
+  "bodyKey": "clueOrValeLetterBody",
+  "sourceRoomId": "room_orangery",
+  "optional": false
+}

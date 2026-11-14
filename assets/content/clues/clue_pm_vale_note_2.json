@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_pm_vale_note_2",
+  "titleKey": "cluePmValeNoteTitle",
+  "bodyKey": "cluePmValeNoteBody",
+  "sourceRoomId": "room_pump_room",
+  "optional": true
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_or_specimen",
+  "titleKey": "clueOrSpecimenTitle",
+  "bodyKey": "clueOrSpecimenBody",
+  "sourceRoomId": "room_orangery",
+  "optional": true
+}

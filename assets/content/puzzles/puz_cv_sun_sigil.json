@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_cv_sun_sigil",
+  "roomId": "room_conservatory",
+  "hotspotId": "hot_cv_sun_sigil",
+  "puzzleType": "symbol_matching",
+  "titleKey": "puz.puz_cv_sun_sigil.title",
+  "instructionsKey": "puz.puz_cv_sun_sigil.instr",
+  "initialState": {
+    "labelKeys": {
+      "sun": "symSun",
+      "star": "symStar",
+      "moon": "symMoon",
+      "gear": "symGear",
+      "key": "symKey"
+    }
+  },
+  "solutionConfig": {
+    "symbols": [
+      "sun",
+      "star",
+      "moon"
+    ],
+    "choices": [
+      "sun",
+      "star",
+      "moon",
+      "gear",
+      "key"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_cv_sigil_marks"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_copper_ring"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_cv_irrigation_schedule"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_cv_sun_sigil.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_cv_sun_sigil.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_cv_sun_sigil.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

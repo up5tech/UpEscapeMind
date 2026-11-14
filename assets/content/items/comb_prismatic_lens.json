@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "item_combination",
+  "id": "comb_prismatic_lens",
+  "inputItemIds": [
+    "item_copper_ring",
+    "item_glass_vial"
+  ],
+  "resultItemId": "item_prismatic_lens",
+  "consumeInputItems": true,
+  "resultMessageKey": "combPrismaticLensResult"
+}

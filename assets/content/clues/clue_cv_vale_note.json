@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_vale_note",
+  "titleKey": "clueCvValeNoteTitle",
+  "bodyKey": "clueCvValeNoteBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": true
+}

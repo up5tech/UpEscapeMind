@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_pm_flywheel",
+  "roomId": "room_pump_room",
+  "hotspotId": "hot_pm_flywheel",
+  "puzzleType": "rotation",
+  "titleKey": "puz.puz_pm_flywheel.title",
+  "instructionsKey": "puz.puz_pm_flywheel.instr",
+  "initialState": {},
+  "solutionConfig": {
+    "steps": [
+      90,
+      270
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_pm_gauge_marks"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_pm_flywheel.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_pm_flywheel.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_pm_flywheel.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

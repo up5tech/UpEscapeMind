@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_pm_gauge_chart",
+  "roomId": "room_pump_room",
+  "hotspotId": "hot_pm_gauge_board",
+  "puzzleType": "observation",
+  "titleKey": "puz.puz_pm_gauge_chart.title",
+  "instructionsKey": "puz.puz_pm_gauge_chart.instr",
+  "initialState": {
+    "imageAsset": "assets/art/puzzles/conservatory_chart.png",
+    "labelKeys": {
+      "bed": "chartBed",
+      "fountain": "chartFountain",
+      "frame": "chartColdFrame"
+    }
+  },
+  "solutionConfig": {
+    "regions": [
+      {
+        "id": "bed",
+        "x": 0.18,
+        "y": 0.27,
+        "width": 0.14,
+        "height": 0.16
+      },
+      {
+        "id": "fountain",
+        "x": 0.48,
+        "y": 0.47,
+        "width": 0.14,
+        "height": 0.16
+      },
+      {
+        "id": "frame",
+        "x": 0.73,
+        "y": 0.69,
+        "width": 0.14,
+        "height": 0.16
+      }
+    ],
+    "targets": [
+      "bed",
+      "fountain",
+      "frame"
+    ]
+  },
+  "validationConfig": {
+    "hitPadding": 0.03
+  },
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_pm_gauge_marks"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "discover_clue",
+      "targetId": "clue_pm_pressure_plate"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_pm_gauge_chart.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_pm_gauge_chart.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_pm_gauge_chart.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

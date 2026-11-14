@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "type": "puzzle",
+  "id": "puz_cv_bloom_order",
+  "roomId": "room_conservatory",
+  "hotspotId": "hot_cv_plant_tags",
+  "puzzleType": "sequence",
+  "titleKey": "puz.puz_cv_bloom_order.title",
+  "instructionsKey": "puz.puz_cv_bloom_order.instr",
+  "initialState": {
+    "labelKeys": {
+      "tag_spring": "seasonSpring",
+      "tag_summer": "seasonSummer",
+      "tag_autumn": "seasonAutumn",
+      "tag_winter": "seasonWinter"
+    }
+  },
+  "solutionConfig": {
+    "order": [
+      "tag_spring",
+      "tag_summer",
+      "tag_autumn",
+      "tag_winter"
+    ]
+  },
+  "validationConfig": {},
+  "prerequisites": [
+    {
+      "type": "clue_discovered",
+      "targetId": "clue_cv_bloom_order"
+    }
+  ],
+  "successActions": [
+    {
+      "type": "collect_item",
+      "targetId": "item_glass_vial"
+    },
+    {
+      "type": "discover_clue",
+      "targetId": "clue_cv_vale_note"
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "textKey": "hint.puz_cv_bloom_order.l1"
+    },
+    {
+      "level": 2,
+      "textKey": "hint.puz_cv_bloom_order.l2"
+    },
+    {
+      "level": 3,
+      "textKey": "hint.puz_cv_bloom_order.l3"
+    }
+  ],
+  "resetPolicy": "keep"
+}

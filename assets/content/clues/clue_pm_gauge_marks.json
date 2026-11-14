@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_pm_gauge_marks",
+  "titleKey": "cluePmGaugeMarksTitle",
+  "bodyKey": "cluePmGaugeMarksBody",
+  "sourceRoomId": "room_pump_room",
+  "optional": false
+}

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "type": "room",
+  "id": "room_conservatory",
+  "chapterId": "chapter_02",
+  "titleKey": "roomConservatoryTitle",
+  "descriptionKey": "roomConservatoryDescription",
+  "backgroundAsset": "assets/art/rooms/room_conservatory.png",
+  "hotspots": [
+    {
+      "id": "hot_cv_pump_door",
+      "bounds": {
+        "x": 0.8,
+        "y": 0.22,
+        "width": 0.15,
+        "height": 0.58
+      },
+      "labelKey": "hotCvPumpDoor",
+      "interactionType": "puzzle",
+      "targetId": "puz_cv_door_lock"
+    },
+    {
+      "id": "hot_cv_pump_exit",
+      "bounds": {
+        "x": 0.83,
+        "y": 0.34,
+        "width": 0.09,
+        "height": 0.44
+      },
+      "labelKey": "hotCvPumpExit",
+      "interactionType": "navigate",
+      "targetId": "room_pump_room",
+      "visibilityConditions": [
+        {
+          "type": "puzzle_solved",
+          "targetId": "puz_cv_door_lock"
+        }
+      ]
+    },
+    {
+      "id": "hot_cv_plant_tags",
+      "bounds": {
+        "x": 0.05,
+        "y": 0.42,
+        "width": 0.26,
+        "height": 0.34
+      },
+      "labelKey": "hotCvPlantTags",
+      "interactionType": "puzzle",
+      "targetId": "puz_cv_bloom_order"
+    },
+    {
+      "id": "hot_cv_sun_sigil",
+      "bounds": {
+        "x": 0.34,
+        "y": 0.14,
+        "width": 0.22,
+        "height": 0.26
+      },
+      "labelKey": "hotCvSunSigil",
+      "interactionType": "puzzle",
+      "targetId": "puz_cv_sun_sigil"
+    },
+    {
+      "id": "hot_cv_irrigation",
+      "bounds": {
+        "x": 0.34,
+        "y": 0.52,
+        "width": 0.24,
+        "height": 0.34
+      },
+      "labelKey": "hotCvIrrigation",
+      "interactionType": "puzzle",
+      "targetId": "puz_cv_irrigation"
+    },
+    {
+      "id": "hot_cv_clock",
+      "bounds": {
+        "x": 0.6,
+        "y": 0.1,
+        "width": 0.13,
+        "height": 0.24
+      },
+      "labelKey": "hotCvClock",
+      "interactionType": "discover_clue",
+      "targetId": "clue_cv_sundial_time"
+    },
+    {
+      "id": "hot_cv_calendar",
+      "bounds": {
+        "x": 0.58,
+        "y": 0.38,
+        "width": 0.1,
+        "height": 0.1
+      },
+      "labelKey": "hotCvCalendar",
+      "interactionType": "discover_clue",
+      "targetId": "clue_cv_bloom_order"
+    },
+    {
+      "id": "hot_cv_sigil_band",
+      "bounds": {
+        "x": 0.08,
+        "y": 0.3,
+        "width": 0.16,
+        "height": 0.08
+      },
+      "labelKey": "hotCvSigilBand",
+      "interactionType": "discover_clue",
+      "targetId": "clue_cv_sigil_marks"
+    },
+    {
+      "id": "hot_cv_vale_note",
+      "bounds": {
+        "x": 0.5,
+        "y": 0.64,
+        "width": 0.11,
+        "height": 0.14
+      },
+      "labelKey": "hotCvValeNote",
+      "interactionType": "discover_clue",
+      "targetId": "clue_cv_vale_note"
+    },
+    {
+      "id": "hot_cv_fountain",
+      "bounds": {
+        "x": 0.42,
+        "y": 0.7,
+        "width": 0.2,
+        "height": 0.16
+      },
+      "labelKey": "hotCvFountain",
+      "interactionType": "discover_clue",
+      "targetId": "clue_cv_fountain"
+    }
+  ],
+  "entryConditions": []
+}

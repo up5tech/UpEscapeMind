@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_pm_oil_stain",
+  "titleKey": "cluePmOilStainTitle",
+  "bodyKey": "cluePmOilStainBody",
+  "sourceRoomId": "room_pump_room",
+  "optional": true
+}

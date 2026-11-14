@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_sigil_marks",
+  "titleKey": "clueCvSigilMarksTitle",
+  "bodyKey": "clueCvSigilMarksBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": false
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "clue",
+  "id": "clue_cv_irrigation_schedule",
+  "titleKey": "clueCvIrrigationTitle",
+  "bodyKey": "clueCvIrrigationBody",
+  "sourceRoomId": "room_conservatory",
+  "optional": false
+}
