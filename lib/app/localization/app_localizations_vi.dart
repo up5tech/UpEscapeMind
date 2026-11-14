@@ -106,6 +106,30 @@ class AppLocalizationsVi extends AppLocalizations {
       'Up Escape Mind — trò chơi phiêu lưu giải đố một người chơi, chơi ngoại tuyến.';
 
   @override
+  String get creditsArtTitle => 'Hình ảnh';
+
+  @override
+  String get creditsArtBody =>
+      'Toàn bộ hình ảnh là nguyên bản, được tạo riêng cho Up Escape Mind.';
+
+  @override
+  String get creditsAudioTitle => 'Âm thanh';
+
+  @override
+  String get creditsAudioBody =>
+      'Phiên bản 1.0.0 chưa có âm thanh. Nhạc nền và hiệu ứng âm thanh dự kiến sẽ có trong bản cập nhật sau.';
+
+  @override
+  String get creditsTechTitle => 'Công nghệ';
+
+  @override
+  String get creditsTechBody =>
+      'Được xây dựng bằng Flutter. Trò chơi chơi hoàn toàn ngoại tuyến — không tài khoản, không quảng cáo, không cần Internet.';
+
+  @override
+  String get creditsLicensesAction => 'Giấy phép mã nguồn mở';
+
+  @override
   String get commonBack => 'Quay lại';
 
   @override

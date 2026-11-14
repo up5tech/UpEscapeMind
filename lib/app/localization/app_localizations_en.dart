@@ -103,6 +103,30 @@ class AppLocalizationsEn extends AppLocalizations {
       'Up Escape Mind — a single-player offline escape-room adventure.';
 
   @override
+  String get creditsArtTitle => 'Artwork';
+
+  @override
+  String get creditsArtBody =>
+      'All artwork is original and created for Up Escape Mind.';
+
+  @override
+  String get creditsAudioTitle => 'Audio';
+
+  @override
+  String get creditsAudioBody =>
+      'Version 1.0.0 ships without audio. Music and sound effects are planned for a future update.';
+
+  @override
+  String get creditsTechTitle => 'Technology';
+
+  @override
+  String get creditsTechBody =>
+      'Built with Flutter. The game runs fully offline — no account, ads, or internet required.';
+
+  @override
+  String get creditsLicensesAction => 'Open-source licenses';
+
+  @override
   String get commonBack => 'Back';
 
   @override

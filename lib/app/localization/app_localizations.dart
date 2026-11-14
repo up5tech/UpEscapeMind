@@ -278,6 +278,48 @@ abstract class AppLocalizations {
   /// **'Up Escape Mind — a single-player offline escape-room adventure.'**
   String get creditsBody;
 
+  /// No description provided for @creditsArtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Artwork'**
+  String get creditsArtTitle;
+
+  /// No description provided for @creditsArtBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All artwork is original and created for Up Escape Mind.'**
+  String get creditsArtBody;
+
+  /// No description provided for @creditsAudioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get creditsAudioTitle;
+
+  /// No description provided for @creditsAudioBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0.0 ships without audio. Music and sound effects are planned for a future update.'**
+  String get creditsAudioBody;
+
+  /// No description provided for @creditsTechTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Technology'**
+  String get creditsTechTitle;
+
+  /// No description provided for @creditsTechBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Built with Flutter. The game runs fully offline — no account, ads, or internet required.'**
+  String get creditsTechBody;
+
+  /// No description provided for @creditsLicensesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licenses'**
+  String get creditsLicensesAction;
+
   /// No description provided for @commonBack.
   ///
   /// In en, this message translates to:
