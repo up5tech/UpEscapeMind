@@ -1,4 +1,4 @@
-package com.upescapemind.up_escape_mind
+package com.up5.upescapemind
 
 import io.flutter.embedding.android.FlutterActivity
 

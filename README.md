@@ -63,3 +63,20 @@ flutter run
 
 Quality gate: `dart format --set-exit-if-changed .`, clean `flutter analyze`,
 and passing `flutter test`.
+
+## Android release signing
+
+Android release builds read signing settings from `android/key.properties`:
+
+1. Copy `android/key.properties.example` to `android/key.properties`.
+2. Place `android-key.keystore` in `android/app/`, or set `storeFile` to its
+   absolute path. Relative paths resolve from `android/app/`.
+3. Set the store password, key alias, and key password for that keystore.
+
+The local properties file and keystore are ignored by Git. Release builds use
+the release signing configuration; debug builds retain the debug signing key.
+
+```bash
+flutter build apk --release
+flutter build appbundle --release
+```

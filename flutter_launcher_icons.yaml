@@ -1,0 +1,7 @@
+# Regenerate Android and iOS launcher icons: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/art/branding/app_icon.png
+  remove_alpha_ios: true
+  background_color_ios: "#141B2E"
