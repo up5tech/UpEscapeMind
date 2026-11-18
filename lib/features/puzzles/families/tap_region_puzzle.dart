@@ -25,6 +25,7 @@ class TapRegionPuzzle extends ConsumerStatefulWidget {
     required this.puzzle,
     required this.s,
     this.hintAction,
+    this.guide,
   });
 
   final PuzzleDefinition puzzle;
@@ -32,6 +33,9 @@ class TapRegionPuzzle extends ConsumerStatefulWidget {
 
   /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
   final Widget? hintAction;
+
+  /// One-line controls hint under the instructions.
+  final String? guide;
 
   @override
   ConsumerState<TapRegionPuzzle> createState() => _TapRegionPuzzleState();
@@ -179,7 +183,10 @@ class _TapRegionPuzzleState extends ConsumerState<TapRegionPuzzle> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
+              PuzzleInstructions(
+                text: widget.s(widget.puzzle.instructionsKey),
+                guide: widget.guide,
+              ),
               const SizedBox(height: 12),
               PuzzleFeedback(visible: _wrong),
               if (_ordered)

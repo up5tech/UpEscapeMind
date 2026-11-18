@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/chapters/chapters_screen.dart';
+import '../features/home/how_to_play_screen.dart';
 import '../features/home/main_menu_screen.dart';
 import '../features/home/prologue_screen.dart';
 import '../features/home/splash_screen.dart';
@@ -19,6 +20,7 @@ abstract final class AppRoutes {
   static const String splash = '/';
   static const String menu = '/menu';
   static const String prologue = '/prologue';
+  static const String howToPlay = '/how-to-play';
   static const String chapters = '/chapters';
   static const String settings = '/settings';
   static const String credits = '/credits';
@@ -46,6 +48,11 @@ GoRouter createAppRouter(WidgetRef ref) {
         path: AppRoutes.prologue,
         name: 'prologue',
         builder: (context, state) => const PrologueScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.howToPlay,
+        name: 'howToPlay',
+        builder: (context, state) => const HowToPlayScreen(),
       ),
       GoRoute(
         path: AppRoutes.chapters,
@@ -95,9 +102,8 @@ GoRouter createAppRouter(WidgetRef ref) {
           }
           return AppRoutes.chapters;
         },
-        builder: (context, state) => ChapterSummaryScreen(
-          chapterId: state.pathParameters['chapterId']!,
-        ),
+        builder: (context, state) =>
+            ChapterSummaryScreen(chapterId: state.pathParameters['chapterId']!),
       ),
     ],
   );

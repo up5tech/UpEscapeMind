@@ -12,6 +12,7 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   static const _keySfx = 'settings.sfx';
   static const _keyHaptics = 'settings.haptics';
   static const _keyLanguage = 'settings.language';
+  static const _keyGuidanceSeen = 'guidance.seen';
 
   @override
   Future<bool> isMusicEnabled() async => _prefs.getBool(_keyMusic) ?? true;
@@ -42,5 +43,17 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
       return _prefs.remove(_keyLanguage);
     }
     return _prefs.setString(_keyLanguage, languageCode);
+  }
+
+  @override
+  Future<bool> hasSeenGuidance(String guidanceId) async =>
+      (_prefs.getStringList(_keyGuidanceSeen) ?? const []).contains(guidanceId);
+
+  @override
+  Future<void> markGuidanceSeen(String guidanceId) async {
+    final seen = {...?_prefs.getStringList(_keyGuidanceSeen)};
+    if (seen.add(guidanceId)) {
+      await _prefs.setStringList(_keyGuidanceSeen, seen.toList());
+    }
   }
 }

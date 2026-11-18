@@ -35,6 +35,10 @@ class RoomScreen extends ConsumerStatefulWidget {
 class _RoomScreenState extends ConsumerState<RoomScreen> {
   String? _enteredRoomId;
 
+  /// First-visit intro card (title + description + how to play the room).
+  /// Shown once per room; the seen flag lives in settings, not progress.
+  bool _showRoomIntro = false;
+
   /// Transient UI state: item currently "in hand" and combine mode.
   /// Durable state lives in `GameProgress`.
   String? _selectedItemId;
@@ -74,9 +78,15 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
 
     if (_enteredRoomId != room.id) {
       _enteredRoomId = room.id;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          ref.read(progressActionsProvider).enterRoom(room.id);
+      _showRoomIntro = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        unawaited(ref.read(progressActionsProvider).enterRoom(room.id));
+        final seen = await ref
+            .read(settingsRepositoryProvider)
+            .hasSeenGuidance('room_intro.${room.id}');
+        if (mounted && !seen) {
+          setState(() => _showRoomIntro = true);
         }
       });
     }
@@ -101,6 +111,23 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       showBackButton: true,
       body: Column(
         children: [
+          _RoomGuidanceHeader(
+            room: room,
+            title: strings.forLocale(locale, room.titleKey),
+            description: room.descriptionKey != null
+                ? strings.forLocale(locale, room.descriptionKey!)
+                : null,
+            l10n: l10n,
+            expanded: _showRoomIntro,
+            onDismiss: () {
+              setState(() => _showRoomIntro = false);
+              unawaited(
+                ref
+                    .read(settingsRepositoryProvider)
+                    .markGuidanceSeen('room_intro.${room.id}'),
+              );
+            },
+          ),
           Expanded(
             child: RoomScene(
               backgroundAsset: room.backgroundAsset,
@@ -449,5 +476,107 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
+  }
+}
+
+/// Guidance strip above the scene. On a room's first visit it expands into
+/// an intro card (title + description + tip); afterwards it stays a
+/// one-line hint so players always know the spots are tappable.
+class _RoomGuidanceHeader extends StatelessWidget {
+  const _RoomGuidanceHeader({
+    required this.room,
+    required this.title,
+    required this.description,
+    required this.l10n,
+    required this.expanded,
+    required this.onDismiss,
+  });
+
+  final RoomDefinition room;
+  final String title;
+  final String? description;
+  final AppLocalizations l10n;
+  final bool expanded;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final decoration = const BoxDecoration(
+      color: AppColors.surfaceElevated,
+      border: Border(bottom: BorderSide(color: AppColors.brass, width: 0.5)),
+    );
+    final tip = Row(
+      children: [
+        const Icon(Icons.touch_app_outlined, size: 18, color: AppColors.brass),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            l10n.guideRoomExplore,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.secondaryText,
+            ),
+          ),
+        ),
+      ],
+    );
+
+    if (!expanded) {
+      return Container(
+        key: ValueKey('room_guidance_${room.id}'),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: decoration,
+        child: tip,
+      );
+    }
+
+    return Container(
+      key: ValueKey('room_intro_${room.id}'),
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
+      decoration: decoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: AppColors.parchmentText,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close, size: 18),
+                tooltip: l10n.guideRoomDismiss,
+                onPressed: onDismiss,
+              ),
+            ],
+          ),
+          if (description != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              description!,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.secondaryText,
+                height: 1.4,
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
+          tip,
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: onDismiss,
+              child: Text(l10n.guideRoomDismiss),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

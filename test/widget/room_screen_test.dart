@@ -249,4 +249,31 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('first visit shows the room intro; dismiss keeps the tip bar', (
+    tester,
+  ) async {
+    await pumpApp(tester, progress: progressWith());
+    await openSampleRoom(tester);
+
+    // First visit: intro card with the room description and tip.
+    expect(
+      find.byKey(const ValueKey('room_intro_room_sample')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Một căn phòng tối giản dùng để kiểm tra hệ thống nội dung.'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Đã hiểu'));
+    await flush(tester);
+
+    // Afterwards only the compact guidance strip remains.
+    expect(find.byKey(const ValueKey('room_intro_room_sample')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('room_guidance_room_sample')),
+      findsOneWidget,
+    );
+  });
 }

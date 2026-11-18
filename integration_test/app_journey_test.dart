@@ -61,8 +61,20 @@ void main() {
     await settle(tester);
   }
 
-  testWidgets('chapter 1 critical path: new game to unlocked study',
-      (tester) async {
+  /// First playthrough on a device shows the one-time how-to-play guide
+  /// after the prologue; pass through it when present.
+  Future<void> passHowToPlay(WidgetTester tester) async {
+    final start = find.byKey(const ValueKey('how_to_play_start'));
+    await settle(tester);
+    if (start.evaluate().isNotEmpty) {
+      await tester.tap(start);
+      await settle(tester);
+    }
+  }
+
+  testWidgets('chapter 1 critical path: new game to unlocked study', (
+    tester,
+  ) async {
     unawaited(app.main());
     await settle(tester, 800);
 
@@ -70,6 +82,7 @@ void main() {
     await newGame(tester);
     expect(find.byKey(const ValueKey('prologue_skip')), findsOneWidget);
     await skipPrologue(tester);
+    await passHowToPlay(tester);
 
     expect(
       find.byKey(const ValueKey('hotspot_hot_eh_grandfather_clock')),
@@ -118,8 +131,7 @@ void main() {
   // Runs after the journey test: the widget tree is torn down between
   // testWidgets, so booting the app again is a real restart over the same
   // on-device save.
-  testWidgets('save resumes in the study after an app restart',
-      (tester) async {
+  testWidgets('save resumes in the study after an app restart', (tester) async {
     unawaited(app.main());
     await waitFor(tester, find.text('Tiếp tục'));
     await tester.tap(find.text('Tiếp tục'));

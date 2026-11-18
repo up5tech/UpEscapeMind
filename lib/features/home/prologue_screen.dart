@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +9,7 @@ import '../../app/providers/app_providers.dart';
 import '../../app/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/widgets/widgets.dart';
+import 'how_to_play_screen.dart';
 
 /// Prologue (PLAN §2.1 MVP content; design/02 §7): three skippable text
 /// cards shown after New Game, before entering the Entrance Hall.
@@ -43,16 +46,28 @@ class _PrologueScreenState extends ConsumerState<PrologueScreen> {
         );
       }
     } else {
-      _enterHouse();
+      unawaited(_enterHouse());
     }
   }
 
-  void _enterHouse() {
-    final progress = ref.read(gameProgressProvider).value;
-    final roomId = progress?.currentRoomId ?? AppConstants.entryRoomId;
-    // Replace the prologue (never `go`, which would clear the menu from
-    // the stack and break system-back behaviour).
-    context.replaceNamed('room', pathParameters: {'roomId': roomId});
+  Future<void> _enterHouse() async {
+    final roomId =
+        ref.read(gameProgressProvider).value?.currentRoomId ??
+        AppConstants.entryRoomId;
+    // First playthrough shows the how-to-play guide once (persisted in
+    // settings), then continues to the first room. Replace — never `go`,
+    // which would clear the menu from the stack and break system-back.
+    final settings = ref.read(settingsRepositoryProvider);
+    if (await settings.hasSeenGuidance(HowToPlayScreen.guidanceId)) {
+      if (mounted) {
+        context.replaceNamed('room', pathParameters: {'roomId': roomId});
+      }
+      return;
+    }
+    await settings.markGuidanceSeen(HowToPlayScreen.guidanceId);
+    if (mounted) {
+      context.replaceNamed('howToPlay', extra: roomId);
+    }
   }
 
   @override

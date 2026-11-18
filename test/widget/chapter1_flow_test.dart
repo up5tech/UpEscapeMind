@@ -33,7 +33,12 @@ void main() {
     db = AppDatabase.forTesting(NativeDatabase.memory());
     addTearDown(db.close);
     await tester.pumpWidget(
-      UpEscapeMindApp(prefs: prefs, database: db, catalog: catalog, strings: strings),
+      UpEscapeMindApp(
+        prefs: prefs,
+        database: db,
+        catalog: catalog,
+        strings: strings,
+      ),
     );
     await tester.pumpAndSettle();
   }
@@ -53,8 +58,19 @@ void main() {
     await flush(tester);
   }
 
-  testWidgets('New Game shows the localized prologue and enters the hall',
-      (tester) async {
+  /// First playthrough shows the how-to-play guide once after the
+  /// prologue; pass through it to reach the room.
+  Future<void> passHowToPlay(WidgetTester tester) async {
+    final start = find.byKey(const ValueKey('how_to_play_start'));
+    if (start.evaluate().isNotEmpty) {
+      await tester.tap(start);
+      await flush(tester, 3);
+    }
+  }
+
+  testWidgets('New Game shows the localized prologue and enters the hall', (
+    tester,
+  ) async {
     await pumpFreshApp(tester);
     await newGame(tester);
 
@@ -70,6 +86,10 @@ void main() {
       await tester.pump(const Duration(milliseconds: 400));
     }
     await flush(tester, 3);
+
+    // The one-time how-to-play guide sits between prologue and hall.
+    expect(find.byKey(const ValueKey('how_to_play_start')), findsOneWidget);
+    await passHowToPlay(tester);
 
     // Entrance Hall hotspots from production content.
     expect(
@@ -97,11 +117,9 @@ void main() {
     await newGame(tester);
     await tester.tap(find.byKey(const ValueKey('prologue_skip')));
     await flush(tester, 3);
+    await passHowToPlay(tester);
 
-    expect(
-      find.byKey(const ValueKey('hotspot_hot_eh_window')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('hotspot_hot_eh_window')), findsOneWidget);
   });
 
   testWidgets('tutorial door keypad: wrong code inert, 1024 opens the '
@@ -110,6 +128,7 @@ void main() {
     await newGame(tester);
     await tester.tap(find.byKey(const ValueKey('prologue_skip')));
     await flush(tester, 3);
+    await passHowToPlay(tester);
 
     await tester.tap(find.byKey(const ValueKey('hotspot_hot_eh_study_door')));
     await flush(tester);
@@ -155,10 +174,8 @@ void main() {
     await newGame(tester);
     await tester.tap(find.byKey(const ValueKey('prologue_skip')));
     await flush(tester, 3);
-    expect(
-      find.byKey(const ValueKey('hotspot_hot_eh_marks')),
-      findsOneWidget,
-    );
+    await passHowToPlay(tester);
+    expect(find.byKey(const ValueKey('hotspot_hot_eh_marks')), findsOneWidget);
 
     // Leave to the menu and press Continue.
     final ctx = tester.element(find.byType(Scaffold).first);
@@ -166,9 +183,6 @@ void main() {
     await flush(tester, 3);
     await tester.tap(find.text('Tiếp tục'));
     await flush(tester, 3);
-    expect(
-      find.byKey(const ValueKey('hotspot_hot_eh_marks')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('hotspot_hot_eh_marks')), findsOneWidget);
   });
 }

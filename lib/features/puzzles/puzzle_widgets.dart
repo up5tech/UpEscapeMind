@@ -162,18 +162,36 @@ class PuzzleActionRow extends StatelessWidget {
   }
 }
 
-/// Puzzle instructions header shared by every family screen.
+/// Puzzle instructions header shared by every family screen, with an
+/// optional one-line controls hint so first-time players know what to do.
 class PuzzleInstructions extends StatelessWidget {
-  const PuzzleInstructions({super.key, required this.text});
+  const PuzzleInstructions({super.key, required this.text, this.guide});
 
   final String text;
+  final String? guide;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.bodyLarge,
-      textAlign: TextAlign.center,
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        Text(
+          text,
+          style: theme.textTheme.bodyLarge,
+          textAlign: TextAlign.center,
+        ),
+        if (guide != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              guide!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.secondaryText,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+      ],
     );
   }
 }

@@ -703,6 +703,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Using {item} — tap something in the room.'**
   String itemUsingHint(String item);
+
+  /// No description provided for @menuHowToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get menuHowToPlay;
+
+  /// No description provided for @howToPlayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get howToPlayTitle;
+
+  /// No description provided for @howToPlayExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the glowing spots in a room to find clues, items and puzzles.'**
+  String get howToPlayExplore;
+
+  /// No description provided for @howToPlayItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Items live in your Satchel: choose “Use” then tap a spot in the room, or “Combine” several items.'**
+  String get howToPlayItems;
+
+  /// No description provided for @howToPlayHints.
+  ///
+  /// In en, this message translates to:
+  /// **'The lightbulb in a puzzle opens 3 hint levels — hints are never required.'**
+  String get howToPlayHints;
+
+  /// No description provided for @howToPlayJournal.
+  ///
+  /// In en, this message translates to:
+  /// **'Every clue and note is kept in your Journal.'**
+  String get howToPlayJournal;
+
+  /// No description provided for @howToPlayStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start exploring'**
+  String get howToPlayStart;
+
+  /// No description provided for @guideRoomExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the glowing spots to explore the room.'**
+  String get guideRoomExplore;
+
+  /// No description provided for @guideRoomDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get guideRoomDismiss;
+
+  /// No description provided for @guideChaptersPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an area to start playing.'**
+  String get guideChaptersPick;
+
+  /// No description provided for @guidePuzzleKeypad.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the digits to enter the code — it checks itself when complete.'**
+  String get guidePuzzleKeypad;
+
+  /// No description provided for @guidePuzzleSymbolMatching.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a slot to pick the right symbol, then press Check.'**
+  String get guidePuzzleSymbolMatching;
+
+  /// No description provided for @guidePuzzleSequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap candidates to fill the slots in order, then press Check.'**
+  String get guidePuzzleSequence;
+
+  /// No description provided for @guidePuzzleRotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag or tap a dial to rotate it to the right angle, then press Check.'**
+  String get guidePuzzleRotation;
+
+  /// No description provided for @guidePuzzleLogicDeduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in each row\'s answer, then press Check.'**
+  String get guidePuzzleLogicDeduction;
+
+  /// No description provided for @guidePuzzleMechanicalState.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip the levers into position, then press Check.'**
+  String get guidePuzzleMechanicalState;
+
+  /// No description provided for @guidePuzzleTapRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the hidden spots to find every target.'**
+  String get guidePuzzleTapRegion;
 }
 
 class _AppLocalizationsDelegate

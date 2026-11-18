@@ -73,12 +73,34 @@ class _ChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final chapters = [...catalog.chapters]
       ..sort((a, b) => a.order.compareTo(b.order));
 
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.touch_app_outlined,
+                size: 18,
+                color: AppColors.brass,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.guideChaptersPick,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.secondaryText,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         for (final chapter in chapters)
           Padding(
             padding: const EdgeInsets.only(bottom: 16),

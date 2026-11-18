@@ -349,4 +349,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String itemUsingHint(String item) {
     return 'Using $item — tap something in the room.';
   }
+
+  @override
+  String get menuHowToPlay => 'How to play';
+
+  @override
+  String get howToPlayTitle => 'How to play';
+
+  @override
+  String get howToPlayExplore =>
+      'Tap the glowing spots in a room to find clues, items and puzzles.';
+
+  @override
+  String get howToPlayItems =>
+      'Items live in your Satchel: choose “Use” then tap a spot in the room, or “Combine” several items.';
+
+  @override
+  String get howToPlayHints =>
+      'The lightbulb in a puzzle opens 3 hint levels — hints are never required.';
+
+  @override
+  String get howToPlayJournal => 'Every clue and note is kept in your Journal.';
+
+  @override
+  String get howToPlayStart => 'Start exploring';
+
+  @override
+  String get guideRoomExplore => 'Tap the glowing spots to explore the room.';
+
+  @override
+  String get guideRoomDismiss => 'Got it';
+
+  @override
+  String get guideChaptersPick => 'Tap an area to start playing.';
+
+  @override
+  String get guidePuzzleKeypad =>
+      'Tap the digits to enter the code — it checks itself when complete.';
+
+  @override
+  String get guidePuzzleSymbolMatching =>
+      'Tap a slot to pick the right symbol, then press Check.';
+
+  @override
+  String get guidePuzzleSequence =>
+      'Tap candidates to fill the slots in order, then press Check.';
+
+  @override
+  String get guidePuzzleRotation =>
+      'Drag or tap a dial to rotate it to the right angle, then press Check.';
+
+  @override
+  String get guidePuzzleLogicDeduction =>
+      'Fill in each row\'s answer, then press Check.';
+
+  @override
+  String get guidePuzzleMechanicalState =>
+      'Flip the levers into position, then press Check.';
+
+  @override
+  String get guidePuzzleTapRegion =>
+      'Tap the hidden spots to find every target.';
 }

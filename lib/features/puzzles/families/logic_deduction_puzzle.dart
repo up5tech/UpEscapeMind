@@ -18,6 +18,7 @@ class LogicDeductionPuzzle extends ConsumerStatefulWidget {
     required this.puzzle,
     required this.s,
     this.hintAction,
+    this.guide,
   });
 
   final PuzzleDefinition puzzle;
@@ -25,6 +26,9 @@ class LogicDeductionPuzzle extends ConsumerStatefulWidget {
 
   /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
   final Widget? hintAction;
+
+  /// One-line controls hint under the instructions.
+  final String? guide;
 
   @override
   ConsumerState<LogicDeductionPuzzle> createState() =>
@@ -45,9 +49,9 @@ class _LogicDeductionPuzzleState extends ConsumerState<LogicDeductionPuzzle> {
       solutionConfig: widget.puzzle.solutionConfig,
       where: 'puzzle "${widget.puzzle.id}"',
     );
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     final values = stored is Map<String, String>
         ? stored
         : const <String, String>{};
@@ -109,6 +113,7 @@ class _LogicDeductionPuzzleState extends ConsumerState<LogicDeductionPuzzle> {
             children: [
               PuzzleInstructions(
                 text: widget.s(widget.puzzle.instructionsKey),
+                guide: widget.guide,
               ),
               const SizedBox(height: 24),
               for (final field in _validator.fields)
@@ -124,9 +129,7 @@ class _LogicDeductionPuzzleState extends ConsumerState<LogicDeductionPuzzle> {
                     maxLength: field.maxLength > 0 ? field.maxLength : null,
                     inputFormatters: [
                       if (field.kind == 'digits')
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[0-9 ]'),
-                        )
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9 ]'))
                       else
                         LengthLimitingTextInputFormatter(
                           field.maxLength > 0 ? field.maxLength : 64,

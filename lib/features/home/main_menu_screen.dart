@@ -98,6 +98,11 @@ class MainMenuScreen extends ConsumerWidget {
               onTap: () => context.pushNamed('chapters'),
             ),
             _MenuTile(
+              icon: Icons.help_outline,
+              label: l10n.menuHowToPlay,
+              onTap: () => context.pushNamed('howToPlay'),
+            ),
+            _MenuTile(
               icon: Icons.settings_outlined,
               label: l10n.menuSettings,
               onTap: () => context.pushNamed('settings'),

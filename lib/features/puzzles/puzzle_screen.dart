@@ -153,9 +153,8 @@ class _PuzzleScreenState extends ConsumerState<PuzzleScreen> {
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
                       _prerequisiteHint(l10n, condition),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.secondaryText,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: AppColors.secondaryText),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -166,29 +165,73 @@ class _PuzzleScreenState extends ConsumerState<PuzzleScreen> {
       );
     }
 
+    final guide = _guideFor(l10n, puzzle.type);
+
     return switch (puzzle.type) {
-      PuzzleType.keypad => KeypadPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.symbolMatching =>
-        SymbolMatchingPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.sequence =>
-        SequencePuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.rotation =>
-        RotationPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.logicDeduction =>
-        LogicDeductionPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.mechanicalState =>
-        LeverPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
+      PuzzleType.keypad => KeypadPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.symbolMatching => SymbolMatchingPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.sequence => SequencePuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.rotation => RotationPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.logicDeduction => LogicDeductionPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.mechanicalState => LeverPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.hiddenObject || PuzzleType.observation => TapRegionPuzzle(
+        puzzle: puzzle,
+        s: s,
+        hintAction: hintAction,
+        guide: guide,
+      ),
+      PuzzleType.itemUse || PuzzleType.itemCombination => AppScaffold(
+        title: s(puzzle.titleKey),
+        showBackButton: true,
+        actions: [hintAction!],
+        body: Center(child: Text(l10n.errorGeneric)),
+      ),
+    };
+  }
+
+  /// One-line "how do I play this" hint per puzzle family, shown under the
+  /// authored instructions so first-time players know the controls.
+  static String? _guideFor(AppLocalizations l10n, PuzzleType type) {
+    return switch (type) {
+      PuzzleType.keypad => l10n.guidePuzzleKeypad,
+      PuzzleType.symbolMatching => l10n.guidePuzzleSymbolMatching,
+      PuzzleType.sequence => l10n.guidePuzzleSequence,
+      PuzzleType.rotation => l10n.guidePuzzleRotation,
+      PuzzleType.logicDeduction => l10n.guidePuzzleLogicDeduction,
+      PuzzleType.mechanicalState => l10n.guidePuzzleMechanicalState,
       PuzzleType.hiddenObject ||
-      PuzzleType.observation =>
-        TapRegionPuzzle(puzzle: puzzle, s: s, hintAction: hintAction),
-      PuzzleType.itemUse ||
-      PuzzleType.itemCombination =>
-        AppScaffold(
-          title: s(puzzle.titleKey),
-          showBackButton: true,
-          actions: [hintAction!],
-          body: Center(child: Text(l10n.errorGeneric)),
-        ),
+      PuzzleType.observation => l10n.guidePuzzleTapRegion,
+      PuzzleType.itemUse || PuzzleType.itemCombination => null,
     };
   }
 

@@ -17,6 +17,7 @@ class SequencePuzzle extends ConsumerStatefulWidget {
     required this.puzzle,
     required this.s,
     this.hintAction,
+    this.guide,
   });
 
   final PuzzleDefinition puzzle;
@@ -24,6 +25,9 @@ class SequencePuzzle extends ConsumerStatefulWidget {
 
   /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
   final Widget? hintAction;
+
+  /// One-line controls hint under the instructions.
+  final String? guide;
 
   @override
   ConsumerState<SequencePuzzle> createState() => _SequencePuzzleState();
@@ -43,9 +47,9 @@ class _SequencePuzzleState extends ConsumerState<SequencePuzzle> {
       where: 'puzzle "${widget.puzzle.id}"',
     );
     _picks = <String>[];
-    final stored = ref.read(puzzleSessionsProvider.notifier).inputFor(
-      widget.puzzle.id,
-    );
+    final stored = ref
+        .read(puzzleSessionsProvider.notifier)
+        .inputFor(widget.puzzle.id);
     if (stored is List<String>) {
       for (final pick in stored) {
         if (_validator.candidates.contains(pick) && !_picks.contains(pick)) {
@@ -112,6 +116,7 @@ class _SequencePuzzleState extends ConsumerState<SequencePuzzle> {
             children: [
               PuzzleInstructions(
                 text: widget.s(widget.puzzle.instructionsKey),
+                guide: widget.guide,
               ),
               const SizedBox(height: 24),
               // Ordered slots.
@@ -124,13 +129,14 @@ class _SequencePuzzleState extends ConsumerState<SequencePuzzle> {
                     _SequenceChip(
                       key: ValueKey('sequence_slot_$i'),
                       label: i < _picks.length
-                          ? idLabel(widget.puzzle.initialState, _picks[i],
-                              widget.s)
+                          ? idLabel(
+                              widget.puzzle.initialState,
+                              _picks[i],
+                              widget.s,
+                            )
                           : '·',
                       filled: i < _picks.length,
-                      onTap: i < _picks.length
-                          ? () => _removeAt(i)
-                          : null,
+                      onTap: i < _picks.length ? () => _removeAt(i) : null,
                     ),
                 ],
               ),

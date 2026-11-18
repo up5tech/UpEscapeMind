@@ -19,6 +19,7 @@ class LeverPuzzle extends ConsumerStatefulWidget {
     required this.puzzle,
     required this.s,
     this.hintAction,
+    this.guide,
   });
 
   final PuzzleDefinition puzzle;
@@ -26,6 +27,9 @@ class LeverPuzzle extends ConsumerStatefulWidget {
 
   /// AppBar lightbulb action opened by [PuzzleScreen] (Phase 8).
   final Widget? hintAction;
+
+  /// One-line controls hint under the instructions.
+  final String? guide;
 
   @override
   ConsumerState<LeverPuzzle> createState() => _LeverPuzzleState();
@@ -102,7 +106,10 @@ class _LeverPuzzleState extends ConsumerState<LeverPuzzle> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              PuzzleInstructions(text: widget.s(widget.puzzle.instructionsKey)),
+              PuzzleInstructions(
+                text: widget.s(widget.puzzle.instructionsKey),
+                guide: widget.guide,
+              ),
               const SizedBox(height: 24),
               Wrap(
                 alignment: WrapAlignment.center,

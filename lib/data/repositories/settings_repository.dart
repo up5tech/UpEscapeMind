@@ -12,4 +12,9 @@ abstract interface class SettingsRepository {
   Future<void> setSoundEffectsEnabled(bool value);
   Future<void> setHapticsEnabled(bool value);
   Future<void> setLanguageOverride(String? languageCode);
+
+  /// One-time guidance overlays (how-to-play, per-room intro) are tracked
+  /// by stable id so each is shown once and can be replayed from the menu.
+  Future<bool> hasSeenGuidance(String guidanceId);
+  Future<void> markGuidanceSeen(String guidanceId);
 }

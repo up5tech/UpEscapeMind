@@ -351,4 +351,66 @@ class AppLocalizationsVi extends AppLocalizations {
   String itemUsingHint(String item) {
     return 'Đang dùng $item — chạm vào một điểm trong phòng.';
   }
+
+  @override
+  String get menuHowToPlay => 'Cách chơi';
+
+  @override
+  String get howToPlayTitle => 'Cách chơi';
+
+  @override
+  String get howToPlayExplore =>
+      'Chạm vào các điểm sáng trong phòng để khám phá manh mối, vật phẩm và câu đố.';
+
+  @override
+  String get howToPlayItems =>
+      'Vật phẩm nằm trong Hành trang: chọn “Sử dụng” rồi chạm vào điểm trong phòng, hoặc “Kết hợp” nhiều vật phẩm.';
+
+  @override
+  String get howToPlayHints =>
+      'Nút bóng đèn trong câu đố mở gợi ý 3 cấp — gợi ý không bao giờ bắt buộc.';
+
+  @override
+  String get howToPlayJournal =>
+      'Mọi manh mối và ghi chú được lưu trong Nhật ký.';
+
+  @override
+  String get howToPlayStart => 'Bắt đầu khám phá';
+
+  @override
+  String get guideRoomExplore =>
+      'Chạm vào các điểm sáng để khám phá căn phòng.';
+
+  @override
+  String get guideRoomDismiss => 'Đã hiểu';
+
+  @override
+  String get guideChaptersPick => 'Chạm vào một khu vực để vào chơi.';
+
+  @override
+  String get guidePuzzleKeypad =>
+      'Chạm các số để nhập mã — đủ số sẽ tự kiểm tra.';
+
+  @override
+  String get guidePuzzleSymbolMatching =>
+      'Chạm ô để chọn biểu tượng đúng, rồi nhấn Kiểm tra.';
+
+  @override
+  String get guidePuzzleSequence =>
+      'Chạm ứng viên để xếp vào các ô theo thứ tự, rồi nhấn Kiểm tra.';
+
+  @override
+  String get guidePuzzleRotation =>
+      'Kéo hoặc chạm vòng để xoay về đúng góc, rồi nhấn Kiểm tra.';
+
+  @override
+  String get guidePuzzleLogicDeduction =>
+      'Điền đáp án cho từng dòng, rồi nhấn Kiểm tra.';
+
+  @override
+  String get guidePuzzleMechanicalState =>
+      'Gạt các cần về đúng vị trí, rồi nhấn Kiểm tra.';
+
+  @override
+  String get guidePuzzleTapRegion => 'Chạm vào các điểm ẩn để tìm đủ mục tiêu.';
 }
