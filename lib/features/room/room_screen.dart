@@ -39,6 +39,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
   /// Shown once per room; the seen flag lives in settings, not progress.
   bool _showRoomIntro = false;
 
+  /// Transient reading aids. They never touch durable progress.
+  bool _showHotspotLabels = false;
+
   /// Transient UI state: item currently "in hand" and combine mode.
   /// Durable state lives in `GameProgress`.
   String? _selectedItemId;
@@ -129,18 +132,55 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             },
           ),
           Expanded(
-            child: RoomScene(
-              backgroundAsset: room.backgroundAsset,
-              sceneLabel: strings.forLocale(locale, room.titleKey),
-              hotspots: hotspots,
-              onHotspotTap: (hotspot) => _handleHotspot(
-                context,
-                ref,
-                catalog,
-                strings,
-                progress,
-                hotspot,
-              ),
+            child: Stack(
+              children: [
+                RoomScene(
+                  backgroundAsset: room.backgroundAsset,
+                  sceneLabel: strings.forLocale(locale, room.titleKey),
+                  hotspots: hotspots,
+                  showLabels: _showHotspotLabels,
+                  onHotspotTap: (hotspot) => _handleHotspot(
+                    context,
+                    ref,
+                    catalog,
+                    strings,
+                    progress,
+                    hotspot,
+                  ),
+                ),
+                Positioned(
+                  right: 12,
+                  bottom: 12,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _sceneControl(
+                        key: const ValueKey('room_zoom_action'),
+                        icon: Icons.zoom_in_rounded,
+                        tooltip: l10n.roomZoomAction,
+                        onPressed: () => _openSceneZoom(
+                          context,
+                          room.backgroundAsset,
+                          strings.forLocale(locale, room.titleKey),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _sceneControl(
+                        key: const ValueKey('room_labels_action'),
+                        icon: _showHotspotLabels
+                            ? Icons.label
+                            : Icons.label_outline,
+                        tooltip: _showHotspotLabels
+                            ? l10n.roomLabelsHideAction
+                            : l10n.roomLabelsShowAction,
+                        onPressed: () => setState(
+                          () => _showHotspotLabels = !_showHotspotLabels,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           InventoryBar(
@@ -161,6 +201,88 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             onOpenSheet: (item) => _openItemSheet(context, ref, strings, item),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Small floating control used for the scene reading aids.
+  Widget _sceneControl({
+    required Key key,
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      key: key,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOverlay,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.brass.withValues(alpha: 0.8)),
+      ),
+      child: IconButton(
+        icon: Icon(icon, size: 20, color: AppColors.parchmentText),
+        tooltip: tooltip,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints.tightFor(width: 42, height: 42),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
+  /// Fullscreen pan/zoom of the scene art, for players who need a closer
+  /// look at an object. It is transient: no state or progress is changed.
+  Future<void> _openSceneZoom(
+    BuildContext context,
+    String asset,
+    String sceneLabel,
+  ) {
+    final l10n = AppLocalizations.of(context);
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => Dialog.fullscreen(
+        backgroundColor: AppColors.inkNavy,
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: InteractiveViewer(
+                  minScale: 1,
+                  maxScale: 4,
+                  child: Center(
+                    child: Image.asset(
+                      asset,
+                      fit: BoxFit.contain,
+                      semanticLabel: sceneLabel,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: IconButton(
+                  key: const ValueKey('room_zoom_close'),
+                  icon: const Icon(Icons.close, color: AppColors.parchmentText),
+                  tooltip: l10n.commonClose,
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 16,
+                child: Text(
+                  l10n.roomZoomHint,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.secondaryText,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -202,13 +324,23 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
       case HotspotInteraction.discoverClue:
         final clueId = def.targetId;
         if (clueId == null) return;
+        final clue = catalog.cluesById[clueId];
+        final title = clue != null ? s(clue.titleKey) : clueId;
         final isNew = !progress.discoveredClueIds.contains(clueId);
         await actions.discoverClue(clueId);
         if (isNew) await _playHaptic();
-        if (isNew && context.mounted) {
-          final title = catalog.cluesById[clueId] != null
-              ? s(catalog.cluesById[clueId]!.titleKey)
-              : clueId;
+        if (!context.mounted) return;
+        // Always show the clue text where it was found. Reading it from the
+        // clue definition (not a hotspot-only field) keeps this working even
+        // if room content and clue content are shipped in different updates.
+        final body = clue != null
+            ? s(clue.bodyKey)
+            : def.descriptionKey != null
+            ? s(def.descriptionKey!)
+            : null;
+        if (body != null) {
+          await _showClueSheet(context, title, body, l10n);
+        } else if (isNew) {
           _toast(context, l10n.clueDiscoveredMessage(title));
         }
       case HotspotInteraction.collectItem:
@@ -390,6 +522,92 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
         pathParameters: {'puzzleId': puzzle.id},
       );
     }
+  }
+
+  /// Shows a discovered note's text where the player found it, so they never
+  /// have to hunt through the Journal to understand what they just tapped.
+  Future<void> _showClueSheet(
+    BuildContext context,
+    String title,
+    String body,
+    AppLocalizations l10n,
+  ) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        final theme = Theme.of(sheetContext);
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryText,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.description_outlined,
+                      size: 20,
+                      color: AppColors.brass,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(title, style: theme.textTheme.titleMedium),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.agedPaper.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.brass.withValues(alpha: 0.5),
+                    ),
+                  ),
+                  child: Text(
+                    body,
+                    style: const TextStyle(
+                      color: AppColors.parchmentText,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.clueSavedToJournal,
+                  style: const TextStyle(
+                    color: AppColors.secondaryText,
+                    fontSize: 12,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.of(sheetContext).pop(),
+                    child: Text(l10n.commonClose),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _showInspection(

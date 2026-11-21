@@ -805,6 +805,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the hidden spots to find every target.'**
   String get guidePuzzleTapRegion;
+
+  /// No description provided for @roomZoomAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom scene'**
+  String get roomZoomAction;
+
+  /// No description provided for @roomZoomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinch to zoom · drag to pan'**
+  String get roomZoomHint;
+
+  /// No description provided for @roomLabelsShowAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Show object names'**
+  String get roomLabelsShowAction;
+
+  /// No description provided for @roomLabelsHideAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide object names'**
+  String get roomLabelsHideAction;
+
+  /// No description provided for @clueSavedToJournal.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to your Journal.'**
+  String get clueSavedToJournal;
 }
 
 class _AppLocalizationsDelegate

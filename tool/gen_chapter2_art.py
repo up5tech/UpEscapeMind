@@ -16,7 +16,13 @@ import os
 import struct
 import zlib
 
+import art_detail as d
+
 ROOT = os.path.join(os.path.dirname(__file__), "..", "assets", "art")
+
+# Same 2x logical-coordinate pipeline as Chapter 1 — see gen_chapter1_art.py.
+SCALE = 2
+mix = d.mix
 
 # palette (design/05) — same constants as chapter 1
 INK = (0x14, 0x1B, 0x2E)
@@ -38,6 +44,7 @@ ORANGE = (0xD8, 0x7A, 0x3A)
 
 def save_png(path, w, h, px):
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    w, h = w * SCALE, h * SCALE
     rows = []
     for y in range(h):
         rows.append(b"\x00" + bytes(px[y * w * 4:(y + 1) * w * 4]))
@@ -55,15 +62,23 @@ def save_png(path, w, h, px):
 
 
 class Canvas:
+    """Logical-coordinate canvas with SCALE× physical pixels (see Chapter 1)."""
+
     def __init__(self, w, h, base=(0, 0, 0, 255)):
         self.w, self.h = w, h
-        self.px = bytearray(w * h * 4)
+        self.pw, self.ph = w * SCALE, h * SCALE
+        self.px = bytearray(self.pw * self.ph * 4)
         self.fill_rect(0, 0, w, h, base)
 
-    def blend(self, x, y, c, a=1.0):
-        if not (0 <= x < self.w and 0 <= y < self.h):
+    def _write(self, x, y, c, a=1.0):
+        if not (0 <= x < self.pw and 0 <= y < self.ph):
             return
-        i = (y * self.w + x) * 4
+        i = (y * self.pw + x) * 4
+        if a >= 1.0:
+            self.px[i:i + 4] = (
+                bytes(c[:3]) + (bytes(c[3:4]) if len(c) > 3 else b"\xff")
+            )
+            return
         inv = 1.0 - a
         for k in range(3):
             self.px[i + k] = int(c[k] * a + self.px[i + k] * inv)
@@ -71,8 +86,17 @@ class Canvas:
 
     def set(self, x, y, c):
         if 0 <= x < self.w and 0 <= y < self.h:
-            i = (y * self.w + x) * 4
-            self.px[i:i + 4] = bytes(c[:3]) + (bytes(c[3:4]) if len(c) > 3 else b"\xff")
+            px, py = int(x * SCALE), int(y * SCALE)
+            for yy in range(py, py + SCALE):
+                for xx in range(px, px + SCALE):
+                    self._write(xx, yy, c)
+
+    def blend(self, x, y, c, a=1.0):
+        if 0 <= x < self.w and 0 <= y < self.h:
+            px, py = int(x * SCALE), int(y * SCALE)
+            for yy in range(py, py + SCALE):
+                for xx in range(px, px + SCALE):
+                    self._write(xx, yy, c, a)
 
     def fill_rect(self, x, y, w, h, c):
         for yy in range(int(y), int(y + h)):
@@ -93,17 +117,17 @@ class Canvas:
                 if fill:
                     if d2 <= r2:
                         self.set(xx, yy, c)
-                elif r2 - 9 <= d2 <= r2:
+                elif (r - 2) ** 2 <= d2 <= r2:
                     self.set(xx, yy, c)
 
     def ellipse(self, cx, cy, rx, ry, c, fill=True):
         for yy in range(int(cy - ry), int(cy + ry) + 1):
             for xx in range(int(cx - rx), int(cx + rx) + 1):
-                d = ((xx - cx) / max(rx, 1)) ** 2 + ((yy - cy) / max(ry, 1)) ** 2
+                dv = ((xx - cx) / max(rx, 1)) ** 2 + ((yy - cy) / max(ry, 1)) ** 2
                 if fill:
-                    if d <= 1.0:
+                    if dv <= 1.0:
                         self.set(xx, yy, c)
-                elif 0.75 <= d <= 1.0:
+                elif 0.75 <= dv <= 1.0:
                     self.set(xx, yy, c)
 
     def line(self, x0, y0, x1, y1, c, width=2):
@@ -129,8 +153,8 @@ class Canvas:
         m = max(math.hypot(cx, cy), 1)
         for yy in range(0, self.h, 2):
             for xx in range(0, self.w, 2):
-                d = math.hypot(xx - cx, yy - cy) / m
-                a = max(0.0, (d - 0.55)) * 0.5
+                dv = math.hypot(xx - cx, yy - cy) / m
+                a = max(0.0, (dv - 0.68)) * 0.28
                 if a > 0.01:
                     self.blend(xx, yy, (8, 10, 16), a)
                     self.blend(xx + 1, yy, (8, 10, 16), a)
@@ -197,8 +221,7 @@ def glasshouse_base(canvas_t=0.60):
 
 def panel(c, b, fill=CHAR, edge=BRASS):
     x, y, w, h = rect_of(b)
-    c.fill_rect(x, y, w, h, fill)
-    c.frame(x, y, w, h, edge, 2)
+    d.bevel(c, x, y, w, h, fill, edge)
     return x, y, w, h
 
 
@@ -256,10 +279,11 @@ def room_conservatory():
     c.line(x + w / 2, y + h * 0.2, x + w / 2, y + h * 0.6, STEEL, 4)
     c.circle(x + w / 2, y + h * 0.15, 5, BRASS)
     # pump-room glass door (right)
-    x, y, w, h = panel(c, (0.80, 0.22, 0.15, 0.58), (0x1E, 0x30, 0x34), BRASS)
-    c.frame(x + w * 0.1, y + h * 0.06, w * 0.8, h * 0.3, GLASS, 2)
-    c.line(x + w / 2, y, x + w / 2, y + h, BRASS, 2)
-    c.fill_rect(x + w * 0.42, y + h * 0.55, w * 0.16, h * 0.3, CHAR)
+    x, y, w, h = rect_of((0.80, 0.22, 0.15, 0.58))
+    d.door(c, x, y, w, h, (0x1E, 0x30, 0x34))
+    c.fill_rect(x + w * 0.12, y + h * 0.08, w * 0.76, h * 0.28,
+                mix((0x1E, 0x30, 0x34), GLASS, 0.28))
+    c.frame(x + w * 0.12, y + h * 0.08, w * 0.76, h * 0.28, GLASS, 2)
     # leaf silhouettes for depth
     for bx, by, s in [(0.10, 0.18, 26), (0.24, 0.12, 20), (0.70, 0.16, 22)]:
         c.plant(bx * 360, by * 640, s, LEAF_D)
@@ -313,11 +337,12 @@ def room_pump_room():
     c.ellipse(x + w / 2, y + h / 2, w * 0.45, h * 0.42, (0x0C, 0x0C, 0x0E))
     c.ellipse(x + w / 2 - 3, y + h / 2 - 2, w * 0.2, h * 0.18, (0x16, 0x16, 0x18))
     # orangery door (right)
-    x, y, w, h = panel(c, (0.86, 0.30, 0.12, 0.48), (0x2A, 0x24, 0x1C), BRASS)
-    c.frame(x + 3, y + 3, w - 6, h - 6, (0x3E, 0x6B, 0x46), 1)
-    c.fill_rect(x + w * 0.4, y + h * 0.5, w * 0.2, h * 0.16, STEEL)
+    x, y, w, h = rect_of((0.86, 0.30, 0.12, 0.48))
+    d.door(c, x, y, w, h, (0x2A, 0x24, 0x1C))
+    c.frame(x + 3, y + h * 0.10, w - 6, h * 0.30, GLASS, 1)
     # back door (left)
-    panel(c, (0.02, 0.30, 0.06, 0.44), (0x2C, 0x24, 0x1E), STEEL)
+    x, y, w, h = rect_of((0.02, 0.30, 0.06, 0.44))
+    d.door(c, x, y, w, h, (0x2C, 0x24, 0x1E), locked=False)
     c.vignette()
     return c
 
@@ -371,7 +396,8 @@ def room_orangery():
     c.ellipse(x + w / 2, y + h * 0.58, w * 0.34, h * 0.24, GLASS)
     c.line(x + w / 2, y + h * 0.15, x + w / 2, y + h * 0.6, STEEL, 4)
     # back door (left)
-    panel(c, (0.02, 0.30, 0.06, 0.44), (0x2C, 0x24, 0x1E), STEEL)
+    x, y, w, h = rect_of((0.02, 0.30, 0.06, 0.44))
+    d.door(c, x, y, w, h, (0x2C, 0x24, 0x1E), locked=False)
     c.vignette()
     return c
 

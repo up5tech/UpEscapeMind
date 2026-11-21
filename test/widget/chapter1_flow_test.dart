@@ -110,6 +110,22 @@ void main() {
         .loadProgress(AppConstants.defaultSaveSlotId);
     expect(saved!.currentRoomId, 'room_entrance');
     expect(saved.unlockedRoomIds, ['room_entrance']);
+
+    // The note under the doormat is readable where it is found, not only
+    // after hunting through the Journal.
+    await tester.tap(find.byKey(const ValueKey('hotspot_hot_eh_doormat')));
+    await flush(tester);
+    expect(
+      find.text('Đốt sáp nơi trăng ẩn — lên, xuống, lên.'),
+      findsOneWidget,
+    );
+    expect(find.text('Đã lưu vào Nhật ký.'), findsOneWidget);
+    await tester.tap(find.text('Đóng'));
+    await flush(tester);
+
+    final afterClue = await DriftProgressRepository(db)
+        .loadProgress(AppConstants.defaultSaveSlotId);
+    expect(afterClue!.discoveredClueIds, contains('clue_doormat'));
   });
 
   testWidgets('prologue is skippable at any card', (tester) async {

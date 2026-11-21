@@ -26,12 +26,17 @@ class RoomScene extends StatefulWidget {
     required this.sceneLabel,
     required this.hotspots,
     required this.onHotspotTap,
+    this.showLabels = false,
   });
 
   final String backgroundAsset;
   final String sceneLabel;
   final List<RoomHotspotView> hotspots;
   final ValueChanged<RoomHotspotView> onHotspotTap;
+
+  /// Optional reading aid: localised object names over each hotspot. It
+  /// names the object only — never the clue value or the solution.
+  final bool showLabels;
 
   /// Minimum touch-target edge in logical pixels.
   static const double minTouchTarget = 56;
@@ -126,9 +131,76 @@ class _RoomSceneState extends State<RoomScene> {
             ),
             for (final hotspot in widget.hotspots)
               _positionedHotspot(hotspot, originX, originY, dispW, dispH, box),
+            // Labels are drawn after the tap targets and ignore pointers, so
+            // enabling the reading aid never blocks an interaction.
+            if (widget.showLabels)
+              for (final hotspot in widget.hotspots)
+                _positionedLabel(hotspot, originX, originY, dispW, dispH, box),
           ],
         );
       },
+    );
+  }
+
+  /// Localised object name chip centred on a hotspot. Purely informational:
+  /// it does not change hit testing or reveal puzzle values.
+  Widget _positionedLabel(
+    RoomHotspotView hotspot,
+    double originX,
+    double originY,
+    double dispW,
+    double dispH,
+    Size box,
+  ) {
+    const chipWidth = 124.0;
+    const chipHeight = 26.0;
+    final b = hotspot.definition.bounds;
+    final cx = originX + (b.x + b.width / 2) * dispW;
+    final cy = originY + (b.y + b.height / 2) * dispH;
+    final halfW = chipWidth / 2;
+    final left = cx.clamp(
+      math.min(halfW, box.width / 2),
+      math.max(halfW, box.width - halfW),
+    );
+    final top = cy.clamp(
+      math.min(chipHeight / 2, box.height / 2),
+      math.max(chipHeight / 2, box.height - chipHeight / 2),
+    );
+
+    return Positioned(
+      key: ValueKey('hotspot_label_${hotspot.definition.id}'),
+      left: left - halfW,
+      top: top - chipHeight / 2,
+      width: chipWidth,
+      height: chipHeight,
+      child: IgnorePointer(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: chipWidth),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceOverlay,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.brass.withValues(alpha: 0.85),
+                ),
+              ),
+              child: Text(
+                hotspot.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.parchmentText,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -213,15 +285,15 @@ class _HotspotTargetState extends State<_HotspotTarget> {
                 ? Duration.zero
                 : const Duration(milliseconds: 120),
             opacity: MediaQuery.disableAnimationsOf(context) || _pressed
-                ? 0.9
-                : 0.45,
+                ? 0.95
+                : 0.65,
             child: Container(
-              width: 10,
-              height: 10,
+              width: 12,
+              height: 12,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _pressed ? AppColors.amber : AppColors.brass,
-                border: Border.all(color: AppColors.parchmentText, width: 1),
+                border: Border.all(color: AppColors.parchmentText, width: 1.5),
               ),
             ),
           ),

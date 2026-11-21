@@ -455,6 +455,9 @@ void main() {
 
     // Wrong: flip only lever 0.
     await tapKey(tester, find.byKey(const ValueKey('lever_0')));
+    // The visible state label must follow the lever, not just semantics.
+    expect(find.text('Lên'), findsOneWidget);
+    expect(find.text('Xuống'), findsNWidgets(2));
     await tapKey(tester, find.byKey(const ValueKey('puzzle_check')));
     await flush(tester);
     expect(find.text(wrongMsg), findsOneWidget);

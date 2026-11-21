@@ -413,4 +413,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get guidePuzzleTapRegion => 'Chạm vào các điểm ẩn để tìm đủ mục tiêu.';
+
+  @override
+  String get roomZoomAction => 'Phóng to khung cảnh';
+
+  @override
+  String get roomZoomHint => 'Chụm để phóng to · kéo để di chuyển';
+
+  @override
+  String get roomLabelsShowAction => 'Hiện tên vật';
+
+  @override
+  String get roomLabelsHideAction => 'Ẩn tên vật';
+
+  @override
+  String get clueSavedToJournal => 'Đã lưu vào Nhật ký.';
 }

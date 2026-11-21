@@ -110,6 +110,35 @@ void main() {
     );
   });
 
+  testWidgets('scene controls show object names and open a zoom view', (
+    tester,
+  ) async {
+    await pumpApp(tester, progress: progressWith());
+    await openSampleRoom(tester);
+
+    expect(
+      find.byKey(const ValueKey('hotspot_label_hs_sample_note')),
+      findsNothing,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('room_labels_action')));
+    await flush(tester);
+    expect(
+      find.byKey(const ValueKey('hotspot_label_hs_sample_note')),
+      findsOneWidget,
+    );
+    expect(find.text('Một mẩu ghi chú'), findsWidgets);
+
+    await tester.tap(find.byKey(const ValueKey('room_zoom_action')));
+    await flush(tester);
+    expect(find.byKey(const ValueKey('room_zoom_close')), findsOneWidget);
+    expect(find.text('Chụm để phóng to · kéo để di chuyển'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('room_zoom_close')));
+    await flush(tester);
+    expect(find.byKey(const ValueKey('room_zoom_close')), findsNothing);
+  });
+
   testWidgets('room scene hotspot is exposed as an accessible button', (
     tester,
   ) async {
@@ -159,7 +188,12 @@ void main() {
     // Discover the plaque clue.
     await tester.tap(find.byKey(const ValueKey('hotspot_hs_sample_plaque')));
     await flush(tester);
-    expect(find.textContaining('Manh mối mới trong Nhật ký'), findsOneWidget);
+    expect(
+      find.textContaining('Người thợ làm đồng hồ viết'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('Đóng'));
+    await flush(tester);
 
     // Collect the key, then tap again — idempotent, no duplicate.
     await tester.tap(

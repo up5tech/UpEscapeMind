@@ -50,9 +50,11 @@ signing before store distribution (see RELEASE_CHECKLIST.md).
 
 ## 4. Performance notes
 
-- Scene art is deliberately small: 5 rooms at 360×640 PNG (~8–12 KB each),
-  2 puzzle backdrops (~5 KB), 5 item icons. Total `assets/` ≈ 150 KB —
-  negligible memory and decode cost; no texture compression needed.
+- Scene art is rendered at 2× logical resolution for sharpness on high-density
+  screens: 8 rooms at 720×1280 PNG (~16–23 KB each), 4 puzzle backdrops at
+  960×800/840 (~8–14 KB), compact item icons at 288×288. Total generated art
+  ≈ 0.3 MB (the 1.1 MB app icon is separate) — negligible memory and decode
+  cost; no texture compression needed.
 - Audio directories are empty by design (game ships silent, 1.0.0).
 - Integration journey completes in ~6 s on an iPhone 17 Pro simulator,
   including two cold app boots and full content load — no perceptible

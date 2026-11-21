@@ -83,7 +83,8 @@
       },
       "labelKey": "hotEhDoormat",
       "interactionType": "discover_clue",
-      "targetId": "clue_doormat"
+      "targetId": "clue_doormat",
+      "descriptionKey": "clueDoormatBody"
     },
     {
       "id": "hot_eh_sconce_panel",

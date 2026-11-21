@@ -410,4 +410,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guidePuzzleTapRegion =>
       'Tap the hidden spots to find every target.';
+
+  @override
+  String get roomZoomAction => 'Zoom scene';
+
+  @override
+  String get roomZoomHint => 'Pinch to zoom · drag to pan';
+
+  @override
+  String get roomLabelsShowAction => 'Show object names';
+
+  @override
+  String get roomLabelsHideAction => 'Hide object names';
+
+  @override
+  String get clueSavedToJournal => 'Saved to your Journal.';
 }

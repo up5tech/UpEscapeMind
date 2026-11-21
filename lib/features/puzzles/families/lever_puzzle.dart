@@ -130,26 +130,84 @@ class _LeverPuzzleState extends ConsumerState<LeverPuzzle> {
                           onTap: () => _flip(i),
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
-                            width: 64,
-                            height: 128,
+                            width: 72,
+                            height: 136,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               color: AppColors.charcoal,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: _states[i]
-                                    ? AppColors.brass
-                                    : AppColors.secondaryText,
+                                    ? AppColors.amber
+                                    : AppColors.brass,
                                 width: 2,
                               ),
                             ),
-                            child: Icon(
-                              _states[i]
-                                  ? Icons.arrow_circle_up
-                                  : Icons.arrow_circle_down,
-                              size: 40,
-                              color: _states[i]
-                                  ? AppColors.brass
-                                  : AppColors.disabledText,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  _states[i]
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  size: 22,
+                                  color: _states[i]
+                                      ? AppColors.amber
+                                      : AppColors.secondaryText,
+                                ),
+                                const SizedBox(height: 4),
+                                // A physical slot: the knob sits at the top or
+                                // bottom so the current state reads at a glance.
+                                Container(
+                                  width: 30,
+                                  height: 56,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.inkNavy,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                      color: AppColors.secondaryText.withValues(
+                                        alpha: 0.55,
+                                      ),
+                                    ),
+                                  ),
+                                  child: AnimatedAlign(
+                                    duration:
+                                        MediaQuery.disableAnimationsOf(context)
+                                        ? Duration.zero
+                                        : const Duration(milliseconds: 140),
+                                    alignment: _states[i]
+                                        ? Alignment.topCenter
+                                        : Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3),
+                                      child: Container(
+                                        width: 22,
+                                        height: 22,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: _states[i]
+                                              ? AppColors.amber
+                                              : AppColors.brass,
+                                          border: Border.all(
+                                            color: AppColors.parchmentText,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  _states[i] ? l10n.leverUp : l10n.leverDown,
+                                  style: TextStyle(
+                                    color: _states[i]
+                                        ? AppColors.amber
+                                        : AppColors.secondaryText,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
