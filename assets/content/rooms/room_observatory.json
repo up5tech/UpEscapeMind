@@ -5,15 +5,15 @@
   "chapterId": "chapter_01",
   "titleKey": "roomObservatoryTitle",
   "descriptionKey": "roomObservatoryDescription",
-  "backgroundAsset": "assets/art/rooms/room_observatory.png",
+  "backgroundAsset": "assets/art/rooms/room_observatory_r2_background.webp",
   "hotspots": [
     {
       "id": "hot_ob_back_gallery",
       "bounds": {
-        "x": 0.02,
-        "y": 0.34,
-        "width": 0.03,
-        "height": 0.34
+        "x": 0.01,
+        "y": 0.3,
+        "width": 0.06,
+        "height": 0.24
       },
       "labelKey": "hotObBack",
       "interactionType": "navigate",
@@ -23,21 +23,22 @@
       "id": "hot_ob_star_chart",
       "bounds": {
         "x": 0.3,
-        "y": 0.15,
-        "width": 0.4,
-        "height": 0.3
+        "y": 0.22,
+        "width": 0.32,
+        "height": 0.22
       },
       "labelKey": "hotObStarChart",
       "interactionType": "puzzle",
-      "targetId": "puz_ob_starchart"
+      "targetId": "puz_ob_starchart",
+      "inspectionAsset": "assets/art/objects/inspect_star_chart.webp"
     },
     {
       "id": "hot_ob_orrery",
       "bounds": {
-        "x": 0.12,
-        "y": 0.45,
-        "width": 0.3,
-        "height": 0.35
+        "x": 0.1,
+        "y": 0.44,
+        "width": 0.38,
+        "height": 0.32
       },
       "labelKey": "hotObOrrery",
       "interactionType": "puzzle",
@@ -46,10 +47,10 @@
     {
       "id": "hot_ob_telescope",
       "bounds": {
-        "x": 0.62,
-        "y": 0.35,
-        "width": 0.26,
-        "height": 0.45
+        "x": 0.55,
+        "y": 0.45,
+        "width": 0.28,
+        "height": 0.33
       },
       "labelKey": "hotObTelescope",
       "interactionType": "puzzle",
@@ -58,15 +59,19 @@
     {
       "id": "hot_ob_exit_door",
       "bounds": {
-        "x": 0.86,
-        "y": 0.3,
-        "width": 0.12,
-        "height": 0.48
+        "x": 0.85,
+        "y": 0.28,
+        "width": 0.14,
+        "height": 0.3
       },
       "labelKey": "hotObExitDoor",
       "interactionType": "inspect",
       "descriptionKey": "hotObExitDoorDesc"
     }
   ],
-  "entryConditions": []
+  "entryConditions": [],
+  "lightingAsset": "assets/art/effects/room_observatory_r2_lighting.webp",
+  "foregroundAsset": "assets/art/rooms/room_observatory_r2_foreground.webp",
+  "solvedAsset": "assets/art/rooms/room_observatory_r2_solved.webp",
+  "ambientParticle": "dust"
 }

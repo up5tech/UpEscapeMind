@@ -21,19 +21,41 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveOnPressed = enabled ? onPressed : null;
 
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: enabled ? AppColors.goldFoil : null,
+        color: enabled ? null : AppColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: enabled
+              ? AppColors.goldFoilLight
+              : AppColors.brass.withValues(alpha: 0.4),
+        ),
+        boxShadow: enabled
+            ? [
+                BoxShadow(
+                  color: AppColors.candleGlow.withValues(alpha: 0.22),
+                  blurRadius: 14,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
       child: FilledButton.icon(
         onPressed: effectiveOnPressed,
         icon: icon == null ? const SizedBox.shrink() : Icon(icon, size: 20),
         label: Text(label),
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.brass,
-          foregroundColor: AppColors.inkNavy,
-          disabledBackgroundColor: AppColors.surfaceElevated,
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: enabled
+              ? AppColors.inkNavy
+              : AppColors.disabledText,
+          disabledBackgroundColor: Colors.transparent,
           disabledForegroundColor: AppColors.disabledText,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

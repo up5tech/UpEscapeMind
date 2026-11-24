@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'app_typography.dart';
 
 /// Application theme. Dark, atmospheric, portrait-first.
 abstract final class AppTheme {
@@ -39,9 +40,11 @@ abstract final class AppTheme {
           side: const BorderSide(color: AppColors.brass, width: 0.5),
         ),
       ),
-      textTheme: base.textTheme.apply(
-        bodyColor: AppColors.primaryText,
-        displayColor: AppColors.primaryText,
+      textTheme: AppTypography.applyTo(
+        base.textTheme.apply(
+          bodyColor: AppColors.primaryText,
+          displayColor: AppColors.primaryText,
+        ),
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.brass,

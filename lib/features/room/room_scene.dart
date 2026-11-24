@@ -13,12 +13,14 @@ class RoomHotspotView {
   final String label;
 }
 
-/// Renders a room background with normalized-coordinate hotspots overlaid.
+/// Renders a room scene with normalized-coordinate hotspots overlaid.
 ///
-/// The background is letterboxed (`BoxFit.contain`-equivalent) inside the
-/// available space; hotspot bounds are fractions of the *image*, so they
-/// stay aligned at any aspect ratio. Each hotspot gets a forgiving touch
-/// target (>= [_kMinTouchTarget] logical px) centered on its bounds.
+/// The scene is letterboxed (`BoxFit.contain`-equivalent) inside the available
+/// space; hotspot bounds are fractions of the *image*, so they stay aligned at
+/// any aspect ratio. Optional r2 layers (§8.6 of PLAN.md) are drawn between
+/// the background and the hotspot UI; a room with only `backgroundAsset`
+/// renders exactly as before. Each hotspot gets a forgiving touch target
+/// (>= 56 logical px) centered on its bounds.
 class RoomScene extends StatefulWidget {
   const RoomScene({
     super.key,
@@ -26,6 +28,12 @@ class RoomScene extends StatefulWidget {
     required this.sceneLabel,
     required this.hotspots,
     required this.onHotspotTap,
+    this.midgroundAsset,
+    this.lightingAsset,
+    this.foregroundAsset,
+    this.solvedAsset,
+    this.ambientParticle,
+    this.solved = false,
     this.showLabels = false,
   });
 
@@ -33,6 +41,19 @@ class RoomScene extends StatefulWidget {
   final String sceneLabel;
   final List<RoomHotspotView> hotspots;
   final ValueChanged<RoomHotspotView> onHotspotTap;
+
+  /// Optional r2 art layers. All share the background's canvas geometry.
+  final String? midgroundAsset;
+  final String? lightingAsset;
+  final String? foregroundAsset;
+
+  /// Shown on top of the scene once the room's milestone is solved.
+  final String? solvedAsset;
+  final bool solved;
+
+  /// `"dust"` selects the built-in procedural mote field; any other value is
+  /// treated as an asset path for a low-alpha looping texture.
+  final String? ambientParticle;
 
   /// Optional reading aid: localised object names over each hotspot. It
   /// names the object only — never the clue value or the solution.
@@ -49,7 +70,6 @@ class _RoomSceneState extends State<RoomScene> {
   ImageStream? _imageStream;
   ImageStreamListener? _listener;
   Size? _imageSize;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -103,6 +123,8 @@ class _RoomSceneState extends State<RoomScene> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final box = constraints.biggest;
@@ -115,22 +137,64 @@ class _RoomSceneState extends State<RoomScene> {
         final dispH = imageSize.height * scale;
         final originX = (box.width - dispW) / 2;
         final originY = (box.height - dispH) / 2;
+        final sceneRect = Rect.fromLTWH(originX, originY, dispW, dispH);
 
         return Stack(
           children: [
-            Positioned(
-              left: originX,
-              top: originY,
-              width: dispW,
-              height: dispH,
+            Positioned.fromRect(
+              rect: sceneRect,
               child: Image.asset(
                 widget.backgroundAsset,
                 fit: BoxFit.fill,
                 semanticLabel: widget.sceneLabel,
               ),
             ),
+            for (final asset in [
+              widget.midgroundAsset,
+              widget.lightingAsset,
+              widget.foregroundAsset,
+            ])
+              if (asset != null)
+                Positioned.fromRect(
+                  rect: sceneRect,
+                  child: IgnorePointer(
+                    child: Image.asset(
+                      asset,
+                      fit: BoxFit.fill,
+                      gaplessPlayback: true,
+                    ),
+                  ),
+                ),
+            if (widget.solved && widget.solvedAsset != null)
+              Positioned.fromRect(
+                rect: sceneRect,
+                child: IgnorePointer(
+                  child: Image.asset(
+                    widget.solvedAsset!,
+                    fit: BoxFit.fill,
+                    gaplessPlayback: true,
+                  ),
+                ),
+              ),
+            if (widget.ambientParticle != null)
+              Positioned.fromRect(
+                rect: sceneRect,
+                child: IgnorePointer(
+                  child: _AmbientLayer(
+                    particle: widget.ambientParticle!,
+                    reduceMotion: reduceMotion,
+                  ),
+                ),
+              ),
             for (final hotspot in widget.hotspots)
-              _positionedHotspot(hotspot, originX, originY, dispW, dispH, box),
+              _positionedHotspot(
+                hotspot,
+                originX,
+                originY,
+                dispW,
+                dispH,
+                box,
+              ),
             // Labels are drawn after the tap targets and ignore pointers, so
             // enabling the reading aid never blocks an interaction.
             if (widget.showLabels)
@@ -246,9 +310,66 @@ class _RoomSceneState extends State<RoomScene> {
   }
 }
 
-/// Transparent tap target showing a subtle marker at the hotspot center.
+/// Procedural atmosphere overlay. `"dust"` draws slowly drifting motes;
+/// any other value is rendered as a low-alpha looping texture asset.
+class _AmbientLayer extends StatelessWidget {
+  const _AmbientLayer({required this.particle, required this.reduceMotion});
+
+  final String particle;
+  final bool reduceMotion;
+
+  @override
+  Widget build(BuildContext context) {
+    if (particle != 'dust') {
+      return Opacity(
+        opacity: 0.22,
+        child: Image.asset(
+          particle,
+          fit: BoxFit.cover,
+          gaplessPlayback: true,
+        ),
+      );
+    }
+    return CustomPaint(painter: _DustPainter(reduceMotion ? 0 : 0.32));
+  }
+}
+
+class _DustPainter extends CustomPainter {
+  const _DustPainter(this.progress);
+
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..style = PaintingStyle.fill;
+    for (var i = 0; i < 26; i++) {
+      final seed = i * 37.7;
+      final x = (math.sin(seed) * 0.5 + 0.5) * size.width;
+      final drift = math.sin(seed * 0.7 + progress * math.pi * 2) * 12;
+      final y =
+          ((math.cos(seed * 1.3) * 0.5 + 0.5) * size.height +
+                  progress * 26 +
+                  drift) %
+              size.height;
+      final r = 0.8 + (i % 4) * 0.45;
+      paint.color = AppColors.candleGlow.withValues(
+        alpha: 0.10 + (i % 3) * 0.05,
+      );
+      canvas.drawCircle(Offset(x, y), r, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DustPainter oldDelegate) =>
+      oldDelegate.progress != progress;
+}
+
+/// Transparent tap target with a soft brass glow at the hotspot center.
 class _HotspotTarget extends StatefulWidget {
-  const _HotspotTarget({required this.label, required this.onTap});
+  const _HotspotTarget({
+    required this.label,
+    required this.onTap,
+  });
 
   final String label;
   final VoidCallback onTap;
@@ -262,6 +383,7 @@ class _HotspotTargetState extends State<_HotspotTarget> {
 
   @override
   Widget build(BuildContext context) {
+    final disabled = MediaQuery.disableAnimationsOf(context);
     return Semantics(
       button: true,
       label: widget.label,
@@ -269,9 +391,7 @@ class _HotspotTargetState extends State<_HotspotTarget> {
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
         onTapDown: (_) {
-          if (!MediaQuery.disableAnimationsOf(context)) {
-            setState(() => _pressed = true);
-          }
+          if (!disabled) setState(() => _pressed = true);
         },
         onTapUp: (_) {
           if (_pressed) setState(() => _pressed = false);
@@ -281,19 +401,35 @@ class _HotspotTargetState extends State<_HotspotTarget> {
         },
         child: Center(
           child: AnimatedOpacity(
-            duration: MediaQuery.disableAnimationsOf(context)
+            duration: disabled
                 ? Duration.zero
                 : const Duration(milliseconds: 120),
-            opacity: MediaQuery.disableAnimationsOf(context) || _pressed
-                ? 0.95
-                : 0.65,
+            opacity: disabled || _pressed ? 0.95 : 0.65,
             child: Container(
-              width: 12,
-              height: 12,
+              width: 28,
+              height: 28,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _pressed ? AppColors.amber : AppColors.brass,
-                border: Border.all(color: AppColors.parchmentText, width: 1.5),
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.amber.withValues(alpha: 0.30),
+                    AppColors.amber.withValues(alpha: 0),
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _pressed ? AppColors.amber : AppColors.brass,
+                    border: Border.all(
+                      color: AppColors.parchmentText,
+                      width: 1.5,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

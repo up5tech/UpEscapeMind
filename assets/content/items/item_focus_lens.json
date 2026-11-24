@@ -4,7 +4,7 @@
   "id": "item_focus_lens",
   "nameKey": "itemFocusName",
   "descriptionKey": "itemFocusDesc",
-  "iconAsset": "assets/art/items/item_focus_lens.png",
+  "iconAsset": "assets/art/items/item_focus_lens_r2.png",
   "tags": [
     "part"
   ],

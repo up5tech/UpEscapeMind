@@ -222,6 +222,53 @@ void main() {
     );
   });
 
+  test('r2 room layers are parsed and validated', () async {
+    final room = RoomDefinition.fromJson({
+      'type': 'room',
+      'schemaVersion': 1,
+      'id': 'room_layers',
+      'chapterId': 'chapter_01',
+      'titleKey': 'roomEntranceTitle',
+      'backgroundAsset': 'assets/art/rooms/room_sample.png',
+      'midgroundAsset': 'assets/art/rooms/room_study.png',
+      'lightingAsset': 'assets/art/effects/missing_light.webp',
+      'foregroundAsset': 'assets/art/rooms/room_gallery.png',
+      'solvedAsset': 'assets/art/rooms/room_sample_exit.png',
+      'ambientParticle': 'dust',
+      'hotspots': <dynamic>[],
+    }, 'rooms/room_layers.json');
+    expect(room.sceneLayers, [
+      'assets/art/rooms/room_study.png',
+      'assets/art/effects/missing_light.webp',
+      'assets/art/rooms/room_gallery.png',
+    ]);
+    expect(room.artAssets, contains('assets/art/effects/missing_light.webp'));
+    // The procedural particle token is not an asset path.
+    expect(room.artAssets, isNot(contains('dust')));
+
+    final layeredCatalog = ContentCatalog(
+      chapters: catalog.chapters,
+      rooms: [room],
+      puzzles: const [],
+      items: const [],
+      combinations: const [],
+      clues: const [],
+    );
+    await expectLater(
+      ContentValidator.validate(
+        layeredCatalog,
+        assetExists: (p) async => _assetExists(p),
+      ),
+      throwsA(
+        isA<ContentValidationException>().having(
+          (e) => e.message,
+          'message',
+          contains('missing_light.webp'),
+        ),
+      ),
+    );
+  });
+
   test('unknown ids and broken references are reported', () async {
     expect(
       () => PuzzleDefinition.fromJson({

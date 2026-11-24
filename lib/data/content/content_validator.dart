@@ -690,8 +690,7 @@ abstract final class ContentValidator {
   ) async {
     final paths = <String>{};
     for (final room in c.rooms) {
-      paths.add(room.backgroundAsset);
-      paths.addAll(room.foregroundAssets);
+      paths.addAll(room.artAssets);
       if (room.ambientAudioAsset != null) paths.add(room.ambientAudioAsset!);
       for (final hotspot in room.hotspots) {
         if (hotspot.inspectionAsset != null) {

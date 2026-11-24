@@ -5,15 +5,15 @@
   "chapterId": "chapter_01",
   "titleKey": "roomStudyTitle",
   "descriptionKey": "roomStudyDescription",
-  "backgroundAsset": "assets/art/rooms/room_study.png",
+  "backgroundAsset": "assets/art/rooms/room_study_r2_background.webp",
   "hotspots": [
     {
       "id": "hot_st_back_entrance",
       "bounds": {
-        "x": 0.02,
-        "y": 0.3,
-        "width": 0.06,
-        "height": 0.44
+        "x": 0.009,
+        "y": 0.641,
+        "width": 0.139,
+        "height": 0.266
       },
       "labelKey": "hotStBack",
       "interactionType": "navigate",
@@ -22,9 +22,9 @@
     {
       "id": "hot_st_bookshelf",
       "bounds": {
-        "x": 0.58,
-        "y": 0.16,
-        "width": 0.32,
+        "x": 0.72,
+        "y": 0.08,
+        "width": 0.26,
         "height": 0.48
       },
       "labelKey": "hotStBookshelf",
@@ -34,10 +34,10 @@
     {
       "id": "hot_st_regulator",
       "bounds": {
-        "x": 0.1,
-        "y": 0.3,
-        "width": 0.16,
-        "height": 0.42
+        "x": 0.01,
+        "y": 0.16,
+        "width": 0.2,
+        "height": 0.45
       },
       "labelKey": "hotStRegulator",
       "interactionType": "use_item",
@@ -51,27 +51,29 @@
           "type": "discover_clue",
           "targetId": "clue_regulator_time"
         }
-      ]
+      ],
+      "inspectionAsset": "assets/art/objects/inspect_regulator.webp"
     },
     {
       "id": "hot_st_certificate",
       "bounds": {
-        "x": 0.34,
-        "y": 0.18,
+        "x": 0.16,
+        "y": 0.11,
         "width": 0.18,
-        "height": 0.22
+        "height": 0.2
       },
       "labelKey": "hotStCertificate",
       "interactionType": "discover_clue",
-      "targetId": "clue_apprentice_year"
+      "targetId": "clue_apprentice_year",
+      "inspectionAsset": "assets/art/objects/inspect_st_certificate.webp"
     },
     {
       "id": "hot_st_safe",
       "bounds": {
-        "x": 0.74,
+        "x": 0.72,
         "y": 0.52,
-        "width": 0.18,
-        "height": 0.3
+        "width": 0.2,
+        "height": 0.27
       },
       "labelKey": "hotStSafe",
       "interactionType": "puzzle",
@@ -80,10 +82,10 @@
     {
       "id": "hot_st_astrolabe",
       "bounds": {
-        "x": 0.36,
-        "y": 0.48,
-        "width": 0.16,
-        "height": 0.24
+        "x": 0.28,
+        "y": 0.44,
+        "width": 0.12,
+        "height": 0.12
       },
       "labelKey": "hotStAstrolabe",
       "interactionType": "puzzle",
@@ -92,34 +94,36 @@
     {
       "id": "hot_st_globe",
       "bounds": {
-        "x": 0.52,
-        "y": 0.55,
-        "width": 0.2,
-        "height": 0.3
+        "x": 0.4,
+        "y": 0.35,
+        "width": 0.28,
+        "height": 0.2
       },
       "labelKey": "hotStGlobe",
       "interactionType": "puzzle",
-      "targetId": "puz_st_globe"
+      "targetId": "puz_st_globe",
+      "inspectionAsset": "assets/art/objects/inspect_st_globe.webp"
     },
     {
       "id": "hot_st_desk",
       "bounds": {
-        "x": 0.2,
-        "y": 0.62,
-        "width": 0.3,
+        "x": 0.32,
+        "y": 0.58,
+        "width": 0.32,
         "height": 0.26
       },
       "labelKey": "hotStDesk",
       "interactionType": "discover_clue",
-      "targetId": "clue_vale_letter"
+      "targetId": "clue_vale_letter",
+      "inspectionAsset": "assets/art/objects/inspect_st_desk.webp"
     },
     {
       "id": "hot_st_workshop_exit",
       "bounds": {
-        "x": 0.86,
-        "y": 0.3,
-        "width": 0.12,
-        "height": 0.5
+        "x": 0.5,
+        "y": 0.2,
+        "width": 0.24,
+        "height": 0.34
       },
       "labelKey": "hotStWorkshopExit",
       "interactionType": "navigate",
@@ -132,5 +136,9 @@
       ]
     }
   ],
-  "entryConditions": []
+  "entryConditions": [],
+  "lightingAsset": "assets/art/effects/room_study_r2_lighting.webp",
+  "foregroundAsset": "assets/art/rooms/room_study_r2_foreground.webp",
+  "solvedAsset": "assets/art/rooms/room_study_r2_solved.webp",
+  "ambientParticle": "dust"
 }

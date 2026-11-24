@@ -120,7 +120,16 @@ void main() {
     );
 
     // Enter the study so the saved room becomes room_study.
-    await tester.tap(find.byKey(const ValueKey('hotspot_hot_eh_study_exit')));
+    // The exit box overlaps the lock plate at its center, so tap the right
+    // side of the door — the same visible area a player would use.
+    final exitFinder = find.byKey(const ValueKey('hotspot_hot_eh_study_exit'));
+    final exitRect = tester.getRect(exitFinder);
+    await tester.tapAt(
+      Offset(
+        exitRect.left + exitRect.width * 0.82,
+        exitRect.top + exitRect.height * 0.2,
+      ),
+    );
     await settle(tester, 800);
     expect(
       find.byKey(const ValueKey('hotspot_hot_st_bookshelf')),

@@ -40,6 +40,11 @@ class RoomDefinition {
     required this.exitConnections,
     this.descriptionKey,
     this.foregroundAssets = const [],
+    this.midgroundAsset,
+    this.lightingAsset,
+    this.foregroundAsset,
+    this.solvedAsset,
+    this.ambientParticle,
     this.ambientAudioAsset,
   });
 
@@ -49,10 +54,36 @@ class RoomDefinition {
   final String? descriptionKey;
   final String backgroundAsset;
   final List<String> foregroundAssets;
+
+  /// Optional r2 layered-art assets (§8.6). Missing layers are skipped at
+  /// runtime; `backgroundAsset` remains the only required scene image.
+  final String? midgroundAsset;
+  final String? lightingAsset;
+  final String? foregroundAsset;
+  final String? solvedAsset;
+  final String? ambientParticle;
+
   final List<HotspotDefinition> hotspots;
   final List<Prerequisite> entryConditions;
   final List<RoomExit> exitConnections;
   final String? ambientAudioAsset;
+
+  /// All optional r2 scene layers in paint order (behind hotspot UI).
+  List<String> get sceneLayers => [
+    ?midgroundAsset,
+    ?lightingAsset,
+    ?foregroundAsset,
+  ];
+
+  /// Every art asset referenced by this room, for validation/precaching.
+  List<String> get artAssets => [
+    backgroundAsset,
+    ...foregroundAssets,
+    ...sceneLayers,
+    ?solvedAsset,
+    if (ambientParticle != null && ambientParticle != 'dust')
+      ambientParticle!,
+  ];
 
   factory RoomDefinition.fromJson(Map<String, dynamic> json, String filePath) {
     if (json['type'] != 'room') {
@@ -79,6 +110,11 @@ class RoomDefinition {
       foregroundAssets: json['foregroundAssets'] == null
           ? const []
           : reqStringList(json, 'foregroundAssets', filePath),
+      midgroundAsset: optString(json, 'midgroundAsset', filePath),
+      lightingAsset: optString(json, 'lightingAsset', filePath),
+      foregroundAsset: optString(json, 'foregroundAsset', filePath),
+      solvedAsset: optString(json, 'solvedAsset', filePath),
+      ambientParticle: optString(json, 'ambientParticle', filePath),
       hotspots: hotspots,
       entryConditions: _parseConditions(json, 'entryConditions', filePath),
       exitConnections: _parseExits(json, filePath),

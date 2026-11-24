@@ -136,6 +136,16 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
               children: [
                 RoomScene(
                   backgroundAsset: room.backgroundAsset,
+                  midgroundAsset: room.midgroundAsset,
+                  lightingAsset: room.lightingAsset,
+                  foregroundAsset: room.foregroundAsset,
+                  solvedAsset: room.solvedAsset,
+                  ambientParticle: room.ambientParticle,
+                  solved:
+                      room.exitConnections.isNotEmpty &&
+                      room.exitConnections.every(
+                        (exit) => progress.isRoomUnlocked(exit.targetRoomId),
+                      ),
                   sceneLabel: strings.forLocale(locale, room.titleKey),
                   hotspots: hotspots,
                   showLabels: _showHotspotLabels,
@@ -304,8 +314,11 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     // While an item is "in hand", every hotspot tap is a use attempt.
     // Only `use_item` hotspots can succeed; anything else is invalid
     // feedback and the selection is kept.
+    // Navigation always stays available: an item in hand must not trap the
+    // player in a room. Only room interactions are interpreted as use attempts.
     if (_selectedItemId != null &&
-        def.interactionType != HotspotInteraction.useItem) {
+        def.interactionType != HotspotInteraction.useItem &&
+        def.interactionType != HotspotInteraction.navigate) {
       _toast(context, l10n.invalidItemUseMessage);
       return;
     }
@@ -320,6 +333,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
           await _tryUseItem(catalog, strings, progress, hotspot);
         }
       case HotspotInteraction.navigate:
+        if (_selectedItemId != null) {
+          setState(() => _selectedItemId = null);
+        }
         await _navigate(context, catalog, progress, def.targetId, l10n);
       case HotspotInteraction.discoverClue:
         final clueId = def.targetId;
@@ -339,7 +355,13 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
             ? s(def.descriptionKey!)
             : null;
         if (body != null) {
-          await _showClueSheet(context, title, body, l10n);
+          await _showClueSheet(
+            context,
+            title,
+            body,
+            l10n,
+            imageAsset: def.inspectionAsset,
+          );
         } else if (isNew) {
           _toast(context, l10n.clueDiscoveredMessage(title));
         }
@@ -530,8 +552,9 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
     BuildContext context,
     String title,
     String body,
-    AppLocalizations l10n,
-  ) {
+    AppLocalizations l10n, {
+    String? imageAsset,
+  }) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -587,6 +610,20 @@ class _RoomScreenState extends ConsumerState<RoomScreen> {
                     ),
                   ),
                 ),
+                if (imageAsset != null) ...[
+                  const SizedBox(height: 12),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 220),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        imageAsset,
+                        fit: BoxFit.contain,
+                        semanticLabel: title,
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 8),
                 Text(
                   l10n.clueSavedToJournal,

@@ -4,7 +4,7 @@
   "id": "item_clock_key",
   "nameKey": "itemClockKeyName",
   "descriptionKey": "itemClockKeyDesc",
-  "iconAsset": "assets/art/items/item_clock_key.png",
+  "iconAsset": "assets/art/items/item_clock_key_r2.png",
   "tags": [
     "tool"
   ],

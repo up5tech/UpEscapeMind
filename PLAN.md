@@ -7,6 +7,7 @@
 > **Game mode:** Single-player, fully offline  
 > **Backend:** None  
 > **Initial release target:** One polished story chapter with 5 connected areas and approximately 15–20 puzzles
+> **Graphics rebuild (r2):** The §8 art direction and the related §9/§10/§12/§13/§15/§16/§17/§18 updates in this revision replace the original flat-vector art plan. The programmatic placeholder art (`tool/gen_*.py`, single-layer ~20 KB room PNGs) is superseded as release art and retained only as a fallback/placeholder generator. See §8.1–§8.8 and the new Phase 9A.
 
 ---
 
@@ -331,32 +332,41 @@ These are game progress indicators only. Do not label them as clinical, educatio
 
 ## 8. User Experience and Visual Design
 
-### 8.1 Visual direction
+### 8.1 Visual direction — Graphics Rebuild (r2)
 
-Use a modern, atmospheric mystery aesthetic:
+Art identity: **"Dusty grandeur, cinematic painterly mystery"**. The Meridian House must look like a hand-painted storybook film still — rich, warm, and cinematic — not a flat vector diagram. Muted navy, charcoal, warm wood, aged paper, brass, and amber remain the core palette, but they are now rendered with material richness, gradients, texture, and hero lighting instead of flat fills.
 
-- Muted navy, charcoal, warm wood, aged paper, brass, and restrained amber highlights.
-- Soft lighting and subtle shadows to create depth.
-- Illustrated 2D environments with readable object silhouettes.
-- Consistent iconography for inventory items, hotspots, clues, and puzzle states.
-- Smooth but restrained transitions; avoid excessive motion that slows puzzle solving.
+**Diagnosis of the current (r1) art — why it cannot satisfy "đẹp, bắt mắt":**
 
-The art direction should support observation. Important clues must remain visually discoverable and must not be hidden by decorative noise.
+The shipped rooms are single-layer, programmatically plotted PNGs (720×1280, ~18–23 KB/room from `tool/gen_chapter1_art.py` / `tool/gen_chapter2_art.py`). They use flat color blocks, hard pixel edges, a single dark-navy void background, sparse silhouettes with large empty negative space, no textured materials, no depth, no foreground framing, no atmospheric light, and no motion. Icon and UI art is similarly minimal (e.g. ~1.5 KB item PNGs), with no layered depth, particles, or lighting overlays (`assets/art/effects/` and `assets/art/ui/` are empty). This style reads as wireframe/placeholder in screenshots and store listings. It is adequate for hotspot alignment and logic validation, but it is not release art.
 
-### 8.2 Main screens
+**Six art pillars for the rebuild:**
 
-1. **Splash screen:** Logo and lightweight startup transition.
-2. **Main menu:** Continue, New Game, Chapters, Settings, Credits.
-3. **Continue flow:** Resume the latest save or explain that no save exists.
-4. **Chapter selection:** Show chapter state: locked, available, in progress, completed.
-5. **Room screen:** Main scene, hotspots, room navigation, inventory access, journal, pause/menu.
-6. **Inspection screen:** Enlarged object, description, contextual actions.
-7. **Puzzle screen:** Dedicated interaction UI for the selected puzzle family.
-8. **Inventory:** Item grid/list, item details, combine/use actions.
-9. **Journal:** Discovered notes, clues, and story fragments.
-10. **Hint panel:** Three hint levels with explicit reveal actions.
-11. **Pause/settings:** Resume, restart current room (with confirmation), audio, haptics, language, accessibility.
-12. **Chapter completion:** Story resolution, discoveries, optional rating, next chapter status.
+1. **Atmosphere over flatness.** Every scene has graded color, soft volumetric light cones, dust motes, vignette, and fog. Darkness is layered and directional (candle, sconce, window, moon, lantern), never a single flat navy fill.
+2. **Layered depth.** Each room is a 4–5 layer parallax stack (far background → midground props → lighting/FX overlay → foreground framing → hotspot-glow UI), so the eye reads near/mid/far planes. The camera subtly parallaxes with drag/tilt (with reduced-motion fallback).
+3. **Hero lighting & material richness.** Wood grain, leather, paper fibers, brass/copper/steel patina, glass reflections, pendulum brass, velvet and parchment are painted with gradients, rim light, cast shadows, and contact shadows. Objects have a light source, not just an outline.
+4. **Dense, composed set dressing.** Rooms are composed like film sets: foreground silhouettes frame the view, background storytelling details (portraits, clocks, star charts, tools) fill the space, and every puzzle object is a painted hero with a readable silhouette. No empty navy voids.
+5. **Motion & life.** Clocks tick and pendulums swing, flames flicker, dust drifts, gears breathe, motes catch light, and hotspot affordances pulse with a soft brass glow. Success visibly transforms the scene (door opens, light ignites, gears turn, mechanism wakes) — a checkmark alone is not a payoff.
+6. **UI as jewelry.** Menus, cards, sheets, puzzle panels, and icons share one illustrated chrome: glassmorphism panels, gold-foil dividers, embossed buttons, serif display type, and consistent icon language. Screenshots must work as store art without post-processing.
+
+The art direction should support observation. Important clues must remain visually discoverable and must not be hidden by decorative noise. Atmosphere is applied around the gameplay plane (edges, background, foreground fringe); puzzle-relevant marks, symbols, and keypad digits ship at full contrast on their own layer.
+
+### 8.2 Main screens (art treatment)
+
+Every screen ships with key art or illustrated chrome — no bare `Scaffold` with default Material surfaces.
+
+1. **Splash screen:** Animated logo reveal over a dim, dust-filled key visual (hero Meridian House / grandfather clock), with a paint-fade-in and brass shimmer — not a static icon on a flat color.
+2. **Main menu:** Full-bleed parallax key art (Entrance Hall hero), floating dust + light rays, large serif title with foil treatment, embossed primary actions. Continue / New Game / Chapters / Settings / Credits.
+3. **Continue flow:** Resume the latest save or explain that no save exists. Uses the current room's key art as the backdrop.
+4. **Chapter selection:** Illustrated chapter cards (painted thumbnail, progress seal, lock illustration), not text rows. Show chapter state: locked, available, in progress, completed.
+5. **Room screen:** Full-bleed layered parallax scene (§8.6) with a glass HUD (top bar, inventory tray, guidance header), glowing hotspot affordances (§8.6), and foreground depth framing. HUD chrome never covers puzzle-relevant silhouettes.
+6. **Inspection screen:** Enlarged painted inspection art with spotlight radial, parchment description card, and contextual actions in illustrated style.
+7. **Puzzle screen:** Dedicated material-rich interaction UI per puzzle family — brass-and-leather keypad panels, physically shaded dials/gears/levers, star-map and parchment surfaces — built from shared puzzle chrome, not default buttons.
+8. **Inventory:** Painted item icons in brass-rimmed slots with rarity glow, inspection art, and combine/use affordances in the same hand-painted language.
+9. **Journal:** Aged-paper spread with hand-drawn clue art, wax-seal markers, and page-turn transitions.
+10. **Hint panel:** Bottom sheet with layered parchment cards (levels 1–3) and an illustrated hint icon set.
+11. **Pause/settings:** Illustrated pause emblem, grouped glass cards, and toggles in theme styling.
+12. **Chapter completion:** Cinematic seal reveal with confetti-free brass particle burst, rating stars, discoveries strip, and next-chapter teaser art.
 
 ### 8.3 Mobile layout
 
@@ -370,7 +380,11 @@ The art direction should support observation. Important clues must remain visual
 
 ### 8.4 Animation and audio
 
-- Use Flutter animations for opening drawers, moving puzzle pieces, unlocking doors, and scene transitions.
+**Motion design (rebuild):** Motion sells the polish — invest in it as first-class art, not decoration.
+
+- **Scene life (ambient):** pendulum swing, candle/sconce flicker, drifting dust motes, faint light-ray shimmer, slow fog crawl, ticking/second-hand creep, glass glint sweep. Implemented with lightweight `CustomPainter`/shader particles and `AnimatedBuilder` loops; pause off-screen and honor reduced-motion (freeze to a static lit frame).
+- **Interaction juice:** hotspot press ripple + brass glow bloom, item pickup arc to inventory, sheet slide-ups with spring easing, page curls for journal, drawer/door/mechanism opens, keypad press travel, gear/lever spring-back, success shimmer + particle burst + scene transformation, wrong-answer soft shake-and-dim (never red flash), room-change crossfade + slow push-in (cinematic, ~600 ms, skippable).
+- **Transitions:** short, eased, and never blocking puzzle input. No constant blinking; affordance pulses are slow (≥2 s period) and distinguishable by shape, not color alone.
 - Add subtle haptic feedback for important interactions where supported.
 - Provide separate music, sound-effect, and haptic toggles.
 - All audio must be optional. Critical clues and game feedback must also be available visually.
@@ -385,6 +399,78 @@ The art direction should support observation. Important clues must remain visual
 - Avoid rapid flashing and provide reduced-motion behavior for major animations.
 - Make important symbols visually distinct, not solely color-coded.
 - Support screen readers for menus, settings, journal text, and puzzle controls to a reasonable MVP standard.
+
+### 8.6 Graphics rebuild — scene layering, art specs, and rendering contract
+
+**Layered scene stack (portrait 9:16, full-bleed):** every room renders as a depth stack. Hotspot coordinates stay normalized to the scene canvas, so the existing hotspot system and content JSON remain valid when layers are added.
+
+```text
+foreground frame (depth) → hotspot-glow UI → lighting/FX overlay (glow, fog, particles)
+→ midground props (puzzle objects, furniture) → background (far walls, windows, depth)
+```
+
+- `background`: far architecture, windows/light sources, wall treatment, base floor plane.
+- `midground` (optional): furniture, machines, portraits, clocks, bookshelves — the interactive props. Puzzle-critical objects should live on this layer (or on `background` if they do not move) so lighting and parallax can treat them separately.
+- `lighting`/`effects` (optional): additive light cones, lamp glows, fog, dust-mote field, vignette, solved-state overlays.
+- `foreground` (optional): near-silhouette fringe (doorframe, plants, beams, blur) that frames the view and sells depth. Never occludes a hotspot or clue.
+- `solvedOverlay` (optional): alternate lamps/doors/gears/lights shown when a room milestone is solved, so the room visibly transforms (§8.1 pillar 5).
+- **Parallax:** far layers move less than near layers (e.g. background 4 px, midground 8 px, foreground 16 px at full drag). Driven by drag or device tilt; disabled under reduced-motion or on low-memory fallback (freeze to static full-frame).
+- **Hotspot affordance:** soft brass rim glow + one slow pulse on unsolved interactive objects; solved hotspots keep a quiet static mark (no pulse). Shapes stay distinct without relying on color. Interaction remains point-and-tap — no pixel-perfect aiming.
+- **Clue readability:** puzzle marks/symbols are painted at full contrast on the midground/background layer. Atmospheric overlays use screen-blend at low alpha and never sit directly over a clue digit/symbol. Any overlay that reduces clue contrast fails art QA (§8.7).
+
+**Asset specifications (r2 release targets):**
+
+| Asset | Spec |
+| ----- | ---- |
+| Room layers | 1080×1920 px source (9:16) per layer, sRGB, WebP q80 (or PNG with alpha where required). Each layer ≤ 400 KB; a full room ≤ 1.6 MB. Ship a 2×/3× resolution variant only if device profiling demands it — do not ship 2160×3840 masters as runtime assets. |
+| Room source | Masters at 2× runtime size (2160×3840) kept out of the app bundle; only optimized runtime files ship. |
+| Inspection art | 1080×1080 painted close-up per key hotspot, WebP, spotlight-rich, ≤ 250 KB. |
+| Item icons | 512×512 with alpha, painted with soft shadow + rim light, PNG/WebP. Inspection variants 1024 px where storytelling needs them. |
+| UI chrome | Shared vectors as SVG (borders, seals, icons) + WebP for textured fills. One chrome sheet per area (button, slot, sheet, card) — never per-screen one-offs. |
+| Fonts | Bundled licensed display serif (story/title, full VI + EN diacritic coverage verified) + clean UI sans. System font fallback only for debug. All text respects system text scaling; display sizes are fluid (`LayoutBuilder`/media queries), never clipped. |
+| Branding | App icon (512 px master + adaptive monochrome), store screenshots from real gameplay at final art, splash logo vector. |
+
+**Rendering contract (keeps the architecture offline and honest):**
+
+- `RoomScene` becomes a layered `Stack` of `Image` layers + a particle/glow overlay + `GestureDetector` hit layer. Single-`backgroundAsset` rooms keep working: missing layers are simply skipped.
+- No Flame / physics engine. Parallax, particles, and glow use Flutter `AnimatedBuilder`, `CustomPainter`, and `Transform` — see §9.1–§9.2. Animated puzzle widgets (gears, levers, dials) can move to Rive vectors in the future; the rebuild does not add a game engine pre-emptively.
+- Art is referenced from content JSON (`backgroundAsset`, `midgroundAsset`, `foregroundAsset`, `lightingAsset`, `solvedAsset`, `ambientParticle` — all optional except `backgroundAsset`). Widgets never hard-code art paths. The content validator checks every referenced file exists (§10.3, §12).
+- All art is bundled and works offline (airplane mode). Precache the current room's layers + the next reachable room only; dispose off-screen layers to bound memory (§15.1).
+
+### 8.7 Typography, color, and UI-chrome tokens (r2)
+
+Extend `lib/app/theme/` (do not rename existing tokens; add to them) so art and code share one language:
+
+- **Color:** Retain `inkNavy`, `charcoal`, `agedPaper`, `brass`, `amber`, `clockRed`, `parchmentText`. Add: `goldFoil` gradient (`#E8C86A → #B08D3E`), `candleGlow` (`#FFD27A` radial), `fogBlue` (`#2A3A5E` atmosphere), `parchmentShadow` (`#8A7648`), `successSeal` (muted emerald `#3E7A4E` — success is shape + motion + color, never color alone). Every surface must pass contrast checks at final art brightness, not just token values.
+- **Typography scale:** `display` (splash/menu titles), `title` (room/chapter), `subtitle`, `body`, `caption`, `hint`. Display serif with generous tracking + foil gradient; body serif for story parchment; sans for UI labels. Line-height ≥ 1.4 for story; hint/body contrast ≥ 4.5:1 on final art.
+- **Chrome:** `glassPanel` (dark translucent + 1 px brass border + 12–16 r radius + inner shadow), `foilDivider`, `embossedPrimaryButton`, `brassSlot` (inventory), `waxSeal` (journal/complete), `glowPulse` (hotspot). Defined once in `core/widgets` + theme extensions; screens compose, never restyle locally.
+- **Iconography:** one hand-painted set (tap, inspect, collect, combine, hint, journal, pause, lock, seal, star) with consistent 2 px brass keyline + filled silhouette. Puzzle symbols differ by shape first, color second (unchanged from r1).
+
+### 8.8 Art pipeline, production, and QA gates
+
+**Pipeline (offline-final, reproducible):**
+
+1. **Art Bible** (`design/05-visual-style.md` + this plan): palette, tokens, layer contract, composition grammar (foreground/mid/background, light logic), type specs, chrome specs, and 5 room styleframes (one per Chapter 1 room) approved before any batch production.
+2. **Styleframe → hero room:** Entrance Hall goes first as the vertical-slice proof. Approve on a real mid-range phone at final size before painting the remaining 4 rooms.
+3. **Production per room:** background → midground → lighting/effects → foreground → solved overlay → inspection art → thumbnails. Hotspot bounds are re-verified against the painted midground after every pass (see QA gate 4).
+4. **Optimize:** `tool/optimize_art.py` (WebP q80, resize variants, strip metadata, alpha trim, size budget check) + `tool/validate_art.py` (dimensions, ≤ budget, sRGB, contrast sampling on clue regions). Masters stay out of the bundle.
+5. **Integrate:** content JSON references the new layers; `ContentValidator` must pass; golden/widget screenshots compared per room.
+
+**Production rules:**
+
+- `tool/gen_*.py` output is **placeholder/fallback art only** — it guarantees hotspot alignment for engineering, but it does not ship as release art. Release art is human-finished painting (commissioned, studio, or licensed asset) with recorded provenance in `assets/licenses/` — never an unlicensed scrape, and never AI output without a confirmed commercial-use license on file.
+- Hotspot alignment: painted puzzle objects must be centered in their JSON bounds (within ±0.02 of the bounds center at final canvas). If painting moves a hero object, move the JSON bounds and re-run content validation — do not hand-tune pixels in the widget.
+- Every layer file is 9:16 at runtime spec; aspect mismatches fail `validate_art.py`.
+
+**QA gates ("đẹp, bắt mắt" must be measurable):**
+
+1. **5-second impression:** a first-time viewer describes each room's mood and one notable object within 5 s. If they describe it as "flat / empty / placeholder", the room fails.
+2. **Store-screenshot test:** the 5 room screenshots + menu + one puzzle panel read as a coherent set without post-processing (same palette, same chrome, same type).
+3. **Clue readability:** every puzzle-relevant mark/symbol is legible at arm's length on a mid-range phone in a bright room at final brightness, without zoom. Fails if any atmosphere overlay covers a clue.
+4. **Alignment:** every hotspot is centered over its painted object; solved overlay visibly transforms the scene.
+5. **Motion:** ambient loops feel alive but never distract; reduced-motion freezes to a static lit frame; parallax never displaces hotspots.
+6. **Performance:** 60 fps room interaction on the agreed minimum device after full layer stack loads; first-frame time within budget (§15.1); low-memory fallback hides foreground/particles without breaking hotspot alignment.
+7. **Playtest sign-off:** at least one playtester who did not design the puzzles comments unprompted that the game "looks good / premium" — not merely "functional".
 
 ---
 
@@ -403,7 +489,7 @@ The art direction should support observation. Important clues must remain visual
 | Settings               | `shared_preferences`                                                     | Small non-critical settings such as sound and language preference    |
 | Content files          | Bundled JSON assets                                                      | Versioned, offline room and puzzle definitions                       |
 | Audio                  | `audioplayers` (optional)                                                | Background music and sound effects                                   |
-| Scene rendering        | Flutter widgets, `Stack`, `GestureDetector`, `CustomPainter` when needed | Sufficient for static 2D escape-room scenes and interactive hotspots |
+| Scene rendering        | Flutter widgets, layered `Stack`, `GestureDetector`, `AnimatedBuilder`/`CustomPainter` particles and glow | Sufficient for r2 layered scenes and interactive hotspots without a game engine (§8.6, §9.2) |
 
 Use the latest stable package versions compatible with the Flutter/Dart SDK selected at project initialization. Commit `pubspec.lock` for the application. Do not copy old package APIs from tutorials without checking their current documentation.
 
@@ -498,11 +584,14 @@ Keep simple operations in their ViewModels if extracting a dedicated use case wo
 - `titleKey`
 - `descriptionKey`
 - `backgroundAsset`
-- `foregroundAssets` (optional)
+- `foregroundAssets` (optional, legacy flat list)
+- `midgroundAsset`, `lightingAsset`, `foregroundAsset`, `solvedAsset`, `ambientParticle` (optional r2 layers; §8.6)
 - `hotspots`
 - `entryConditions`
 - `exitConnections`
 - `ambientAudioAsset` (optional)
+
+**r2 schema note:** the optional layer fields extend the room content format without removing any existing field, so old room JSON remains valid. Nonetheless, any change to `schemaVersion` or the on-disk save/content contract requires owner approval per `AGENTS.md` before implementation. The content validator must check every referenced layer asset exists, with `backgroundAsset` remaining the only required art field.
 
 **HotspotDefinition**
 
@@ -573,7 +662,11 @@ The exact schema should be finalized in Phase 2, but content should follow a pre
   "id": "chapter_01_workshop",
   "chapterId": "chapter_01",
   "titleKey": "room.workshop.title",
-  "backgroundAsset": "assets/art/rooms/workshop.webp",
+  "backgroundAsset": "assets/art/rooms/workshop_background.webp",
+  "midgroundAsset": "assets/art/rooms/workshop_midground.webp",
+  "lightingAsset": "assets/art/effects/workshop_lighting.webp",
+  "foregroundAsset": "assets/art/rooms/workshop_foreground.webp",
+  "solvedAsset": "assets/art/rooms/workshop_solved.webp",
   "hotspots": [
     {
       "id": "gear_console",
@@ -595,6 +688,7 @@ This is an illustrative shape, not a final generated schema. Use typed Dart mode
 - Keep puzzle rules declarative where practical.
 - Do not execute code loaded from content JSON.
 - Validate all referenced asset paths, IDs, prerequisites, and puzzle types with a development-time content validator.
+- Validate the optional r2 room layers (`midgroundAsset`, `lightingAsset`, `foregroundAsset`, `solvedAsset`, `ambientParticle`) with the same asset-existence check as `backgroundAsset` (§8.6).
 - Provide a content version and migration strategy for save data when content changes.
 
 ---
@@ -652,11 +746,12 @@ escape_mind/
 ├── ios/
 ├── assets/
 │   ├── art/
-│   │   ├── rooms/
-│   │   ├── objects/
+│   │   ├── rooms/                 # r2: <room>_background/_midground/_foreground/_solved.webp
+│   │   ├── objects/               # r2: inspection close-ups per key hotspot
 │   │   ├── items/
-│   │   ├── ui/
-│   │   └── effects/
+│   │   ├── ui/                    # shared illustrated chrome (SVG + textured WebP)
+│   │   └── effects/               # light cones, fog, dust motes, vignette
+│   ├── licenses/                  # provenance + license ledger for shipped art/fonts
 │   ├── audio/
 │   │   ├── music/
 │   │   └── sfx/
@@ -714,6 +809,11 @@ escape_mind/
 │   ├── content_validation/
 │   └── fixtures/
 ├── integration_test/
+├── tool/
+│   ├── gen_chapter1_art.py        # placeholder/fallback only — not release art
+│   ├── gen_chapter2_art.py        # placeholder/fallback only — not release art
+│   ├── optimize_art.py            # r2: WebP q80, resize, metadata strip, budget check
+│   └── validate_art.py            # r2: dimensions, size, sRGB, clue-contrast sampling
 ├── analysis_options.yaml
 ├── pubspec.yaml
 ├── pubspec.lock
@@ -1055,6 +1155,44 @@ Each phase must end with working code, tests, and a reviewable deliverable. Do n
 - Story clues are understandable and can be revisited.
 - The chapter contains no placeholder art, placeholder text, or fake puzzle logic in release paths.
 
+### Phase 9A — Graphics Rebuild (r2)
+
+**Objectives**
+
+- Replace placeholder r1 art with the painterly, layered r2 release art defined in §8.1–§8.8.
+- Prove the hero room on a real device before batch-producing the remaining rooms, while keeping every hotspot and clue readable and correctly aligned.
+
+**Tasks**
+
+1. Update `design/05-visual-style.md` into the r2 Art Bible: palette/tokens, layer contract, composition grammar, light logic, type and chrome specs, plus 5 room styleframes (§8.8 step 1). Obtain sign-off before batch production.
+2. Gate check before implementation: obtain owner approval for any content/save schema version change or new dependency (per `AGENTS.md`). Keep `backgroundAsset` required and all new r2 layer fields optional so existing rooms keep working.
+3. Paint and approve the Entrance Hall as the hero room (background → midground → lighting/effects → foreground → solved overlay → inspection art → thumbnail) at final on-device size (§8.8 step 2).
+4. Extend `RoomDefinition`, `ContentValidator`, and `RoomScene` for the optional layer stack: layered `Stack`, low-memory/reduced-motion static fallback, and parallax that never moves hit regions (§8.6). Keep single-background rooms working.
+5. Add r2 theme tokens and shared chrome in `lib/app/theme/` and `core/widgets` (§8.7): goldFoil, candleGlow, fogBlue, parchmentShadow, successSeal, glassPanel, foilDivider, embossed buttons, brass slots, wax seals, hotspot glow. Do not rename existing tokens.
+6. Add `tool/optimize_art.py` and `tool/validate_art.py` (WebP q80, ≤ 400 KB per layer / ≤ 1.6 MB per room, 9:16 aspect, sRGB, clue-region contrast sampling). Keep 2× masters out of the app bundle (§8.8).
+7. Produce the remaining four Chapter 1 rooms and their inspection art, then the shared UI chrome, item icons, fonts with verified VI/EN glyph coverage, splash/menu key art, and branding (§8.2, §8.6).
+8. Wire art paths through content JSON only; never hard-code art paths in widgets. Re-verify hotspot centers against painted objects (within ±0.02) and update JSON bounds where painting moved a hero object (§8.8).
+9. Record every shipped asset's source and license in `assets/licenses/`; no unlicensed scrapes and no AI art without a confirmed commercial-use license on file (§8.8).
+10. Run all §8.8 QA gates, capture store screenshots from real gameplay, and integrate with Phase 10 motion/audio polish.
+
+**Deliverables**
+
+- Approved r2 Art Bible with 5 room styleframes.
+- Layered release art for all five Chapter 1 rooms plus inspection art, UI chrome, icons, fonts, key art, and branding.
+- Layer-aware `RoomScene`, extended content model/validator, r2 theme/chrome tokens, and art optimize/validate tools.
+- Updated content JSON with verified hotspot alignment and completed asset license ledger.
+
+**Acceptance criteria**
+
+- All §8.8 QA gates pass, including the 5-second impression test, clue readability, alignment, motion, performance, and unprompted "looks premium" playtest feedback.
+- Every room layer is 9:16, within size budgets, and its asset path resolves offline; the content validator flags any broken reference.
+- Hotspot centers stay aligned after the art swap; no clue is obscured by atmospheric overlays; solved overlays visibly change the scene.
+- Rooms with only `backgroundAsset` still render correctly; reduced-motion and low-memory fallbacks preserve hotspot alignment.
+- No placeholder `tool/gen_*.py` output, unlicensed asset, or hard-coded art path remains in a release path.
+- `flutter analyze` and all tests remain clean after each integration step.
+
+---
+
 ### Phase 10 — Audio, Animation, Accessibility, and Localization Polish
 
 **Objectives**
@@ -1216,9 +1354,10 @@ At minimum, automate this player journey:
 
 ### 15.1 Performance
 
-- Prefer WebP for raster room art where quality permits.
-- Avoid loading every chapter's large images into memory at startup.
-- Precache only the next likely room assets when useful.
+- Prefer WebP for raster room art where quality permits; follow the r2 budgets (≤ 400 KB per layer, ≤ 1.6 MB per room, 1080×1920 runtime) from §8.6.
+- Avoid loading every chapter's large images into memory at startup; keep 2× masters out of the bundle.
+- Precache only the current room's layers and the next reachable room; dispose off-screen layers to bound memory (§8.6).
+- Provide a low-memory fallback that hides foreground/particle layers without shifting hotspots.
 - Dispose audio players and controllers appropriately.
 - Avoid unnecessary rebuilds of the entire room scene when inventory or journal state changes.
 - Keep puzzle validation lightweight and synchronous unless there is a real need for asynchronous work.
@@ -1265,6 +1404,9 @@ Run an explicit airplane-mode test on release candidates. Remove network depende
 | Story text does not fit multiple languages | Broken layouts                         | Localization from the beginning and text-scaling tests       |
 | Too many features delay MVP                | Incomplete first release               | Protect the MVP scope and defer online/monetization features |
 | Hints reveal too much or too little        | Reduced player satisfaction            | Three-level hint design and playtesting                      |
+| r2 art layers obscure clues or misalign hotspots | Puzzle becomes unreadable or unfair | QA gates 3–4 (§8.8): clue-contrast sampling, ±0.02 hotspot centering, on-device review |
+| Layered art exceeds memory/size budget     | Slow devices or crashes                | Per-layer/per-room budgets, precache policy, low-memory fallback (§8.6, §15.1) |
+| Art license provenance missing or invalid  | Legal/store release blocker            | `assets/licenses/` ledger; no unlicensed scrape or unlicensed AI art (§8.8) |
 
 ---
 
@@ -1281,6 +1423,7 @@ A feature or phase is complete only when all applicable conditions are met:
 - Content definitions pass validation.
 - Save/resume behavior is verified when durable state changes.
 - The feature works without an internet connection.
+- For shipped art: the applicable §8.8 QA gates pass, art paths resolve from content JSON offline, and asset provenance is recorded in `assets/licenses/`.
 - No known critical bug or soft lock remains in the affected path.
 - Documentation is updated when a data model, puzzle format, or save schema changes.
 
@@ -1321,6 +1464,8 @@ A feature or phase is complete only when all applicable conditions are met:
 - [ ] Text scaling does not break critical puzzle screens.
 - [ ] Audio and haptics can be disabled.
 - [ ] All important clues are available visually.
+- [ ] Rooms use r2 layered art with legible clues, aligned hotspots, and visible solved-state transformations (§8.8 QA gates 3–5).
+- [ ] Store screenshots come from real gameplay at final art with no post-processing (§8.8 QA gate 2).
 - [ ] No critical soft lock, save loss, or blocker remains.
 
 ---

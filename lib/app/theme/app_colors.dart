@@ -13,6 +13,18 @@ abstract final class AppColors {
   static const Color clockRed = Color(0xFFA33B2E);
   static const Color parchmentText = Color(0xFFF2EAD8);
 
+  // r2 art-direction tokens (§8.7). Existing tokens are unchanged.
+  static const Color goldFoilLight = Color(0xFFE8C86A);
+  static const Color goldFoilDark = Color(0xFFB08D3E);
+  static const Color candleGlow = Color(0xFFFFD27A);
+  static const Color fogBlue = Color(0xFF2A3A5E);
+  static const Color parchmentShadow = Color(0xFF8A7648);
+  static const Color successSeal = Color(0xFF3E7A4E);
+
+  static const LinearGradient goldFoil = LinearGradient(
+    colors: [goldFoilLight, goldFoilDark],
+  );
+
   // Derived surface colors.
   static const Color surface = inkNavy;
   static const Color surfaceElevated = charcoal;

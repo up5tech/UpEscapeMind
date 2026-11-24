@@ -4,7 +4,7 @@
   "id": "item_lens",
   "nameKey": "itemLensName",
   "descriptionKey": "itemLensDesc",
-  "iconAsset": "assets/art/items/item_lens.png",
+  "iconAsset": "assets/art/items/item_lens_r2.png",
   "tags": [
     "part"
   ],

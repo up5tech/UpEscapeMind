@@ -1,48 +1,49 @@
-# Release Checklist — Up Escape Mind 1.0.0
+# Release Checklist — Up Escape Mind 1.1.0 (iOS update)
 
-Version: `1.0.0+1` (pubspec.yaml)
-Target platforms: Android, iOS — portrait-first, fully offline.
+**Version:** `1.1.0` (build `1`) — `pubspec.yaml` + `ios/Runner.xcodeproj/project.pbxproj`
+**Bundle ID:** `com.up5.upescapemind` (unchanged — matches the existing App Store app 1.0)
+**Prepared:** 2026-11-24
+**Scope of this update:** iOS. Android still uses the same version bump but has not been rebuilt here.
 
-## Code & content gates
+## Code, content & tests
 
-- [x] `flutter analyze` — clean, no issues
-- [x] `flutter test` — all unit, widget, content-validation, and solvability tests pass (136 tests)
-- [x] `flutter test integration_test/app_journey_test.dart` — written; verified via `flutter drive` on iPhone 17 Pro simulator (2/2 pass). `flutter test -d` on-device path hits a local WebSocket issue; Android emulator on this machine is unstable — rerun on CI/physical device.
-- [x] Content validation — production `manifest.json` covers Chapter 1 only; sample/dev content unreachable
-- [x] Localization — complete vi + en string sets (269 content strings each, plus arb UI strings)
-- [x] No placeholders or fake success paths in release paths
-- [x] In-app Credits screen expanded (art/audio/tech sections + open-source licenses page)
+- [x] Version bumped to 1.1.0+1; Xcode `MARKETING_VERSION=1.1.0`, `CURRENT_PROJECT_VERSION=1` for Runner (Debug/Profile/Release)
+- [x] `flutter analyze` — clean, 0 issues
+- [x] `flutter test` — **146/146 passed**
+- [x] `python3 tool/validate_art.py` — OK, 5 rooms checked
+- [x] Content manifest loads 2 chapters / 8 rooms / 29 puzzles / 9 items / 2 combinations / 40 clues
+- [x] Integration journey (`flutter drive` on iPhone 17 Pro simulator, iOS 26.1) — **3/3 passed**: critical path, save/resume, teardown
+- [x] Fixed stale integration tap that hit the lock plate instead of the exit door after r2 art changed hotspot layout
+- [x] Release notes updated for 1.1.0 (`release/RELEASE_NOTES.md`)
 
-## Platform gates
+## iOS build status
 
-- [x] Android manifest — no permissions in `src/main` (INTERNET only in debug/profile manifests, required by Flutter tooling)
-- [x] iOS `Info.plist` — no privacy-sensitive usage descriptions required (no camera/photos/mic/etc.)
-- [x] Offline-first — no network dependencies on the critical path; all content/art bundled as assets
-- [ ] Android release signing — **release build currently signed with debug keys**; configure a real keystore before store upload
-- [ ] Android App Bundle — `flutter build appbundle` fails its debug-symbol check because `cmdline-tools`/`apkanalyzer` is missing from the local SDK; install cmdline-tools or produce the AAB on CI
-- [ ] iOS distribution signing & provisioning — build with `--no-codesign` locally; archive via Xcode/Codemagic for App Store
-- [ ] Physical-device smoke test on min-spec Android + iPhone (see QA_REPORT.md for simulator coverage)
+- [x] Archive created: `build/ios/archive/Runner.xcarchive` (188.1 MB)
+- [x] Archive Info.plist verified: `CFBundleShortVersionString=1.1.0`, `CFBundleVersion=1`, `CFBundleIdentifier=com.up5.upescapemind`
+- [x] Export compliance: no app-implemented encryption; answered "None of the algorithms mentioned above" and set `ITSAppUsesNonExemptEncryption = false` in `ios/Runner/Info.plist`; verified in the rebuilt archive.
+- [x] App icon is branded keyhole art (not Flutter placeholder)
+- [ ] **IPA export still blocked:** Apple account is now signed in to Xcode GUI (Personal Team + UP5 TECH Company Limited), but `xcodebuild`/`flutter build ipa` still reports `No Accounts`, no iOS Distribution certificate, and no App Store profile for `com.up5.upescapemind`. The archive has been opened in Xcode Organizer for manual distribution.
+- [ ] Launch image is still the 1×1 placeholder — Flutter emits a non-blocking warning; replace if you want a branded launch screen
+- [ ] Physical-device smoke test + airplane-mode check before submission
 
-## Assets
+## Environment note
 
-- [x] Scene art: 5 rooms + 2 puzzle backdrops, 360×640 PNG, ~70 KB total
-- [x] Item icons: 5 production items
-- [x] License ledger: `assets/licenses/README.md` — all shipped art is project-owned original IP
-- [ ] App icon review — current icons are the Flutter default placeholder; replace with final branded icon before store submission
-- [ ] Store screenshots — capture on release-candidate build (6.7" + 6.5" iPhone, Android phone + 7"/10" tablet optional)
-- [ ] Fonts — currently system default; `assets/fonts/` is empty pending licensed font decision (see license ledger)
+`xcodebuild` on this machine could not resolve the empty `FlutterGeneratedPluginSwiftPackage`
+(`sandbox-exec: sandbox_apply: Operation not permitted`). The archive above was produced with
+that empty package reference temporarily removed; `ios/Runner.xcodeproj/project.pbxproj` has been
+restored to its normal state with the package reference intact. If CLI builds hit the same error,
+fix the local sandbox/Xcode setup or build from Xcode GUI/CI.
 
-## Release artifacts
+## Remaining steps for App Store Connect
 
-- [x] Android release APKs: fat 61.8 MB; per-ABI 19.1–23.1 MB (`build/app/outputs/flutter-apk/`)
-- [x] iOS release build: `build/ios/iphoneos/Runner.app` (20.5 MB, unsigned)
-- [x] Release notes: `release/RELEASE_NOTES.md`
-- [x] Store listing copy: `release/STORE_LISTING.md`
-- [x] Credits: `release/CREDITS.md`
-- [x] QA & performance report: `release/QA_REPORT.md`
+1. **Commit the working tree** — the r2 art, Chapter 2 metadata, version bump, and test fix are still uncommitted. Build the final archive from a clean commit.
+2. **In Xcode → Settings → Accounts**, select the UP5 TECH account and click *Manage Certificates…* → “+” → *iOS Distribution* so a distribution certificate with private key exists. Then click *Download Manual Profiles* (or check *Automatically Manage Signing* in the target).
+3. **Distribute the archive** (already opened in Organizer): *Distribute App* → *App Store Connect* → *Upload*. If the team shown differs from `CZJGGG5A9W`, update `DEVELOPMENT_TEAM` in the Runner target before re-archiving.
+4. **App Store Connect:** select the existing app → create new version **1.1.0** → upload build `1` → paste notes from `release/RELEASE_NOTES.md` → update screenshots if needed.
+5. **Review & submit** for review; verify the build is ready/processed before enabling release.
 
-## Known limitations (documented, accepted for 1.0.0)
+## Known items for 1.1.0
 
-- Game ships silent — `assets/audio/` is empty; audio settings toggles exist but no audio assets are bundled yet (Phase 10 scope).
-- Sample/dev content files (`*_sample*`) remain in `assets/` for tests but are not referenced by the production manifest.
-- Debug-signed Android release APK is suitable for internal RC distribution only.
+- No audio bundled (accepted scope).
+- RunnerTests bundle ID in Xcode still uses `com.upescapemind.upEscapeMind.RunnerTests`; harmless for release but can be aligned to `com.up5.upescapemind.RunnerTests` later.
+- Android 1.1.0 build/signing not part of this iOS update.

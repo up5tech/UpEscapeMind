@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
+import 'app_chrome.dart';
 
 /// Titled content card used on menu, chapter select, and settings screens.
 class SectionCard extends StatelessWidget {
@@ -19,26 +20,24 @@ class SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      child: Padding(
-        padding: padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null) ...[
-              Text(
-                title!,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.amber,
-                  fontWeight: FontWeight.w600,
-                ),
+    return GlassPanel(
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (title != null) ...[
+            Text(
+              title!,
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: AppColors.amber,
+                fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 12),
-            ],
-            child,
+            ),
+            const FoilDivider(),
           ],
-        ),
+          child,
+        ],
       ),
     );
   }
